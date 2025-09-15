@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
+import TopNavigation from '../../components/common/TopNavigation';
 import PartnerPortfolioManagement from '../../components/partners/PartnerPortfolioManagement';
 import RelationshipHealthTracking from '../../components/partners/RelationshipHealthTracking';
 
@@ -7,10 +8,15 @@ const Partners = () => {
   const [selectedTab, setSelectedTab] = useState(0);
 
   return (
-    <Box sx={{ p: 3, minHeight: '100vh', bgcolor: 'background.default' }}>
-      <Typography variant="h3" gutterBottom>
-        Partner Management
-      </Typography>
+    <Box>
+      <TopNavigation
+        title="Partner Management"
+        currentPage="partners"
+      />
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h3" gutterBottom>
+          Partner Management
+        </Typography>
       <Typography variant="body1" color="text.secondary" gutterBottom sx={{ mb: 3 }}>
         Comprehensive partner portfolio and relationship management
       </Typography>
@@ -22,6 +28,7 @@ const Partners = () => {
 
       {selectedTab === 0 && <PartnerPortfolioManagement />}
       {selectedTab === 1 && <RelationshipHealthTracking />}
+      </Box>
     </Box>
   );
 };

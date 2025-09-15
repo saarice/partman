@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import TopNavigation from '../common/TopNavigation';
 import {
   Card,
   CardContent,
@@ -1346,8 +1347,13 @@ const OpportunityLifecycleManagement = () => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Opportunity Lifecycle Management
+      <TopNavigation
+        title="Opportunity Lifecycle Management"
+        currentPage="opportunities"
+      />
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h4" gutterBottom>
+          Opportunity Lifecycle Management
         {stageFromUrl && (
           <Chip
             label={`Filtered by: ${PIPELINE_STAGES.find(s => s.id === stageFromUrl)?.name || stageFromUrl}`}
@@ -1367,14 +1373,6 @@ const OpportunityLifecycleManagement = () => {
 
       {/* Action Bar */}
       <Box display="flex" gap={2} mb={3} alignItems="center">
-        <Button
-          startIcon={<ArrowBack />}
-          variant="outlined"
-          onClick={() => window.location.href = '/dashboard'}
-          sx={{ mr: 1 }}
-        >
-          Back to Dashboard
-        </Button>
         <Button
           startIcon={<Add />}
           variant="contained"
@@ -3214,6 +3212,7 @@ const OpportunityLifecycleManagement = () => {
           )}
         </DialogActions>
       </Dialog>
+      </Box>
     </Box>
   );
 };
