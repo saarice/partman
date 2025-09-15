@@ -329,7 +329,7 @@ const OpportunityLifecycleManagement = () => {
 
   // Filter states
   const [filters, setFilters] = useState({
-    stage: stageFromUrl || 'all',
+    stage: stageFromUrl ? [stageFromUrl] : ['prospecting', 'qualification', 'demo', 'proposal', 'negotiation', 'contract'],
     assignee: 'all',
     priority: 'all',
     partner: 'all',
@@ -349,7 +349,7 @@ const OpportunityLifecycleManagement = () => {
   const [tempRate, setTempRate] = useState<string>('');
 
   // Sorting state
-  const [sortField, setSortField] = useState<string>('');
+  const [sortField, setSortField] = useState<string>('expectedCloseDate');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   useEffect(() => {
@@ -803,7 +803,9 @@ const OpportunityLifecycleManagement = () => {
     console.log('Applying filters. Total opportunities:', opportunities.length);
     let filtered = opportunities;
 
-    if (filters.stage !== 'all') {
+    if (Array.isArray(filters.stage)) {
+      filtered = filtered.filter(opp => filters.stage.includes(opp.stage));
+    } else if (filters.stage !== 'all') {
       filtered = filtered.filter(opp => opp.stage === filters.stage);
     }
 
@@ -1415,11 +1417,19 @@ const OpportunityLifecycleManagement = () => {
             <FormControl fullWidth size="small">
               <InputLabel>Stage</InputLabel>
               <Select
-                value={filters.stage}
-                onChange={(e) => setFilters({...filters, stage: e.target.value})}
+                multiple
+                value={Array.isArray(filters.stage) ? filters.stage : []}
+                onChange={(e) => {
+                  const value = e.target.value as string[];
+                  setFilters({...filters, stage: value});
+                }}
+                renderValue={(selected) =>
+                  selected.length === 0 ? 'No stages selected' :
+                  selected.length === PIPELINE_STAGES.filter(s => s.id !== 'closed_won' && s.id !== 'closed_lost').length ? 'All Active Stages' :
+                  `${selected.length} stages selected`
+                }
               >
-                <MenuItem value="all">All Stages</MenuItem>
-                {PIPELINE_STAGES.map(stage => (
+                {PIPELINE_STAGES.filter(stage => stage.id !== 'closed_won' && stage.id !== 'closed_lost').map(stage => (
                   <MenuItem key={stage.id} value={stage.id}>{stage.name}</MenuItem>
                 ))}
               </Select>
@@ -1473,6 +1483,85 @@ const OpportunityLifecycleManagement = () => {
         </Grid>
       </Paper>
 
+      {/* Summary Cards */}
+      <Grid container spacing={2} mb={3}>
+        <Grid item xs={12} sm={4}>
+          <Card>
+            <CardContent>
+              <Box display="flex" alignItems="center" gap={2}>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    bgcolor: 'primary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Typography variant="h6" color="white">{filteredOpportunities.length}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="textSecondary">Total Opportunities</Typography>
+                  <Typography variant="h6">{filteredOpportunities.length}</Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Card>
+            <CardContent>
+              <Box display="flex" alignItems="center" gap={2}>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    bgcolor: 'success.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Typography variant="h6" color="white">$</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="textSecondary">Pipeline Value</Typography>
+                  <Typography variant="h6">${filteredOpportunities.reduce((sum, opp) => sum + opp.value, 0).toLocaleString()}</Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Card>
+            <CardContent>
+              <Box display="flex" alignItems="center" gap={2}>
+                <Box
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    bgcolor: 'info.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <Typography variant="h6" color="white">%</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="textSecondary">Total Commission</Typography>
+                  <Typography variant="h6">${filteredOpportunities.reduce((sum, opp) => sum + (opp.estimatedCommission || 0), 0).toLocaleString()}</Typography>
+                </Box>
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
       <Tabs value={selectedTab} onChange={(_, newValue) => setSelectedTab(newValue)} sx={{ mb: 3 }}>
         <Tab label="Pipeline View" />
         <Tab label="Analytics & Forecasting" />
@@ -1482,20 +1571,7 @@ const OpportunityLifecycleManagement = () => {
       {selectedTab === 0 && (
         <Card>
           <CardContent>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-              <Typography variant="h6">Opportunities Pipeline</Typography>
-              <Box display="flex" alignItems="center" gap={1}>
-                <Typography variant="body2" color="textSecondary">
-                  Total: {filteredOpportunities.length} opportunities
-                </Typography>
-                <Typography variant="body2" fontWeight="bold">
-                  Pipeline Value: ${filteredOpportunities.reduce((sum, opp) => sum + opp.value, 0).toLocaleString()}
-                </Typography>
-                <Typography variant="body2" color="info.main" fontWeight="bold">
-                  Total Commission: ${filteredOpportunities.reduce((sum, opp) => sum + (opp.estimatedCommission || 0), 0).toLocaleString()}
-                </Typography>
-              </Box>
-            </Box>
+            <Typography variant="h6" mb={2}>Opportunities Pipeline</Typography>
 
             <TableContainer>
               <Table>
@@ -1680,6 +1756,8 @@ const OpportunityLifecycleManagement = () => {
                           anchorEl={menuAnchor[`date_${opportunity.id}`]}
                           open={Boolean(menuAnchor[`date_${opportunity.id}`])}
                           onClose={() => setMenuAnchor({ ...menuAnchor, [`date_${opportunity.id}`]: null })}
+                          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                          transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                           PaperProps={{ sx: { p: 2 } }}
                         >
                           <Box display="flex" flexDirection="column" gap={1}>
@@ -1726,6 +1804,8 @@ const OpportunityLifecycleManagement = () => {
                           anchorEl={menuAnchor[`assignee_${opportunity.id}`]}
                           open={Boolean(menuAnchor[`assignee_${opportunity.id}`])}
                           onClose={() => setMenuAnchor({ ...menuAnchor, [`assignee_${opportunity.id}`]: null })}
+                          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                          transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                         >
                           <MenuItem
                             selected={opportunity.assignedTo === 'user1'}
@@ -1800,6 +1880,8 @@ const OpportunityLifecycleManagement = () => {
                           anchorEl={menuAnchor[`priority_${opportunity.id}`]}
                           open={Boolean(menuAnchor[`priority_${opportunity.id}`])}
                           onClose={() => setMenuAnchor({ ...menuAnchor, [`priority_${opportunity.id}`]: null })}
+                          anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                          transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                         >
                           {Object.entries(PRIORITIES).map(([key, priority]) => (
                             <MenuItem
@@ -1853,6 +1935,8 @@ const OpportunityLifecycleManagement = () => {
                             anchorEl={menuAnchor[`stage_${opportunity.id}`]}
                             open={Boolean(menuAnchor[`stage_${opportunity.id}`])}
                             onClose={() => setMenuAnchor({ ...menuAnchor, [`stage_${opportunity.id}`]: null })}
+                            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                            transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                           >
                             {PIPELINE_STAGES.map(stage => (
                               <MenuItem
@@ -1892,6 +1976,8 @@ const OpportunityLifecycleManagement = () => {
                             anchorEl={menuAnchor[opportunity.id]}
                             open={Boolean(menuAnchor[opportunity.id])}
                             onClose={() => setMenuAnchor({ ...menuAnchor, [opportunity.id]: null })}
+                            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                            transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                           >
                             <MenuItem onClick={() => {
                               setSelectedOpportunity(opportunity);
@@ -1955,6 +2041,8 @@ const OpportunityLifecycleManagement = () => {
                 anchorEl={menuAnchor[`dealtype_${opportunity.id}`]}
                 open={Boolean(menuAnchor[`dealtype_${opportunity.id}`])}
                 onClose={() => setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null })}
+                anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
               >
                 {Object.entries(DEAL_TYPES).map(([key, dealType]) => (
                   <MenuItem
