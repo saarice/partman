@@ -1266,10 +1266,10 @@ const OpportunityLifecycleManagement = () => {
         Opportunity Lifecycle Management
         {stageFromUrl && (
           <Chip
-            label={`Filtered by: ${stageFromUrl}`}
+            label={`Filtered by: ${PIPELINE_STAGES.find(s => s.id === stageFromUrl)?.name || stageFromUrl}`}
             color="primary"
             size="small"
-            sx={{ ml: 2, textTransform: 'capitalize' }}
+            sx={{ ml: 2 }}
             onDelete={() => {
               setFilters({...filters, stage: 'all'});
               window.history.replaceState({}, '', '/opportunities');

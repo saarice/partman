@@ -53,19 +53,19 @@ interface PipelineFilters {
 }
 
 const STAGE_COLORS = {
-  'Lead': '#FF6B6B',
-  'Demo': '#4ECDC4',
-  'POC': '#45B7D1',
-  'Proposal': '#96CEB4',
-  'Closed Won': '#FFEAA7'
+  'lead': '#FF6B6B',
+  'demo': '#4ECDC4',
+  'poc': '#45B7D1',
+  'proposal': '#96CEB4',
+  'closed_won': '#FFEAA7'
 };
 
 const STAGE_PROBABILITIES = {
-  'Lead': 10,
-  'Demo': 25,
-  'POC': 50,
-  'Proposal': 75,
-  'Closed Won': 100
+  'lead': 10,
+  'demo': 25,
+  'poc': 50,
+  'proposal': 75,
+  'closed_won': 100
 };
 
 const PipelineHealthMonitoring = () => {
@@ -122,8 +122,19 @@ const PipelineHealthMonitoring = () => {
     }
   };
 
+  const getDisplayName = (stageId: string) => {
+    const displayNames: Record<string, string> = {
+      'lead': 'Lead',
+      'demo': 'Demo',
+      'poc': 'POC',
+      'proposal': 'Proposal',
+      'closed_won': 'Closed Won'
+    };
+    return displayNames[stageId] || stageId;
+  };
+
   const chartData = {
-    labels: pipelineData?.stages.map(s => s.stage) || [],
+    labels: pipelineData?.stages.map(s => getDisplayName(s.stage)) || [],
     datasets: [
       {
         label: 'Opportunities',
@@ -321,7 +332,7 @@ const PipelineHealthMonitoring = () => {
                 >
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                     <Typography variant="subtitle1" fontWeight="bold">
-                      {stage.stage}
+                      {getDisplayName(stage.stage)}
                     </Typography>
                     <Box display="flex" alignItems="center" gap={0.5}>
                       {getTrendIcon(stage.trend)}

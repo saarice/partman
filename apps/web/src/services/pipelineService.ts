@@ -77,7 +77,7 @@ class PipelineService {
       return {
         stages: [
           {
-            stage: 'Lead',
+            stage: 'lead',
             count: 45,
             value: 2250000,
             probability: 10,
@@ -85,7 +85,7 @@ class PipelineService {
             trend: 'up'
           },
           {
-            stage: 'Demo',
+            stage: 'demo',
             count: 28,
             value: 1680000,
             probability: 25,
@@ -93,7 +93,7 @@ class PipelineService {
             trend: 'up'
           },
           {
-            stage: 'POC',
+            stage: 'poc',
             count: 15,
             value: 1125000,
             probability: 50,
@@ -101,7 +101,7 @@ class PipelineService {
             trend: 'stable'
           },
           {
-            stage: 'Proposal',
+            stage: 'proposal',
             count: 8,
             value: 720000,
             probability: 75,
@@ -109,7 +109,7 @@ class PipelineService {
             trend: 'down'
           },
           {
-            stage: 'Closed Won',
+            stage: 'closed_won',
             count: 12,
             value: 960000,
             probability: 100,
