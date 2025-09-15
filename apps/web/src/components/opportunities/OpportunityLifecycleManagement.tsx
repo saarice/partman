@@ -1513,42 +1513,6 @@ const OpportunityLifecycleManagement = () => {
                           {opportunity.commissionRate || 15}
                         </Typography>
                       </TableCell>
-                      <Menu
-                        anchorEl={menuAnchor[`dealtype_${opportunity.id}`]}
-                        open={Boolean(menuAnchor[`dealtype_${opportunity.id}`])}
-                        onClose={() => setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null })}
-                        >
-                          {Object.entries(DEAL_TYPES).map(([key, dealType]) => (
-                            <MenuItem
-                              key={key}
-                              selected={opportunity.dealType === key}
-                              onClick={() => {
-                                const newCommission = calculateCommission(opportunity.value, key);
-                                const updatedOpportunities = opportunities.map(opp =>
-                                  opp.id === opportunity.id
-                                    ? {
-                                        ...opp,
-                                        dealType: key as any,
-                                        commissionRate: dealType.defaultRate,
-                                        estimatedCommission: newCommission,
-                                        lastUpdated: new Date().toISOString()
-                                      }
-                                    : opp
-                                );
-                                setOpportunities(updatedOpportunities);
-                                setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null });
-                              }}
-                            >
-                              <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                                <Typography variant="body2">{dealType.label}</Typography>
-                                <Typography variant="body2" fontWeight="bold">
-                                  {dealType.defaultRate}
-                                </Typography>
-                              </Box>
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </TableCell>
                       <TableCell align="right">
                         {opportunity.probability}%
                       </TableCell>
@@ -1847,6 +1811,43 @@ const OpportunityLifecycleManagement = () => {
                         </Box>
                       </TableCell>
                     </TableRow>
+
+                    {/* Deal Type Menu */}
+                    <Menu
+                      anchorEl={menuAnchor[`dealtype_${opportunity.id}`]}
+                      open={Boolean(menuAnchor[`dealtype_${opportunity.id}`])}
+                      onClose={() => setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null })}
+                    >
+                      {Object.entries(DEAL_TYPES).map(([key, dealType]) => (
+                        <MenuItem
+                          key={key}
+                          selected={opportunity.dealType === key}
+                          onClick={() => {
+                            const newCommission = calculateCommission(opportunity.value, key);
+                            const updatedOpportunities = opportunities.map(opp =>
+                              opp.id === opportunity.id
+                                ? {
+                                    ...opp,
+                                    dealType: key as any,
+                                    commissionRate: dealType.defaultRate,
+                                    estimatedCommission: newCommission,
+                                    lastUpdated: new Date().toISOString()
+                                  }
+                                : opp
+                            );
+                            setOpportunities(updatedOpportunities);
+                            setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null });
+                          }}
+                        >
+                          <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+                            <Typography variant="body2">{dealType.label}</Typography>
+                            <Typography variant="body2" fontWeight="bold">
+                              {dealType.defaultRate}
+                            </Typography>
+                          </Box>
+                        </MenuItem>
+                      ))}
+                    </Menu>
                   ))}
                 </TableBody>
               </Table>
