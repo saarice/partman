@@ -72,7 +72,10 @@ import {
   Group,
   FilterList,
   Search,
-  GetApp
+  GetApp,
+  ArrowUpward,
+  ArrowDownward,
+  ArrowBack
 } from '@mui/icons-material';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip as ChartTooltip, Legend, PointElement } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
@@ -344,6 +347,10 @@ const OpportunityLifecycleManagement = () => {
   const [editingRate, setEditingRate] = useState<string | null>(null);
   const [tempRate, setTempRate] = useState<string>('');
 
+  // Sorting state
+  const [sortField, setSortField] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
   useEffect(() => {
     console.log('OpportunityLifecycleManagement component mounted');
     loadOpportunities();
@@ -351,7 +358,7 @@ const OpportunityLifecycleManagement = () => {
 
   useEffect(() => {
     applyFilters();
-  }, [opportunities, filters]);
+  }, [opportunities, filters, sortField, sortDirection]);
 
   const calculateOpportunityMetrics = (opportunity: Opportunity) => {
     const now = new Date();
@@ -725,6 +732,72 @@ const OpportunityLifecycleManagement = () => {
     }
   };
 
+  const handleSort = (field: string) => {
+    const isAsc = sortField === field && sortDirection === 'asc';
+    setSortDirection(isAsc ? 'desc' : 'asc');
+    setSortField(field);
+  };
+
+  const getSortIcon = (field: string) => {
+    if (sortField !== field) return null;
+    return sortDirection === 'asc' ? <ArrowUpward fontSize="small" /> : <ArrowDownward fontSize="small" />;
+  };
+
+  const SortableTableCell = ({ field, children, align = 'left' }: { field: string, children: React.ReactNode, align?: 'left' | 'right' | 'center' }) => (
+    <TableCell
+      align={align}
+      sx={{
+        cursor: 'pointer',
+        '&:hover': { backgroundColor: 'grey.50' },
+        fontWeight: 'bold'
+      }}
+      onClick={() => handleSort(field)}
+    >
+      <Box display="flex" alignItems="center" justifyContent={align === 'right' ? 'flex-end' : 'flex-start'} gap={1}>
+        {children}
+        {getSortIcon(field)}
+      </Box>
+    </TableCell>
+  );
+
+  const getSortedOpportunities = (opps: Opportunity[]) => {
+    if (!sortField) return opps;
+
+    return [...opps].sort((a, b) => {
+      let aValue: any = a[sortField as keyof Opportunity];
+      let bValue: any = b[sortField as keyof Opportunity];
+
+      // Special handling for nested properties
+      if (sortField === 'customer.name') {
+        aValue = a.customer.name;
+        bValue = b.customer.name;
+      } else if (sortField === 'customer.company') {
+        aValue = a.customer.company;
+        bValue = b.customer.company;
+      } else if (sortField === 'assignedToName') {
+        aValue = a.assignedToName;
+        bValue = b.assignedToName;
+      } else if (sortField === 'commissionAmount') {
+        aValue = calculateCommission(a.value, a.commissionRate || 15);
+        bValue = calculateCommission(b.value, b.commissionRate || 15);
+      }
+
+      // Convert to string for comparison if needed
+      if (typeof aValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+
+      if (aValue < bValue) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    });
+  };
+
   const applyFilters = () => {
     console.log('Applying filters. Total opportunities:', opportunities.length);
     let filtered = opportunities;
@@ -756,13 +829,16 @@ const OpportunityLifecycleManagement = () => {
       filtered = filtered.filter(opp => opp.isOverdue);
     }
 
+    // Apply sorting
+    filtered = getSortedOpportunities(filtered);
+
     console.log('Filtered opportunities:', filtered.length, 'Stage filter:', filters.stage);
     setFilteredOpportunities(filtered);
   };
 
   const handleCreateOpportunity = () => {
-    const commissionRate = DEAL_TYPES[newOpportunity.dealType]?.commissionRate || 15;
-    const estimatedCommission = calculateCommission(newOpportunity.value, newOpportunity.dealType);
+    const commissionRate = 15; // Default rate
+    const estimatedCommission = calculateCommission(newOpportunity.value, commissionRate);
 
     const opportunity: Opportunity = {
       id: `opp_${Date.now()}`,
@@ -1290,7 +1366,15 @@ const OpportunityLifecycleManagement = () => {
       </Typography>
 
       {/* Action Bar */}
-      <Box display="flex" gap={2} mb={3}>
+      <Box display="flex" gap={2} mb={3} alignItems="center">
+        <Button
+          startIcon={<ArrowBack />}
+          variant="outlined"
+          onClick={() => window.location.href = '/dashboard'}
+          sx={{ mr: 1 }}
+        >
+          Back to Dashboard
+        </Button>
         <Button
           startIcon={<Add />}
           variant="contained"
@@ -1426,17 +1510,17 @@ const OpportunityLifecycleManagement = () => {
                         onChange={handleSelectAll}
                       />
                     </TableCell>
-                    <TableCell>Opportunity</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell>Partner</TableCell>
-                    <TableCell>Deal Type</TableCell>
-                    <TableCell align="right">ARR</TableCell>
-                    <TableCell align="right">Rate %</TableCell>
-                    <TableCell align="right">Commission ARR</TableCell>
-                    <TableCell>Expected Close</TableCell>
-                    <TableCell>Assignee</TableCell>
-                    <TableCell>Priority</TableCell>
-                    <TableCell>Stage / Actions</TableCell>
+                    <SortableTableCell field="title">Opportunity</SortableTableCell>
+                    <SortableTableCell field="customer.company">Customer</SortableTableCell>
+                    <SortableTableCell field="partnerName">Partner</SortableTableCell>
+                    <SortableTableCell field="dealType">Deal Type</SortableTableCell>
+                    <SortableTableCell field="value" align="right">ARR</SortableTableCell>
+                    <SortableTableCell field="commissionRate" align="right">Rate %</SortableTableCell>
+                    <SortableTableCell field="commissionAmount" align="right">Commission ARR</SortableTableCell>
+                    <SortableTableCell field="expectedCloseDate">Expected Close</SortableTableCell>
+                    <SortableTableCell field="assignedToName">Assignee</SortableTableCell>
+                    <SortableTableCell field="priority">Priority</SortableTableCell>
+                    <SortableTableCell field="stage">Stage / Actions</SortableTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
