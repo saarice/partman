@@ -1524,7 +1524,17 @@ const OpportunityLifecycleManagement = () => {
                             }}
                             onKeyPress={(e) => {
                               if (e.key === 'Enter') {
-                                e.currentTarget.blur();
+                                e.preventDefault();
+                                // Directly save without needing blur
+                                const newRate = tempRate === '' ? 15 : parseInt(tempRate);
+                                const updatedOpportunities = opportunities.map(opp =>
+                                  opp.id === opportunity.id
+                                    ? { ...opp, commissionRate: newRate, lastUpdated: new Date().toISOString() }
+                                    : opp
+                                );
+                                setOpportunities(updatedOpportunities);
+                                setEditingRate(null);
+                                setTempRate('');
                               }
                             }}
                             inputProps={{
