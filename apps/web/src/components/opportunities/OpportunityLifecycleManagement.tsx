@@ -341,6 +341,7 @@ const OpportunityLifecycleManagement = () => {
   const [menuAnchor, setMenuAnchor] = useState<{ [key: string]: HTMLElement | null }>({});
 
   useEffect(() => {
+    console.log('OpportunityLifecycleManagement component mounted');
     loadOpportunities();
   }, []);
 
