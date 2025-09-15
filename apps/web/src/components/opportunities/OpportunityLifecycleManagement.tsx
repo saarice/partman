@@ -144,7 +144,7 @@ interface Opportunity {
   isOverdue: boolean;
   commissionRate: number; // Commission percentage (15%, 20%, 30%)
   estimatedCommission: number; // Calculated commission amount
-  dealType: 'new_business' | 'expansion' | 'renewal'; // Affects commission rate
+  dealType: 'new_logo' | 'renewal' | 'var_reselling' | 'msp_services' | 'system_integration' | 'expansion'; // Affects commission rate
 }
 
 const PIPELINE_STAGES: OpportunityStage[] = [
@@ -164,13 +164,16 @@ const PRIORITIES = {
 };
 
 const DEAL_TYPES = {
-  new_business: { label: 'New Business', commissionRate: 30 },
-  expansion: { label: 'Expansion', commissionRate: 20 },
-  renewal: { label: 'Renewal', commissionRate: 15 }
+  new_logo: { label: 'New Logo', defaultRate: 30 },
+  renewal: { label: 'Renewal', defaultRate: 15 },
+  var_reselling: { label: 'VAR Reselling', defaultRate: 25 },
+  msp_services: { label: 'MSP Services', defaultRate: 20 },
+  system_integration: { label: 'System Integration', defaultRate: 22 },
+  expansion: { label: 'Expansion', defaultRate: 18 }
 };
 
 const calculateCommission = (value: number, dealType: string) => {
-  const rate = DEAL_TYPES[dealType as keyof typeof DEAL_TYPES]?.commissionRate || 15;
+  const rate = DEAL_TYPES[dealType as keyof typeof DEAL_TYPES]?.defaultRate || 15;
   return (value * rate) / 100;
 };
 
@@ -318,7 +321,7 @@ const OpportunityLifecycleManagement = () => {
     priority: 'medium' as const,
     tags: [] as string[],
     notes: '',
-    dealType: 'new_business' as const
+    dealType: 'new_logo' as const
   });
 
   // Filter states
@@ -405,7 +408,7 @@ const OpportunityLifecycleManagement = () => {
           weightedValue: 562500,
           daysInStage: 15,
           isOverdue: false,
-          dealType: 'new_business' as const,
+          dealType: 'new_logo' as const,
           commissionRate: 30,
           estimatedCommission: 225000,
           history: [
@@ -483,7 +486,7 @@ const OpportunityLifecycleManagement = () => {
           weightedValue: 100000,
           daysInStage: 25,
           isOverdue: true,
-          dealType: 'expansion' as const,
+          dealType: 'var_reselling' as const,
           commissionRate: 20,
           estimatedCommission: 40000,
           history: [
@@ -591,7 +594,7 @@ const OpportunityLifecycleManagement = () => {
           weightedValue: 1200000,
           daysInStage: 0,
           isOverdue: false,
-          dealType: 'new_business' as const,
+          dealType: 'new_logo' as const,
           commissionRate: 30,
           estimatedCommission: 360000,
           history: [
@@ -642,7 +645,7 @@ const OpportunityLifecycleManagement = () => {
           weightedValue: 0,
           daysInStage: 5,
           isOverdue: false,
-          dealType: 'new_business' as const,
+          dealType: 'new_logo' as const,
           commissionRate: 30,
           estimatedCommission: 0,
           history: [
@@ -693,7 +696,7 @@ const OpportunityLifecycleManagement = () => {
           weightedValue: 0,
           daysInStage: 2,
           isOverdue: false,
-          dealType: 'expansion' as const,
+          dealType: 'var_reselling' as const,
           commissionRate: 20,
           estimatedCommission: 0,
           history: [
@@ -1425,9 +1428,9 @@ const OpportunityLifecycleManagement = () => {
                     <TableCell>Opportunity</TableCell>
                     <TableCell>Customer</TableCell>
                     <TableCell>Partner</TableCell>
+                    <TableCell>Deal Type</TableCell>
                     <TableCell align="right">ARR</TableCell>
-                    <TableCell align="right">Rate</TableCell>
-                    <TableCell align="right">Commission $</TableCell>
+                    <TableCell align="right">Rate %</TableCell>
                     <TableCell align="right">Probability</TableCell>
                     <TableCell>Expected Close</TableCell>
                     <TableCell>Assignee</TableCell>
@@ -1480,6 +1483,18 @@ const OpportunityLifecycleManagement = () => {
                           <Chip size="small" label={opportunity.partnerName} />
                         )}
                       </TableCell>
+                      <TableCell>
+                        <Chip
+                          size="small"
+                          label={DEAL_TYPES[opportunity.dealType as keyof typeof DEAL_TYPES]?.label || opportunity.dealType}
+                          color="primary"
+                          variant="outlined"
+                          sx={{ cursor: 'pointer' }}
+                          onClick={(e) => {
+                            setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: e.currentTarget });
+                          }}
+                        />
+                      </TableCell>
                       <TableCell align="right" sx={{ fontWeight: 'bold' }}>
                         {opportunity.currency} {opportunity.value.toLocaleString()}
                       </TableCell>
@@ -1492,15 +1507,10 @@ const OpportunityLifecycleManagement = () => {
                             '&:hover': { opacity: 0.7 }
                           }}
                           onClick={(e) => {
-                            setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: e.currentTarget });
+                            setMenuAnchor({ ...menuAnchor, [`rate_${opportunity.id}`]: e.currentTarget });
                           }}
                         >
                           {opportunity.commissionRate || 15}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Typography variant="body2" fontWeight="bold" color="success.main">
-                          ${(opportunity.estimatedCommission || 0).toLocaleString()}
                         </Typography>
                       </TableCell>
                       <Menu
@@ -1519,7 +1529,7 @@ const OpportunityLifecycleManagement = () => {
                                     ? {
                                         ...opp,
                                         dealType: key as any,
-                                        commissionRate: dealType.commissionRate,
+                                        commissionRate: dealType.defaultRate,
                                         estimatedCommission: newCommission,
                                         lastUpdated: new Date().toISOString()
                                       }
@@ -1532,7 +1542,7 @@ const OpportunityLifecycleManagement = () => {
                               <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
                                 <Typography variant="body2">{dealType.label}</Typography>
                                 <Typography variant="body2" fontWeight="bold">
-                                  {dealType.commissionRate}
+                                  {dealType.defaultRate}
                                 </Typography>
                               </Box>
                             </MenuItem>
