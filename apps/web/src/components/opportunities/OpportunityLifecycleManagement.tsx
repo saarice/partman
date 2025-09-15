@@ -164,16 +164,15 @@ const PRIORITIES = {
 };
 
 const DEAL_TYPES = {
-  new_logo: { label: 'New Logo', defaultRate: 30 },
-  renewal: { label: 'Renewal', defaultRate: 15 },
-  var_reselling: { label: 'VAR Reselling', defaultRate: 25 },
-  msp_services: { label: 'MSP Services', defaultRate: 20 },
-  system_integration: { label: 'System Integration', defaultRate: 22 },
-  expansion: { label: 'Expansion', defaultRate: 18 }
+  new_logo: { label: 'New Logo' },
+  renewal: { label: 'Renewal' },
+  var_reselling: { label: 'VAR Reselling' },
+  msp_services: { label: 'MSP Services' },
+  system_integration: { label: 'System Integration' },
+  expansion: { label: 'Expansion' }
 };
 
-const calculateCommission = (value: number, dealType: string) => {
-  const rate = DEAL_TYPES[dealType as keyof typeof DEAL_TYPES]?.defaultRate || 15;
+const calculateCommission = (value: number, rate: number) => {
   return (value * rate) / 100;
 };
 
@@ -342,6 +341,8 @@ const OpportunityLifecycleManagement = () => {
   });
 
   const [menuAnchor, setMenuAnchor] = useState<{ [key: string]: HTMLElement | null }>({});
+  const [editingRate, setEditingRate] = useState<string | null>(null);
+  const [tempRate, setTempRate] = useState<string>('');
 
   useEffect(() => {
     console.log('OpportunityLifecycleManagement component mounted');
@@ -1431,7 +1432,7 @@ const OpportunityLifecycleManagement = () => {
                     <TableCell>Deal Type</TableCell>
                     <TableCell align="right">ARR</TableCell>
                     <TableCell align="right">Rate %</TableCell>
-                    <TableCell align="right">Probability</TableCell>
+                    <TableCell align="right">Commission ARR</TableCell>
                     <TableCell>Expected Close</TableCell>
                     <TableCell>Assignee</TableCell>
                     <TableCell>Priority</TableCell>
@@ -1499,22 +1500,52 @@ const OpportunityLifecycleManagement = () => {
                         {opportunity.currency} {opportunity.value.toLocaleString()}
                       </TableCell>
                       <TableCell align="right">
-                        <Typography
-                          variant="body2"
-                          fontWeight="bold"
-                          sx={{
-                            cursor: 'pointer',
-                            '&:hover': { opacity: 0.7 }
-                          }}
-                          onClick={(e) => {
-                            setMenuAnchor({ ...menuAnchor, [`rate_${opportunity.id}`]: e.currentTarget });
-                          }}
-                        >
-                          {opportunity.commissionRate || 15}
-                        </Typography>
+                        {editingRate === opportunity.id ? (
+                          <TextField
+                            size="small"
+                            type="number"
+                            value={tempRate}
+                            onChange={(e) => setTempRate(e.target.value)}
+                            onBlur={() => {
+                              const newRate = Math.min(100, Math.max(0, parseInt(tempRate) || 15));
+                              const updatedOpportunities = opportunities.map(opp =>
+                                opp.id === opportunity.id
+                                  ? { ...opp, commissionRate: newRate, lastUpdated: new Date().toISOString() }
+                                  : opp
+                              );
+                              setOpportunities(updatedOpportunities);
+                              setEditingRate(null);
+                              setTempRate('');
+                            }}
+                            onKeyPress={(e) => {
+                              if (e.key === 'Enter') {
+                                e.currentTarget.blur();
+                              }
+                            }}
+                            inputProps={{ min: 0, max: 100, style: { textAlign: 'right' } }}
+                            autoFocus
+                          />
+                        ) : (
+                          <Typography
+                            variant="body2"
+                            fontWeight="bold"
+                            sx={{
+                              cursor: 'pointer',
+                              '&:hover': { opacity: 0.7 }
+                            }}
+                            onClick={() => {
+                              setEditingRate(opportunity.id);
+                              setTempRate((opportunity.commissionRate || 15).toString());
+                            }}
+                          >
+                            {opportunity.commissionRate || 15}
+                          </Typography>
+                        )}
                       </TableCell>
                       <TableCell align="right">
-                        {opportunity.probability}%
+                        <Typography variant="body2" fontWeight="bold" color="success.main">
+                          ${calculateCommission(opportunity.value, opportunity.commissionRate || 15).toLocaleString()}
+                        </Typography>
                       </TableCell>
                       <TableCell>
                         <Box
@@ -1829,14 +1860,11 @@ const OpportunityLifecycleManagement = () => {
                     key={key}
                     selected={opportunity.dealType === key}
                     onClick={() => {
-                      const newCommission = calculateCommission(opportunity.value, key);
                       const updatedOpportunities = opportunities.map(opp =>
                         opp.id === opportunity.id
                           ? {
                               ...opp,
                               dealType: key as any,
-                              commissionRate: dealType.defaultRate,
-                              estimatedCommission: newCommission,
                               lastUpdated: new Date().toISOString()
                             }
                           : opp
@@ -1845,12 +1873,7 @@ const OpportunityLifecycleManagement = () => {
                       setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null });
                     }}
                   >
-                    <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
-                      <Typography variant="body2">{dealType.label}</Typography>
-                      <Typography variant="body2" fontWeight="bold">
-                        {dealType.defaultRate}
-                      </Typography>
-                    </Box>
+                    <Typography variant="body2">{dealType.label}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
