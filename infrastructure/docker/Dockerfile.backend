@@ -1,0 +1,29 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY apps/api/package*.json ./apps/api/
+COPY packages/shared/package*.json ./packages/shared/
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code
+COPY apps/api ./apps/api
+COPY packages ./packages
+COPY tsconfig.json ./
+
+# Build shared packages
+RUN npm run build --workspace=packages/shared
+
+# Create logs directory
+RUN mkdir -p /app/apps/api/logs
+
+WORKDIR /app/apps/api
+
+EXPOSE 3001
+
+# Use npm run dev from the API directory
+CMD ["npm", "run", "dev"]

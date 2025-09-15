@@ -1,0 +1,1 @@
+{"version":3,"file":"commissionTypes.d.ts","sourceRoot":"","sources":["../../src/constants/commissionTypes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,cAAc,EAAE,MAAM,qBAAqB,CAAC;AAErD,eAAO,MAAM,mBAAmB,EAAE,MAAM,CAAC,cAAc,EAAE;IACvD,iBAAiB,EAAE,MAAM,CAAC;IAC1B,aAAa,EAAE,MAAM,CAAC;IACtB,aAAa,EAAE,MAAM,CAAC;IACtB,WAAW,EAAE,MAAM,CAAC;CACrB,CAyBA,CAAC"}
