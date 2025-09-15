@@ -329,7 +329,7 @@ const OpportunityLifecycleManagement = () => {
 
   // Filter states
   const [filters, setFilters] = useState({
-    stage: stageFromUrl ? [stageFromUrl] : ['prospecting', 'qualification', 'demo', 'proposal', 'negotiation', 'contract'],
+    stage: stageFromUrl ? [stageFromUrl] : ['lead', 'demo', 'poc', 'proposal'],
     assignee: 'all',
     priority: 'all',
     partner: 'all',
@@ -1423,11 +1423,13 @@ const OpportunityLifecycleManagement = () => {
                   const value = e.target.value as string[];
                   setFilters({...filters, stage: value});
                 }}
-                renderValue={(selected) =>
-                  selected.length === 0 ? 'No stages selected' :
-                  selected.length === PIPELINE_STAGES.filter(s => s.id !== 'closed_won' && s.id !== 'closed_lost').length ? 'All Active Stages' :
-                  `${selected.length} stages selected`
-                }
+                renderValue={(selected) => {
+                  const activeStages = PIPELINE_STAGES.filter(s => s.id !== 'closed_won' && s.id !== 'closed_lost');
+                  const validSelected = selected.filter(s => activeStages.some(stage => stage.id === s));
+                  return validSelected.length === 0 ? 'No stages selected' :
+                    validSelected.length === activeStages.length ? 'All Active Stages' :
+                    `${validSelected.length} stages selected`;
+                }}
               >
                 {PIPELINE_STAGES.filter(stage => stage.id !== 'closed_won' && stage.id !== 'closed_lost').map(stage => (
                   <MenuItem key={stage.id} value={stage.id}>{stage.name}</MenuItem>
