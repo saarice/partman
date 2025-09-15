@@ -98,9 +98,11 @@ const PipelineHealthMonitoring = () => {
   };
 
   const handleStageClick = (stage: string) => {
+    console.log('Stage clicked:', stage);
     setSelectedStage(stage);
     // Navigate to opportunities page with stage filter
     navigate(`/opportunities?stage=${encodeURIComponent(stage)}`);
+    console.log('Navigation attempted to:', `/opportunities?stage=${encodeURIComponent(stage)}`);
   };
 
   const handleExportCSV = async () => {

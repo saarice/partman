@@ -372,6 +372,7 @@ const OpportunityLifecycleManagement = () => {
   };
 
   const loadOpportunities = async () => {
+    console.log('Loading opportunities...');
     setLoading(true);
     try {
       // Mock data - would be replaced with API call
@@ -710,6 +711,7 @@ const OpportunityLifecycleManagement = () => {
 
       // Calculate metrics for each opportunity
       const opportunitiesWithMetrics = mockOpportunities.map(calculateOpportunityMetrics);
+      console.log('Loaded opportunities:', opportunitiesWithMetrics.length);
       setOpportunities(opportunitiesWithMetrics);
     } catch (error) {
       console.error('Failed to load opportunities:', error);
@@ -1739,6 +1741,7 @@ const OpportunityLifecycleManagement = () => {
                               }
                             }}
                             onClick={(e) => {
+                              console.log('Stage chip clicked for opportunity:', opportunity.id, opportunity.title);
                               setMenuAnchor({ ...menuAnchor, [`stage_${opportunity.id}`]: e.currentTarget });
                             }}
                           />
@@ -1752,6 +1755,7 @@ const OpportunityLifecycleManagement = () => {
                                 key={stage.id}
                                 selected={opportunity.stage === stage.id}
                                 onClick={() => {
+                                  console.log('Stage change clicked:', opportunity.id, 'from', opportunity.stage, 'to', stage.id);
                                   handleStageChange(opportunity.id, stage.id);
                                   setMenuAnchor({ ...menuAnchor, [`stage_${opportunity.id}`]: null });
                                 }}
