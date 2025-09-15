@@ -15,7 +15,9 @@ import {
   IconButton,
   Menu,
   Paper,
-  Chip
+  Chip,
+  ToggleButton,
+  ToggleButtonGroup
 } from '@mui/material';
 import {
   GetApp,
@@ -23,10 +25,14 @@ import {
   MoreVert,
   TrendingUp,
   TrendingDown,
-  Remove
+  Remove,
+  BarChart,
+  Timeline
 } from '@mui/icons-material';
 import { Chart as ChartJS, ArcElement, Tooltip as ChartTooltip, Legend, CategoryScale, LinearScale, BarElement } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import FunnelChart from './FunnelChart';
+import HistoricalTrendsModal from './HistoricalTrendsModal';
 
 ChartJS.register(ArcElement, ChartTooltip, Legend, CategoryScale, LinearScale, BarElement);
 
@@ -79,6 +85,8 @@ const PipelineHealthMonitoring = () => {
   const [loading, setLoading] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
+  const [chartView, setChartView] = useState<'funnel' | 'bar'>('funnel');
+  const [showHistoricalTrends, setShowHistoricalTrends] = useState(false);
 
   useEffect(() => {
     loadPipelineData();
@@ -110,7 +118,9 @@ const PipelineHealthMonitoring = () => {
 
     try {
       const { pipelineService } = await import('../../services/pipelineService');
-      pipelineService.exportPipelineData(pipelineData, 'pipeline-health-data.csv');
+      const timestamp = new Date().toISOString().split('T')[0];
+      const filename = `pipeline-health-${timestamp}.csv`;
+      pipelineService.exportPipelineData(pipelineData, filename, filters);
     } catch (error) {
       console.error('Failed to export pipeline data:', error);
     }
@@ -308,8 +318,37 @@ const PipelineHealthMonitoring = () => {
           </Grid>
         </Grid>
 
-        <Box height={400} mb={3} sx={{ cursor: 'pointer' }}>
-          <Bar data={chartData} options={chartOptions} />
+        <Box mb={3}>
+          <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+            <Typography variant="h6">Pipeline Visualization</Typography>
+            <ToggleButtonGroup
+              value={chartView}
+              exclusive
+              onChange={(_, newView) => newView && setChartView(newView)}
+              size="small"
+            >
+              <ToggleButton value="funnel">
+                <Timeline fontSize="small" sx={{ mr: 1 }} />
+                Funnel
+              </ToggleButton>
+              <ToggleButton value="bar">
+                <BarChart fontSize="small" sx={{ mr: 1 }} />
+                Bar Chart
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
+
+          <Box height={400} sx={{ cursor: 'pointer' }}>
+            {chartView === 'funnel' ? (
+              <FunnelChart
+                stages={pipelineData?.stages || []}
+                onStageClick={handleStageClick}
+                colors={STAGE_COLORS}
+              />
+            ) : (
+              <Bar data={chartData} options={chartOptions} />
+            )}
+          </Box>
         </Box>
 
         <Box>
@@ -370,7 +409,7 @@ const PipelineHealthMonitoring = () => {
         >
           <MenuItem onClick={() => {
             setMenuAnchor(null);
-            // Handle historical view
+            setShowHistoricalTrends(true);
           }}>
             Historical Trends
           </MenuItem>
@@ -381,6 +420,11 @@ const PipelineHealthMonitoring = () => {
             Detailed Analysis
           </MenuItem>
         </Menu>
+
+        <HistoricalTrendsModal
+          open={showHistoricalTrends}
+          onClose={() => setShowHistoricalTrends(false)}
+        />
       </CardContent>
     </Card>
   );

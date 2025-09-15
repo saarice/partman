@@ -1,11 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { UserRole } from '../../../packages/shared/src/types/user.js';
 import { createError } from './errorHandler.js';
 
 interface JwtPayload {
   userId: string;
   email: string;
-  role: string;
+  role: UserRole;
+  permissions?: string[];
+  organizationId?: string;
 }
 
 declare global {
@@ -14,7 +17,9 @@ declare global {
       user?: {
         id: string;
         email: string;
-        role: string;
+        role: UserRole;
+        permissions?: string[];
+        organizationId?: string;
       };
     }
   }
@@ -35,7 +40,9 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     req.user = {
       id: decoded.userId,
       email: decoded.email,
-      role: decoded.role
+      role: decoded.role,
+      permissions: decoded.permissions,
+      organizationId: decoded.organizationId || 'default'
     };
 
     next();
