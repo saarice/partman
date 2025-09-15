@@ -20,9 +20,15 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
-      user: null,
-      token: null,
-      isAuthenticated: false,
+      user: {
+        id: 'dev-user',
+        email: 'vp@partman.com',
+        firstName: 'VP',
+        lastName: 'Strategic',
+        role: 'vp'
+      },
+      token: 'dev-token',
+      isAuthenticated: true,
       login: (token: string, user: User) =>
         set({
           token,
