@@ -721,6 +721,7 @@ const OpportunityLifecycleManagement = () => {
   };
 
   const applyFilters = () => {
+    console.log('Applying filters. Total opportunities:', opportunities.length);
     let filtered = opportunities;
 
     if (filters.stage !== 'all') {
@@ -750,6 +751,7 @@ const OpportunityLifecycleManagement = () => {
       filtered = filtered.filter(opp => opp.isOverdue);
     }
 
+    console.log('Filtered opportunities:', filtered.length, 'Stage filter:', filters.stage);
     setFilteredOpportunities(filtered);
   };
 
