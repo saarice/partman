@@ -1426,7 +1426,8 @@ const OpportunityLifecycleManagement = () => {
                     <TableCell>Customer</TableCell>
                     <TableCell>Partner</TableCell>
                     <TableCell align="right">ARR</TableCell>
-                    <TableCell align="right">Commission</TableCell>
+                    <TableCell align="right">Rate</TableCell>
+                    <TableCell align="right">Commission $</TableCell>
                     <TableCell align="right">Probability</TableCell>
                     <TableCell>Expected Close</TableCell>
                     <TableCell>Assignee</TableCell>
@@ -1483,31 +1484,29 @@ const OpportunityLifecycleManagement = () => {
                         {opportunity.currency} {opportunity.value.toLocaleString()}
                       </TableCell>
                       <TableCell align="right">
-                        <Box display="flex" flexDirection="column" alignItems="flex-end" gap={0.5}>
-                          <Chip
-                            size="small"
-                            label={`${opportunity.commissionRate || 15}%`}
-                            color="info"
-                            sx={{
-                              cursor: 'pointer',
-                              fontSize: '0.65rem',
-                              '&:hover': {
-                                opacity: 0.8,
-                                transform: 'scale(1.05)'
-                              }
-                            }}
-                            onClick={(e) => {
-                              setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: e.currentTarget });
-                            }}
-                          />
-                          <Typography variant="caption" color="textSecondary">
-                            ${(opportunity.estimatedCommission || 0).toLocaleString()}
-                          </Typography>
-                        </Box>
-                        <Menu
-                          anchorEl={menuAnchor[`dealtype_${opportunity.id}`]}
-                          open={Boolean(menuAnchor[`dealtype_${opportunity.id}`])}
-                          onClose={() => setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null })}
+                        <Typography
+                          variant="body2"
+                          fontWeight="bold"
+                          sx={{
+                            cursor: 'pointer',
+                            '&:hover': { opacity: 0.7 }
+                          }}
+                          onClick={(e) => {
+                            setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: e.currentTarget });
+                          }}
+                        >
+                          {opportunity.commissionRate || 15}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Typography variant="body2" fontWeight="bold" color="success.main">
+                          ${(opportunity.estimatedCommission || 0).toLocaleString()}
+                        </Typography>
+                      </TableCell>
+                      <Menu
+                        anchorEl={menuAnchor[`dealtype_${opportunity.id}`]}
+                        open={Boolean(menuAnchor[`dealtype_${opportunity.id}`])}
+                        onClose={() => setMenuAnchor({ ...menuAnchor, [`dealtype_${opportunity.id}`]: null })}
                         >
                           {Object.entries(DEAL_TYPES).map(([key, dealType]) => (
                             <MenuItem
@@ -1532,12 +1531,9 @@ const OpportunityLifecycleManagement = () => {
                             >
                               <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
                                 <Typography variant="body2">{dealType.label}</Typography>
-                                <Chip
-                                  size="small"
-                                  label={`${dealType.commissionRate}%`}
-                                  color="info"
-                                  sx={{ ml: 1, fontSize: '0.65rem' }}
-                                />
+                                <Typography variant="body2" fontWeight="bold">
+                                  {dealType.commissionRate}
+                                </Typography>
                               </Box>
                             </MenuItem>
                           ))}
@@ -2240,12 +2236,9 @@ const OpportunityLifecycleManagement = () => {
                             <Typography variant="body2" fontWeight="bold" color="primary">
                               ${opportunity.value.toLocaleString()}
                             </Typography>
-                            <Chip
-                              size="small"
-                              label={`${opportunity.commissionRate}%`}
-                              color="info"
-                              sx={{ fontSize: '0.65rem', height: 16 }}
-                            />
+                            <Typography variant="caption" fontWeight="bold">
+                              {opportunity.commissionRate}
+                            </Typography>
                           </Box>
 
                           {/* Expected Close and Priority */}
