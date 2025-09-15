@@ -1503,11 +1503,16 @@ const OpportunityLifecycleManagement = () => {
                         {editingRate === opportunity.id ? (
                           <TextField
                             size="small"
-                            type="number"
                             value={tempRate}
-                            onChange={(e) => setTempRate(e.target.value)}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              // Only allow numbers 0-100
+                              if (value === '' || (/^\d+$/.test(value) && parseInt(value) >= 0 && parseInt(value) <= 100)) {
+                                setTempRate(value);
+                              }
+                            }}
                             onBlur={() => {
-                              const newRate = Math.min(100, Math.max(0, parseInt(tempRate) || 15));
+                              const newRate = tempRate === '' ? 15 : parseInt(tempRate);
                               const updatedOpportunities = opportunities.map(opp =>
                                 opp.id === opportunity.id
                                   ? { ...opp, commissionRate: newRate, lastUpdated: new Date().toISOString() }
@@ -1522,7 +1527,11 @@ const OpportunityLifecycleManagement = () => {
                                 e.currentTarget.blur();
                               }
                             }}
-                            inputProps={{ min: 0, max: 100, style: { textAlign: 'right' } }}
+                            inputProps={{
+                              style: { textAlign: 'right', padding: '4px 8px' },
+                              maxLength: 3
+                            }}
+                            sx={{ width: '60px' }}
                             autoFocus
                           />
                         ) : (
