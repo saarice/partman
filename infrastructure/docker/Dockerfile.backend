@@ -7,8 +7,8 @@ COPY package*.json ./
 COPY apps/api/package*.json ./apps/api/
 COPY packages/shared/package*.json ./packages/shared/
 
-# Install dependencies
-RUN npm ci
+# Install root and workspace dependencies
+RUN npm ci && npm ci --workspace=apps/api && npm ci --workspace=packages/shared
 
 # Copy source code
 COPY apps/api ./apps/api
