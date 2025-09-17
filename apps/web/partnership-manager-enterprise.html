@@ -22,6 +22,7 @@
                 <button id="sidebar-toggle" class="action-menu__trigger" aria-label="Toggle sidebar" aria-expanded="true">
                     <svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
                 </button>
+                
                 <h1 class="app-header__title">Partnership Management Platform</h1>
             </div>
             <div class="app-header__actions">
@@ -36,15 +37,15 @@
             <div class="app-sidebar__nav">
                 <div class="nav-section">
                     <h2 class="nav-section__title">Core</h2>
-                    <a href="#" class="nav-item">
-                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-layout-dashboard"></use></svg>
+                    <a href="/dashboard" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-home"></use></svg>
                         Dashboard
                     </a>
                     <a href="#" class="nav-item nav-item--active" aria-current="page">
                         <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-users"></use></svg>
                         Partnerships
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="/opportunities-enterprise.html" class="nav-item">
                         <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-briefcase"></use></svg>
                         Opportunities
                     </a>
@@ -2025,6 +2026,23 @@
         document.head.appendChild(style);
 
         console.log('🚀 Enterprise Partnership Manager loaded with AA compliance');
+
+        // Navigation handling
+        document.querySelector('a[href="/dashboard"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/dashboard-enterprise.html';
+        });
+
+        // Make other navigation items functional
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const text = item.textContent.trim();
+            if (['Commissions', 'Analytics', 'Settings'].includes(text)) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification(`${text} page - Coming soon!`);
+                });
+            }
+        });
 
         // Initialize all filter counts and density on page load
         updateCategoryCounts();

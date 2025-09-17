@@ -4,24 +4,18 @@ import {
   Grid,
   Typography
 } from '@mui/material';
-// TopNavigation removed - now handled by AppLayout
 import { dashboardApi } from '../../services/api';
 import RevenueCard from '../../components/dashboard/RevenueCard';
-import PipelineFunnel from '../../components/dashboard/PipelineFunnel';
-import EnhancedTeamPerformance from '../../components/dashboard/EnhancedTeamPerformance';
 import PartnerHealth from '../../components/dashboard/PartnerHealth';
 import EnhancedAlertCenter from '../../components/dashboard/EnhancedAlertCenter';
-import PipelineHealthMonitoring from '../../components/dashboard/PipelineHealthMonitoring';
 
 interface DashboardData {
   revenue: any;
-  pipeline: any;
-  team: any;
   partners: any;
   alerts: any[];
 }
 
-const Dashboard: React.FC = () => {
+const OverallDashboard: React.FC = () => {
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -53,36 +47,21 @@ const Dashboard: React.FC = () => {
     <Box sx={{ flexGrow: 1 }}>
       <Box sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom>
-          Executive Dashboard
+          Overall Dashboard
         </Typography>
         <Typography variant="body1" color="text.secondary" gutterBottom>
-          Real-time department performance and KPI tracking
+          Executive KPIs and cross-functional metrics overview
         </Typography>
 
         <Grid container spacing={3} sx={{ mt: 2 }}>
           {/* Revenue Progress */}
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <RevenueCard data={dashboardData?.revenue} />
           </Grid>
 
-          {/* Pipeline Overview */}
-          <Grid item xs={12} md={6} lg={3}>
-            <PipelineFunnel data={dashboardData?.pipeline} />
-          </Grid>
-
-          {/* Team Performance */}
-          <Grid item xs={12}>
-            <EnhancedTeamPerformance />
-          </Grid>
-
           {/* Partner Health */}
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={4}>
             <PartnerHealth data={dashboardData?.partners} />
-          </Grid>
-
-          {/* Pipeline Health Monitoring */}
-          <Grid item xs={12}>
-            <PipelineHealthMonitoring />
           </Grid>
 
           {/* Enhanced Alert Center */}
@@ -95,4 +74,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default OverallDashboard;

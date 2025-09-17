@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import TopNavigation from '../common/TopNavigation';
 import {
   Card,
   CardContent,
@@ -1349,10 +1348,6 @@ const OpportunityLifecycleManagement = () => {
 
   return (
     <Box>
-      <TopNavigation
-        title="Opportunity Lifecycle Management"
-        currentPage="opportunities"
-      />
       <Box sx={{ p: 3 }}>
         <Typography variant="h4" gutterBottom>
           Opportunity Lifecycle Management

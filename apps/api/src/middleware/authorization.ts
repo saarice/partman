@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserRole, PermissionResource, PermissionAction } from '../../../packages/shared/src/types/user.js';
+import { UserRole, PermissionResource, PermissionAction } from '../../../../packages/shared/src/types/user.js';
 import { createError } from './errorHandler.js';
 
 // System Owner bypass - has all permissions

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { UserRole } from '../../../packages/shared/src/types/user.js';
+import { UserRole } from '../../../../packages/shared/src/types/user.js';
 import { createError } from './errorHandler.js';
 
 interface JwtPayload {

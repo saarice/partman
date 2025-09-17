@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
-import TopNavigation from '../../components/common/TopNavigation';
 import PartnerPortfolioManagement from '../../components/partners/PartnerPortfolioManagement';
 import RelationshipHealthTracking from '../../components/partners/RelationshipHealthTracking';
 
@@ -9,10 +8,6 @@ const Partners = () => {
 
   return (
     <Box>
-      <TopNavigation
-        title="Partner Management"
-        currentPage="partners"
-      />
       <Box sx={{ p: 3 }}>
         <Typography variant="h3" gutterBottom>
           Partner Management

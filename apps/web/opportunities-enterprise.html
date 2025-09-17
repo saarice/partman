@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunities - Partnership Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/design-system/components/enterprise.css">
+    <link rel="stylesheet" href="/src/design-system/components/charts.css">
+</head>
+<body>
+    <!-- Include Lucide Icons -->
+    <div id="lucide-icons" style="display: none;"></div>
+
+    <!-- App Shell -->
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="app-header" role="banner">
+            <div class="app-header__brand">
+                <button id="sidebar-toggle" class="action-menu__trigger" aria-label="Toggle sidebar" aria-expanded="true">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+                </button>
+                <h1 class="app-header__title">Partnership Management Platform</h1>
+            </div>
+            <div class="app-header__actions">
+                <button class="action-menu__trigger" aria-label="User menu">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-user"></use></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="app-sidebar" role="navigation" aria-label="Main navigation">
+            <div class="app-sidebar__nav">
+                <div class="nav-section">
+                    <h2 class="nav-section__title">Core</h2>
+                    <a href="/dashboard-enterprise.html" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-home"></use></svg>
+                        Dashboard
+                    </a>
+                    <a href="/partnership-manager-enterprise.html" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-users"></use></svg>
+                        Partnerships
+                    </a>
+                    <a href="#" class="nav-item nav-item--active" aria-current="page">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-briefcase"></use></svg>
+                        Opportunities
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <h2 class="nav-section__title">Operations</h2>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-dollar-sign"></use></svg>
+                        Commissions
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-bar-chart-3"></use></svg>
+                        Analytics
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-settings"></use></svg>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main" role="main">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <span class="breadcrumb__item">Opportunities</span>
+                <span class="breadcrumb__separator" aria-hidden="true">
+                    <svg class="icon icon--sm"><use href="#icon-chevron-right"></use></svg>
+                </span>
+                <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Pipeline</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header__content">
+                    <h1>Opportunity Pipeline</h1>
+                    <p>Track and manage partnership opportunities throughout the sales pipeline</p>
+                </div>
+                <button class="btn-primary" id="add-opportunity-btn">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                    Add Opportunity
+                </button>
+            </div>
+
+            <!-- Pipeline Stage Overview -->
+            <div class="pipeline-overview">
+                <div class="pipeline-stage" data-stage="qualified">
+                    <div class="pipeline-stage__header">
+                        <h3 class="pipeline-stage__title">Qualified</h3>
+                        <span class="pipeline-stage__count">23</span>
+                    </div>
+                    <div class="pipeline-stage__value">$1.2M</div>
+                    <div class="pipeline-stage__bar">
+                        <div class="pipeline-stage__fill" style="width: 30%;"></div>
+                    </div>
+                </div>
+
+                <div class="pipeline-stage" data-stage="proposal">
+                    <div class="pipeline-stage__header">
+                        <h3 class="pipeline-stage__title">Proposal</h3>
+                        <span class="pipeline-stage__count">18</span>
+                    </div>
+                    <div class="pipeline-stage__value">$950K</div>
+                    <div class="pipeline-stage__bar">
+                        <div class="pipeline-stage__fill" style="width: 45%;"></div>
+                    </div>
+                </div>
+
+                <div class="pipeline-stage" data-stage="negotiation">
+                    <div class="pipeline-stage__header">
+                        <h3 class="pipeline-stage__title">Negotiation</h3>
+                        <span class="pipeline-stage__count">15</span>
+                    </div>
+                    <div class="pipeline-stage__value">$1.8M</div>
+                    <div class="pipeline-stage__bar">
+                        <div class="pipeline-stage__fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+
+                <div class="pipeline-stage" data-stage="closing">
+                    <div class="pipeline-stage__header">
+                        <h3 class="pipeline-stage__title">Closing</h3>
+                        <span class="pipeline-stage__count">12</span>
+                    </div>
+                    <div class="pipeline-stage__value">$2.1M</div>
+                    <div class="pipeline-stage__bar">
+                        <div class="pipeline-stage__fill" style="width: 90%;"></div>
+                    </div>
+                </div>
+
+                <div class="pipeline-stage pipeline-stage--won" data-stage="won">
+                    <div class="pipeline-stage__header">
+                        <h3 class="pipeline-stage__title">Won (This Quarter)</h3>
+                        <span class="pipeline-stage__count">31</span>
+                    </div>
+                    <div class="pipeline-stage__value">$3.4M</div>
+                    <div class="pipeline-stage__bar">
+                        <div class="pipeline-stage__fill" style="width: 100%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="quick-stat">
+                    <div class="quick-stat__icon">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-dollar-sign"></use></svg>
+                    </div>
+                    <div class="quick-stat__content">
+                        <div class="quick-stat__value">$6.05M</div>
+                        <div class="quick-stat__label">Total Pipeline Value</div>
+                    </div>
+                </div>
+
+                <div class="quick-stat">
+                    <div class="quick-stat__icon">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-briefcase"></use></svg>
+                    </div>
+                    <div class="quick-stat__content">
+                        <div class="quick-stat__value">68</div>
+                        <div class="quick-stat__label">Active Opportunities</div>
+                    </div>
+                </div>
+
+                <div class="quick-stat">
+                    <div class="quick-stat__icon">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                    </div>
+                    <div class="quick-stat__content">
+                        <div class="quick-stat__value">74%</div>
+                        <div class="quick-stat__label">Average Win Rate</div>
+                    </div>
+                </div>
+
+                <div class="quick-stat">
+                    <div class="quick-stat__icon">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-clock"></use></svg>
+                    </div>
+                    <div class="quick-stat__content">
+                        <div class="quick-stat__value">42 days</div>
+                        <div class="quick-stat__label">Avg Sales Cycle</div>
+                    </div>
+                </div>
+
+                <div class="quick-stat">
+                    <div class="quick-stat__icon">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-alert-circle"></use></svg>
+                    </div>
+                    <div class="quick-stat__content">
+                        <div class="quick-stat__value">8</div>
+                        <div class="quick-stat__label">At Risk Deals</div>
+                    </div>
+                </div>
+
+                <div class="quick-stat">
+                    <div class="quick-stat__icon">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-activity"></use></svg>
+                    </div>
+                    <div class="quick-stat__content">
+                        <div class="quick-stat__value">$89K</div>
+                        <div class="quick-stat__label">Avg Deal Size</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="content-grid">
+                <!-- Win Rate by Partner Category -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h2 class="chart-title">Win Rate by Partner Category</h2>
+                            <p class="chart-subtitle">Success rates across different partner types</p>
+                        </div>
+                        <div class="chart-actions">
+                            <button class="btn-secondary btn-secondary--sm">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-external-link"></use></svg>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: var(--color-primary-500);"></span>
+                            <span class="legend-label">Enterprise</span>
+                            <span class="legend-value">82% win rate</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: var(--color-warning-500);"></span>
+                            <span class="legend-label">Premium</span>
+                            <span class="legend-value">74% win rate</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #06b6d4;"></span>
+                            <span class="legend-label">Standard</span>
+                            <span class="legend-value">68% win rate</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: var(--color-success-500);"></span>
+                            <span class="legend-label">Starter</span>
+                            <span class="legend-value">59% win rate</span>
+                        </div>
+                    </div>
+
+                    <div class="stacked-bar-chart">
+                        <div class="bar-group">
+                            <div class="bar-row">
+                                <div class="bar-label">Enterprise</div>
+                                <div class="bar-container">
+                                    <span class="bar-segment" style="background-color: var(--color-success-500); width: 82%;"></span>
+                                    <span class="bar-segment" style="background-color: var(--color-error-300); width: 18%;"></span>
+                                </div>
+                                <div class="bar-value">82%</div>
+                            </div>
+                            <div class="bar-row">
+                                <div class="bar-label">Premium</div>
+                                <div class="bar-container">
+                                    <span class="bar-segment" style="background-color: var(--color-success-500); width: 74%;"></span>
+                                    <span class="bar-segment" style="background-color: var(--color-error-300); width: 26%;"></span>
+                                </div>
+                                <div class="bar-value">74%</div>
+                            </div>
+                            <div class="bar-row">
+                                <div class="bar-label">Standard</div>
+                                <div class="bar-container">
+                                    <span class="bar-segment" style="background-color: var(--color-success-500); width: 68%;"></span>
+                                    <span class="bar-segment" style="background-color: var(--color-error-300); width: 32%;"></span>
+                                </div>
+                                <div class="bar-value">68%</div>
+                            </div>
+                            <div class="bar-row">
+                                <div class="bar-label">Starter</div>
+                                <div class="bar-container">
+                                    <span class="bar-segment" style="background-color: var(--color-success-500); width: 59%;"></span>
+                                    <span class="bar-segment" style="background-color: var(--color-error-300); width: 41%;"></span>
+                                </div>
+                                <div class="bar-value">59%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deal Velocity & Conversion -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h2 class="chart-title">Deal Velocity & Conversion Funnel</h2>
+                            <p class="chart-subtitle">Average time and conversion rates between stages</p>
+                        </div>
+                    </div>
+
+                    <div class="funnel-chart">
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__bar" style="width: 100%; background-color: var(--color-neutral-300);">
+                                <div class="funnel-stage__content">
+                                    <span class="funnel-stage__title">Qualified</span>
+                                    <span class="funnel-stage__count">100 deals</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__time">Avg: 5 days</div>
+                        </div>
+
+                        <div class="funnel-arrow">
+                            <svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                            <span class="funnel-conversion">78% conversion</span>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__bar" style="width: 78%; background-color: var(--color-warning-400);">
+                                <div class="funnel-stage__content">
+                                    <span class="funnel-stage__title">Proposal</span>
+                                    <span class="funnel-stage__count">78 deals</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__time">Avg: 12 days</div>
+                        </div>
+
+                        <div class="funnel-arrow">
+                            <svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                            <span class="funnel-conversion">71% conversion</span>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__bar" style="width: 55%; background-color: var(--color-primary-400);">
+                                <div class="funnel-stage__content">
+                                    <span class="funnel-stage__title">Negotiation</span>
+                                    <span class="funnel-stage__count">55 deals</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__time">Avg: 18 days</div>
+                        </div>
+
+                        <div class="funnel-arrow">
+                            <svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                            <span class="funnel-conversion">85% conversion</span>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__bar" style="width: 47%; background-color: var(--color-success-400);">
+                                <div class="funnel-stage__content">
+                                    <span class="funnel-stage__title">Closing</span>
+                                    <span class="funnel-stage__count">47 deals</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__time">Avg: 7 days</div>
+                        </div>
+
+                        <div class="funnel-arrow">
+                            <svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                            <span class="funnel-conversion">89% conversion</span>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__bar" style="width: 42%; background-color: var(--color-success-600);">
+                                <div class="funnel-stage__content">
+                                    <span class="funnel-stage__title">Won</span>
+                                    <span class="funnel-stage__count">42 deals</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__time">Total: 42 days avg</div>
+                        </div>
+                    </div>
+
+                    <div class="funnel-summary">
+                        <div class="funnel-summary__stat">
+                            <strong>42% Overall Conversion Rate</strong>
+                            <span>From qualified to won</span>
+                        </div>
+                        <div class="funnel-summary__stat">
+                            <strong>42 Days Average Cycle</strong>
+                            <span>Total sales cycle length</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opportunities Table -->
+            <div class="data-table-container">
+                <div class="data-table-header">
+                    <div class="data-table-title">
+                        <h2>Active Opportunities</h2>
+                        <p>Current opportunities in your sales pipeline</p>
+                    </div>
+                    <div class="data-table-actions">
+                        <div class="filter-controls">
+                            <div class="filter-dropdown">
+                                <button class="filter-button filter-button--dropdown" aria-label="Filter by stage" aria-haspopup="menu" id="stage-filter">
+                                    <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-filter"></use></svg>
+                                    Stage
+                                    <svg class="icon icon--xs filter-dropdown__arrow" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                                </button>
+                                <div class="filter-dropdown__menu" id="stage-menu" style="display: none;">
+                                    <div class="filter-dropdown__header">
+                                        <span class="filter-dropdown__title">Filter by Stage</span>
+                                    </div>
+                                    <div class="filter-dropdown__options">
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="stage-checkbox" value="all" checked>
+                                            <span class="filter-option__label">All Stages</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="stage-checkbox" value="qualified">
+                                            <span class="filter-option__label">Qualified</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="stage-checkbox" value="proposal">
+                                            <span class="filter-option__label">Proposal</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="stage-checkbox" value="negotiation">
+                                            <span class="filter-option__label">Negotiation</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="stage-checkbox" value="closing">
+                                            <span class="filter-option__label">Closing</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="filter-dropdown">
+                                <button class="filter-button filter-button--dropdown" aria-label="Filter by value range" aria-haspopup="menu" id="value-filter">
+                                    <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-dollar-sign"></use></svg>
+                                    Value
+                                    <svg class="icon icon--xs filter-dropdown__arrow" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                                </button>
+                                <div class="filter-dropdown__menu" id="value-menu" style="display: none;">
+                                    <div class="filter-dropdown__header">
+                                        <span class="filter-dropdown__title">Filter by Deal Value</span>
+                                    </div>
+                                    <div class="filter-dropdown__options">
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="value-checkbox" value="all" checked>
+                                            <span class="filter-option__label">All Values</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="value-checkbox" value="small">
+                                            <span class="filter-option__label">$0 - $25K</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="value-checkbox" value="medium">
+                                            <span class="filter-option__label">$25K - $100K</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="value-checkbox" value="large">
+                                            <span class="filter-option__label">$100K - $500K</span>
+                                        </label>
+                                        <label class="filter-option">
+                                            <input type="checkbox" class="value-checkbox" value="enterprise">
+                                            <span class="filter-option__label">$500K+</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="search-container">
+                            <svg class="search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+                            <input type="search" class="search-input" placeholder="Search opportunities..." aria-label="Search opportunities">
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table" role="table">
+                    <thead class="data-table__header">
+                        <tr role="row">
+                            <th role="columnheader" class="sortable-header" data-sort="opportunity">
+                                <button class="sort-button" aria-label="Sort by opportunity">
+                                    Opportunity
+                                    <svg class="icon icon--xs sort-icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader" class="sortable-header" data-sort="partner">
+                                <button class="sort-button" aria-label="Sort by partner">
+                                    Partner
+                                    <svg class="icon icon--xs sort-icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader" class="sortable-header" data-sort="value">
+                                <button class="sort-button" aria-label="Sort by value">
+                                    Deal Value
+                                    <svg class="icon icon--xs sort-icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader" class="sortable-header" data-sort="stage">
+                                <button class="sort-button" aria-label="Sort by stage">
+                                    Stage
+                                    <svg class="icon icon--xs sort-icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader" class="sortable-header" data-sort="close-date">
+                                <button class="sort-button" aria-label="Sort by close date">
+                                    Expected Close
+                                    <svg class="icon icon--xs sort-icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader" class="sortable-header" data-sort="probability">
+                                <button class="sort-button" aria-label="Sort by probability">
+                                    Probability
+                                    <svg class="icon icon--xs sort-icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-table__body" id="opportunities-tbody">
+                        <tr role="row" class="data-table__row data-table__row--high-priority" data-stage="negotiation" data-value="large" data-opportunity-id="OPP-2024-089">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <div class="opportunity-header">
+                                        <strong>Enterprise Security Platform</strong>
+                                        <div class="opportunity-badges">
+                                            <span class="priority-badge priority-badge--high">High Priority</span>
+                                            <span class="risk-badge risk-badge--medium">Medium Risk</span>
+                                        </div>
+                                    </div>
+                                    <span class="opportunity-id">#OPP-2024-089</span>
+                                    <div class="opportunity-meta">
+                                        <span class="opportunity-created">Created: Nov 12, 2024</span>
+                                        <span class="opportunity-owner">Owner: Sarah Chen</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>CloudTech Solutions</strong>
+                                    <span class="partner-tier partner-tier--enterprise">Enterprise</span>
+                                    <div class="partner-contact">
+                                        <span class="contact-name">John Martinez</span>
+                                        <span class="contact-role">CTO</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="deal-value-container">
+                                    <strong class="deal-value">$250,000</strong>
+                                    <div class="deal-value-details">
+                                        <span class="deal-currency">USD</span>
+                                        <span class="deal-type">One-time</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="stage-container">
+                                    <button class="stage-pill stage-pill--negotiation stage-pill--clickable" data-stage="negotiation">
+                                        <svg class="icon icon--xs" aria-hidden="true"><use href="#icon-chevron-right"></use></svg>
+                                        Negotiation
+                                    </button>
+                                    <div class="stage-progress">
+                                        <div class="stage-progress-bar">
+                                            <div class="stage-progress-fill" style="width: 75%;"></div>
+                                        </div>
+                                        <span class="stage-progress-text">Step 3 of 4</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="close-date-container">
+                                    <strong class="close-date">Dec 15, 2024</strong>
+                                    <div class="close-date-status">
+                                        <span class="days-remaining days-remaining--warning">18 days left</span>
+                                        <span class="close-date-confidence">Likely</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="probability-container">
+                                    <div class="probability-indicator">
+                                        <div class="probability-bar">
+                                            <div class="probability-fill probability-fill--high" style="width: 75%;"></div>
+                                        </div>
+                                        <span class="probability-text">75%</span>
+                                    </div>
+                                    <div class="probability-trend">
+                                        <svg class="icon icon--xs probability-trend-icon probability-trend-icon--up" aria-hidden="true">
+                                            <use href="#icon-trending-up"></use>
+                                        </svg>
+                                        <span class="probability-change">+5% this week</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger action-menu__trigger--enhanced" aria-label="More actions for Enterprise Security Platform" aria-haspopup="menu">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__content action-menu__content--enhanced" style="display: none;">
+                                        <div class="action-menu__section">
+                                            <div class="action-menu__section-title">View & Edit</div>
+                                            <button class="action-menu__item" data-action="view" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">View Details</span>
+                                                    <span class="action-menu__item-description">Full opportunity information</span>
+                                                </span>
+                                            </button>
+                                            <button class="action-menu__item" data-action="edit" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Edit</span>
+                                                    <span class="action-menu__item-description">Modify opportunity details</span>
+                                                </span>
+                                            </button>
+                                            <button class="action-menu__item" data-action="duplicate" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-briefcase"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Duplicate</span>
+                                                    <span class="action-menu__item-description">Create similar opportunity</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="action-menu__section">
+                                            <div class="action-menu__section-title">Stage Actions</div>
+                                            <button class="action-menu__item" data-action="advance-stage" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-chevron-right"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Move to Closing</span>
+                                                    <span class="action-menu__item-description">Advance to next stage</span>
+                                                </span>
+                                            </button>
+                                            <button class="action-menu__item" data-action="update-probability" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Update Probability</span>
+                                                    <span class="action-menu__item-description">Change win likelihood</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="action-menu__section">
+                                            <div class="action-menu__section-title">Status</div>
+                                            <button class="action-menu__item action-menu__item--warning" data-action="mark-risk" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-alert-circle"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Mark as At Risk</span>
+                                                    <span class="action-menu__item-description">Flag for attention</span>
+                                                </span>
+                                            </button>
+                                            <button class="action-menu__item action-menu__item--success" data-action="mark-won" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-check-circle-2"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Mark as Won</span>
+                                                    <span class="action-menu__item-description">Close as successful</span>
+                                                </span>
+                                            </button>
+                                            <button class="action-menu__item action-menu__item--danger" data-action="mark-lost" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Mark as Lost</span>
+                                                    <span class="action-menu__item-description">Close as unsuccessful</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div class="action-menu__section">
+                                            <div class="action-menu__section-title">Danger Zone</div>
+                                            <button class="action-menu__item action-menu__item--danger" data-action="delete" data-opportunity-id="OPP-2024-089">
+                                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                                <span class="action-menu__item-content">
+                                                    <span class="action-menu__item-title">Delete</span>
+                                                    <span class="action-menu__item-description">Permanently remove</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row" data-stage="proposal" data-value="medium">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>Data Analytics Suite</strong>
+                                    <span class="opportunity-id">#OPP-2024-076</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>Analytics Plus</strong>
+                                    <span class="partner-tier">Premium</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$85,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--proposal">Proposal</span>
+                            </td>
+                            <td class="data-table__cell">Jan 8, 2025</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 60%;"></div>
+                                    </div>
+                                    <span class="probability-text">60%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions" aria-haspopup="menu">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__content" style="display: none;">
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row" data-stage="closing" data-value="enterprise">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>DevOps Automation Platform</strong>
+                                    <span class="opportunity-id">#OPP-2024-112</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>DevOps Pro</strong>
+                                    <span class="partner-tier">Standard</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$680,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--closing">Closing</span>
+                            </td>
+                            <td class="data-table__cell">Nov 30, 2024</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 90%;"></div>
+                                    </div>
+                                    <span class="probability-text">90%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions" aria-haspopup="menu">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__content" style="display: none;">
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row" data-stage="qualified" data-value="small">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>Monitoring Integration</strong>
+                                    <span class="opportunity-id">#OPP-2024-098</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>Monitor Masters</strong>
+                                    <span class="partner-tier">Enterprise</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$22,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--qualified">Qualified</span>
+                            </td>
+                            <td class="data-table__cell">Feb 14, 2025</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 35%;"></div>
+                                    </div>
+                                    <span class="probability-text">35%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions" aria-haspopup="menu">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__content" style="display: none;">
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row" data-stage="proposal" data-value="medium">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>Security Assessment Tools</strong>
+                                    <span class="opportunity-id">#OPP-2024-103</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>SecureData Inc</strong>
+                                    <span class="partner-tier">Premium</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$45,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--proposal">Proposal</span>
+                            </td>
+                            <td class="data-table__cell">Dec 22, 2024</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 55%;"></div>
+                                    </div>
+                                    <span class="probability-text">55%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions" aria-haspopup="menu">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__content" style="display: none;">
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Opportunity Modal -->
+    <div id="add-opportunity-modal" class="modal" style="display: none;">
+        <div class="modal__backdrop"></div>
+        <div class="modal__container">
+            <div class="modal__header">
+                <h2 class="modal__title">Add New Opportunity</h2>
+                <button class="modal__close" aria-label="Close modal">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="add-opportunity-form">
+                    <div class="form-group">
+                        <label for="opportunity-name" class="form-label">Opportunity Name</label>
+                        <input type="text" id="opportunity-name" name="opportunityName" class="form-control" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="partner-select" class="form-label">Partner</label>
+                            <select id="partner-select" name="partner" class="form-control" required>
+                                <option value="">Select a partner...</option>
+                                <option value="cloudtech">CloudTech Solutions</option>
+                                <option value="analytics">Analytics Plus</option>
+                                <option value="devops">DevOps Pro</option>
+                                <option value="monitor">Monitor Masters</option>
+                                <option value="secure">SecureData Inc</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="deal-value" class="form-label">Deal Value</label>
+                            <input type="number" id="deal-value" name="dealValue" class="form-control" placeholder="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stage-select" class="form-label">Stage</label>
+                            <select id="stage-select" name="stage" class="form-control" required>
+                                <option value="">Select stage...</option>
+                                <option value="qualified">Qualified</option>
+                                <option value="proposal">Proposal</option>
+                                <option value="negotiation">Negotiation</option>
+                                <option value="closing">Closing</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="probability" class="form-label">Probability (%)</label>
+                            <input type="number" id="probability" name="probability" class="form-control" min="0" max="100" placeholder="50">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="close-date" class="form-label">Expected Close Date</label>
+                        <input type="date" id="close-date" name="closeDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="opportunity-notes" class="form-label">Notes</label>
+                        <textarea id="opportunity-notes" name="notes" class="form-control" rows="3" placeholder="Additional notes about this opportunity..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancel-opportunity">Cancel</button>
+                <button type="submit" form="add-opportunity-form" class="btn-primary">Add Opportunity</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container" aria-live="polite"></div>
+
+    <script>
+        // Load icons first
+        fetch('/src/design-system/icons/lucide-icons.svg')
+            .then(response => response.text())
+            .then(svgContent => {
+                document.getElementById('lucide-icons').innerHTML = svgContent;
+            })
+            .catch(error => {
+                console.warn('Could not load icons:', error);
+            });
+
+        // Sidebar toggle functionality
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            const sidebar = document.querySelector('.app-sidebar');
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+            sidebar.classList.toggle('app-sidebar--collapsed');
+            this.setAttribute('aria-expanded', !isExpanded);
+        });
+
+        // Navigation handling
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const text = item.textContent.trim();
+            if (['Commissions', 'Analytics', 'Settings'].includes(text)) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification(`${text} page - Coming soon!`);
+                });
+            }
+        });
+
+        // Add Opportunity Modal
+        const addOpportunityBtn = document.getElementById('add-opportunity-btn');
+        const addOpportunityModal = document.getElementById('add-opportunity-modal');
+        const cancelOpportunityBtn = document.getElementById('cancel-opportunity');
+        const addOpportunityForm = document.getElementById('add-opportunity-form');
+
+        addOpportunityBtn.addEventListener('click', function() {
+            addOpportunityModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+
+        cancelOpportunityBtn.addEventListener('click', function() {
+            addOpportunityModal.style.display = 'none';
+            document.body.style.overflow = '';
+            addOpportunityForm.reset();
+        });
+
+        document.querySelector('#add-opportunity-modal .modal__close').addEventListener('click', function() {
+            addOpportunityModal.style.display = 'none';
+            document.body.style.overflow = '';
+            addOpportunityForm.reset();
+        });
+
+        addOpportunityForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            // Create new opportunity row
+            const tbody = document.getElementById('opportunities-tbody');
+            const newRow = document.createElement('tr');
+            newRow.className = 'data-table__row';
+
+            const oppId = '#OPP-2024-' + String(Math.floor(Math.random() * 900) + 100);
+            const partnerNames = {
+                'cloudtech': 'CloudTech Solutions',
+                'analytics': 'Analytics Plus',
+                'devops': 'DevOps Pro',
+                'monitor': 'Monitor Masters',
+                'secure': 'SecureData Inc'
+            };
+
+            newRow.innerHTML = `
+                <td class="data-table__cell">
+                    <div class="opportunity-info">
+                        <strong>${formData.get('opportunityName')}</strong>
+                        <span class="opportunity-id">${oppId}</span>
+                    </div>
+                </td>
+                <td class="data-table__cell">
+                    <div class="partner-info">
+                        <strong>${partnerNames[formData.get('partner')] || formData.get('partner')}</strong>
+                        <span class="partner-tier">Standard</span>
+                    </div>
+                </td>
+                <td class="data-table__cell">
+                    <strong class="deal-value">$${parseInt(formData.get('dealValue')).toLocaleString()}</strong>
+                </td>
+                <td class="data-table__cell">
+                    <span class="stage-pill stage-pill--${formData.get('stage')}">${formData.get('stage').charAt(0).toUpperCase() + formData.get('stage').slice(1)}</span>
+                </td>
+                <td class="data-table__cell">${new Date(formData.get('closeDate')).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})}</td>
+                <td class="data-table__cell">
+                    <div class="probability-indicator">
+                        <div class="probability-bar">
+                            <div class="probability-fill" style="width: ${formData.get('probability') || 50}%;"></div>
+                        </div>
+                        <span class="probability-text">${formData.get('probability') || 50}%</span>
+                    </div>
+                </td>
+                <td class="data-table__cell">
+                    <div class="action-menu">
+                        <button class="action-menu__trigger" aria-label="More actions" aria-haspopup="menu">
+                            <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                        </button>
+                        <div class="action-menu__content" style="display: none;">
+                            <button class="action-menu__item">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                View Details
+                            </button>
+                            <button class="action-menu__item">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                Edit
+                            </button>
+                            <button class="action-menu__item action-menu__item--danger">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            `;
+
+            tbody.insertBefore(newRow, tbody.firstChild);
+
+            addOpportunityModal.style.display = 'none';
+            document.body.style.overflow = '';
+            this.reset();
+
+            showNotification('Opportunity added successfully!', 'success');
+
+            // Re-bind action menu events for new row
+            bindActionMenuEvents();
+        });
+
+        // Enhanced Action Menu functionality
+        function bindActionMenuEvents() {
+            // Remove existing event listeners
+            document.querySelectorAll('.action-menu__trigger').forEach(trigger => {
+                trigger.replaceWith(trigger.cloneNode(true));
+            });
+
+            // Bind menu toggle events
+            document.querySelectorAll('.action-menu__trigger').forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const menu = this.nextElementSibling;
+                    const isOpen = menu.style.display === 'block';
+
+                    // Close all other menus
+                    document.querySelectorAll('.action-menu__content').forEach(m => {
+                        m.style.display = 'none';
+                    });
+
+                    if (!isOpen) {
+                        // Position enhanced menus properly
+                        if (menu.classList.contains('action-menu__content--enhanced')) {
+                            positionDropdown(this, menu);
+                        }
+                        menu.style.display = 'block';
+                    }
+                });
+            });
+
+            // Bind action item events
+            document.querySelectorAll('.action-menu__item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const action = this.dataset.action;
+                    const opportunityId = this.dataset.opportunityId;
+
+                    if (action && opportunityId) {
+                        handleOpportunityAction(action, opportunityId);
+                    }
+
+                    // Close menu after action
+                    document.querySelectorAll('.action-menu__content').forEach(m => {
+                        m.style.display = 'none';
+                    });
+                });
+            });
+        }
+
+        // Handle opportunity actions
+        function handleOpportunityAction(action, opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            if (!row) return;
+
+            switch (action) {
+                case 'view':
+                    showOpportunityDetails(opportunityId);
+                    break;
+                case 'edit':
+                    editOpportunity(opportunityId);
+                    break;
+                case 'duplicate':
+                    duplicateOpportunity(opportunityId);
+                    break;
+                case 'advance-stage':
+                    advanceOpportunityStage(opportunityId);
+                    break;
+                case 'update-probability':
+                    updateOpportunityProbability(opportunityId);
+                    break;
+                case 'mark-risk':
+                    markOpportunityAsRisk(opportunityId);
+                    break;
+                case 'mark-won':
+                    markOpportunityAsWon(opportunityId);
+                    break;
+                case 'mark-lost':
+                    markOpportunityAsLost(opportunityId);
+                    break;
+                case 'delete':
+                    deleteOpportunity(opportunityId);
+                    break;
+                default:
+                    showNotification(`Action "${action}" not implemented yet`, 'info');
+            }
+        }
+
+        // Opportunity action implementations
+        function showOpportunityDetails(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const opportunityName = row.querySelector('.opportunity-header strong').textContent;
+
+            showNotification(`Viewing details for: ${opportunityName}`, 'info');
+            // TODO: Open detailed view modal
+        }
+
+        function editOpportunity(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const opportunityName = row.querySelector('.opportunity-header strong').textContent;
+
+            showNotification(`Opening edit form for: ${opportunityName}`, 'info');
+            // TODO: Open edit modal with pre-filled data
+        }
+
+        function duplicateOpportunity(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const opportunityName = row.querySelector('.opportunity-header strong').textContent;
+
+            showNotification(`Creating duplicate of: ${opportunityName}`, 'success');
+            // TODO: Create duplicate opportunity
+        }
+
+        function advanceOpportunityStage(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const currentStage = row.dataset.stage;
+            const stageMap = {
+                'qualified': 'proposal',
+                'proposal': 'negotiation',
+                'negotiation': 'closing',
+                'closing': 'won'
+            };
+
+            const nextStage = stageMap[currentStage];
+            if (nextStage) {
+                updateOpportunityStage(opportunityId, nextStage);
+                showNotification(`Opportunity moved to ${nextStage} stage`, 'success');
+            }
+        }
+
+        function updateOpportunityStage(opportunityId, newStage) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const stagePill = row.querySelector('.stage-pill');
+            const stageProgress = row.querySelector('.stage-progress-fill');
+            const stageText = row.querySelector('.stage-progress-text');
+
+            // Update row data attribute
+            row.dataset.stage = newStage;
+
+            // Update stage pill
+            stagePill.className = `stage-pill stage-pill--${newStage} stage-pill--clickable`;
+            stagePill.innerHTML = `
+                <svg class="icon icon--xs" aria-hidden="true"><use href="#icon-chevron-right"></use></svg>
+                ${newStage.charAt(0).toUpperCase() + newStage.slice(1)}
+            `;
+
+            // Update progress
+            const progressMap = {
+                'qualified': { width: '25%', step: '1 of 4' },
+                'proposal': { width: '50%', step: '2 of 4' },
+                'negotiation': { width: '75%', step: '3 of 4' },
+                'closing': { width: '90%', step: '4 of 4' },
+                'won': { width: '100%', step: 'Complete' }
+            };
+
+            const progress = progressMap[newStage];
+            if (progress) {
+                stageProgress.style.width = progress.width;
+                stageText.textContent = progress.step;
+            }
+        }
+
+        function updateOpportunityProbability(opportunityId) {
+            const currentProb = parseInt(document.querySelector(`[data-opportunity-id="${opportunityId}"] .probability-text`).textContent);
+            const newProb = prompt(`Update probability (current: ${currentProb}%):`, currentProb);
+
+            if (newProb !== null && !isNaN(newProb) && newProb >= 0 && newProb <= 100) {
+                const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+                const probFill = row.querySelector('.probability-fill');
+                const probText = row.querySelector('.probability-text');
+
+                probFill.style.width = `${newProb}%`;
+                probText.textContent = `${newProb}%`;
+
+                // Update probability fill color
+                probFill.className = 'probability-fill';
+                if (newProb >= 70) probFill.classList.add('probability-fill--high');
+                else if (newProb >= 40) probFill.classList.add('probability-fill--medium');
+                else probFill.classList.add('probability-fill--low');
+
+                showNotification(`Probability updated to ${newProb}%`, 'success');
+            }
+        }
+
+        function markOpportunityAsRisk(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const riskBadge = row.querySelector('.risk-badge');
+
+            riskBadge.className = 'risk-badge risk-badge--high';
+            riskBadge.textContent = 'High Risk';
+
+            // Add visual indicator
+            row.classList.add('data-table__row--at-risk');
+
+            showNotification('Opportunity marked as at risk', 'warning');
+        }
+
+        function markOpportunityAsWon(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const opportunityName = row.querySelector('.opportunity-header strong').textContent;
+
+            // Update stage to won
+            updateOpportunityStage(opportunityId, 'won');
+
+            // Add visual success styling
+            row.classList.remove('data-table__row--high-priority', 'data-table__row--at-risk');
+            row.classList.add('data-table__row--won');
+
+            // Update probability to 100%
+            const probFill = row.querySelector('.probability-fill');
+            const probText = row.querySelector('.probability-text');
+            probFill.style.width = '100%';
+            probFill.className = 'probability-fill probability-fill--high';
+            probText.textContent = '100%';
+
+            showNotification(`🎉 Opportunity "${opportunityName}" marked as WON!`, 'success');
+        }
+
+        function markOpportunityAsLost(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const opportunityName = row.querySelector('.opportunity-header strong').textContent;
+
+            if (confirm(`Are you sure you want to mark "${opportunityName}" as lost?`)) {
+                // Update visual styling
+                row.classList.add('data-table__row--lost');
+                row.style.opacity = '0.6';
+
+                // Update probability to 0%
+                const probFill = row.querySelector('.probability-fill');
+                const probText = row.querySelector('.probability-text');
+                probFill.style.width = '0%';
+                probFill.className = 'probability-fill probability-fill--low';
+                probText.textContent = '0%';
+
+                showNotification(`Opportunity "${opportunityName}" marked as lost`, 'info');
+            }
+        }
+
+        function deleteOpportunity(opportunityId) {
+            const row = document.querySelector(`[data-opportunity-id="${opportunityId}"]`);
+            const opportunityName = row.querySelector('.opportunity-header strong').textContent;
+
+            if (confirm(`Are you sure you want to permanently delete "${opportunityName}"?`)) {
+                row.style.transition = 'all 0.3s ease';
+                row.style.transform = 'translateX(-100%)';
+                row.style.opacity = '0';
+
+                setTimeout(() => {
+                    row.remove();
+                    showNotification(`Opportunity "${opportunityName}" deleted`, 'info');
+                }, 300);
+            }
+        }
+
+        bindActionMenuEvents();
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.action-menu__content').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            document.querySelectorAll('.filter-dropdown__menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+        });
+
+        // Sorting functionality
+        let sortDirection = {};
+
+        document.querySelectorAll('.sort-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const sortKey = this.closest('.sortable-header').dataset.sort;
+                const currentDirection = sortDirection[sortKey] || 'asc';
+                const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+
+                sortDirection[sortKey] = newDirection;
+
+                // Update visual indicators
+                document.querySelectorAll('.sort-icon').forEach(icon => {
+                    icon.style.transform = '';
+                });
+
+                if (newDirection === 'desc') {
+                    this.querySelector('.sort-icon').style.transform = 'rotate(180deg)';
+                }
+
+                showNotification(`Sorted by ${sortKey} (${newDirection}ending)`);
+            });
+        });
+
+        // Filter functionality
+        function positionDropdown(trigger, dropdown) {
+            const triggerRect = trigger.getBoundingClientRect();
+            const dropdownHeight = 300;
+            const viewportHeight = window.innerHeight;
+            const spaceBelow = viewportHeight - triggerRect.bottom;
+            const spaceAbove = triggerRect.top;
+            const rightPos = window.innerWidth - triggerRect.right;
+
+            if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+                dropdown.style.top = 'auto';
+                dropdown.style.bottom = (viewportHeight - triggerRect.top + 4) + 'px';
+                dropdown.style.right = rightPos + 'px';
+            } else {
+                dropdown.style.top = (triggerRect.bottom + 4) + 'px';
+                dropdown.style.bottom = 'auto';
+                dropdown.style.right = rightPos + 'px';
+            }
+        }
+
+        // Stage Filter
+        document.getElementById('stage-filter').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('stage-menu');
+            const isOpen = dropdown.style.display === 'block';
+
+            document.querySelectorAll('.filter-dropdown__menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+
+            if (!isOpen) {
+                positionDropdown(this, dropdown);
+                dropdown.style.display = 'block';
+            }
+        });
+
+        // Value Filter
+        document.getElementById('value-filter').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('value-menu');
+            const isOpen = dropdown.style.display === 'block';
+
+            document.querySelectorAll('.filter-dropdown__menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+
+            if (!isOpen) {
+                positionDropdown(this, dropdown);
+                dropdown.style.display = 'block';
+            }
+        });
+
+        // Filter checkboxes
+        document.querySelectorAll('.stage-checkbox, .value-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                showNotification('Filters applied');
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            showNotification(`Searching for: ${searchTerm || 'all opportunities'}`);
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+
+            notification.className = `notification notification--${type}`;
+            notification.innerHTML = `
+                <div class="notification__content">
+                    <svg class="notification__icon" aria-hidden="true">
+                        <use href="#icon-check-circle-2"></use>
+                    </svg>
+                    <span class="notification__message">${message}</span>
+                </div>
+                <button class="notification__close" aria-label="Close notification">
+                    <svg class="icon icon--sm" aria-hidden="true">
+                        <use href="#icon-x"></use>
+                    </svg>
+                </button>
+            `;
+
+            container.appendChild(notification);
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+
+            notification.querySelector('.notification__close').addEventListener('click', function() {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            });
+        }
+
+        // Add styles for opportunities-specific elements
+        const style = document.createElement('style');
+        style.textContent = `
+            .opportunity-info {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .opportunity-id {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+                font-weight: var(--font-weight-medium);
+            }
+
+            .stage-pill {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.25rem 0.75rem;
+                border-radius: var(--radius-full);
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .stage-pill--qualified {
+                background-color: var(--color-neutral-100);
+                color: var(--color-neutral-700);
+            }
+
+            .stage-pill--proposal {
+                background-color: var(--color-warning-100);
+                color: var(--color-warning-700);
+            }
+
+            .stage-pill--negotiation {
+                background-color: var(--color-primary-100);
+                color: var(--color-primary-700);
+            }
+
+            .stage-pill--closing {
+                background-color: var(--color-success-100);
+                color: var(--color-success-700);
+            }
+
+            .probability-indicator {
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-2);
+            }
+
+            .probability-bar {
+                width: 60px;
+                height: 8px;
+                background-color: var(--color-neutral-200);
+                border-radius: var(--radius-full);
+                overflow: hidden;
+            }
+
+            .probability-fill {
+                height: 100%;
+                background-color: var(--color-success-500);
+                transition: width 0.3s ease;
+            }
+
+            .probability-text {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+                color: var(--color-neutral-700);
+                min-width: 30px;
+            }
+
+            /* Enhanced Opportunity Management Styles */
+            .data-table__row--high-priority {
+                border-left: 4px solid var(--color-error-500);
+                background: linear-gradient(90deg, rgba(239, 68, 68, 0.02) 0%, transparent 100%);
+            }
+
+            .opportunity-info {
+                display: flex;
+                flex-direction: column;
+                gap: var(--spacing-2);
+            }
+
+            .opportunity-header {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: var(--spacing-2);
+            }
+
+            .opportunity-badges {
+                display: flex;
+                gap: var(--spacing-1);
+                flex-wrap: wrap;
+            }
+
+            .priority-badge {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+                padding: 0.125rem 0.375rem;
+                border-radius: var(--radius-sm);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .priority-badge--high {
+                background-color: var(--color-error-100);
+                color: var(--color-error-700);
+            }
+
+            .priority-badge--medium {
+                background-color: var(--color-warning-100);
+                color: var(--color-warning-700);
+            }
+
+            .priority-badge--low {
+                background-color: var(--color-neutral-100);
+                color: var(--color-neutral-700);
+            }
+
+            .risk-badge {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+                padding: 0.125rem 0.375rem;
+                border-radius: var(--radius-sm);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .risk-badge--high {
+                background-color: var(--color-error-100);
+                color: var(--color-error-700);
+            }
+
+            .risk-badge--medium {
+                background-color: var(--color-warning-100);
+                color: var(--color-warning-700);
+            }
+
+            .risk-badge--low {
+                background-color: var(--color-success-100);
+                color: var(--color-success-700);
+            }
+
+            .opportunity-id {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+                font-weight: var(--font-weight-medium);
+                font-family: var(--font-family-mono);
+            }
+
+            .opportunity-meta {
+                display: flex;
+                flex-direction: column;
+                gap: 0.125rem;
+            }
+
+            .opportunity-created,
+            .opportunity-owner {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-500);
+            }
+
+            .partner-tier--enterprise {
+                background-color: var(--color-primary-100);
+                color: var(--color-primary-700);
+                padding: 0.125rem 0.5rem;
+                border-radius: var(--radius-full);
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .partner-contact {
+                display: flex;
+                flex-direction: column;
+                gap: 0.125rem;
+                margin-top: var(--spacing-1);
+            }
+
+            .contact-name {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-700);
+                font-weight: var(--font-weight-medium);
+            }
+
+            .contact-role {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-500);
+            }
+
+            .deal-value-container {
+                display: flex;
+                flex-direction: column;
+                gap: var(--spacing-1);
+                align-items: flex-end;
+                text-align: right;
+            }
+
+            .deal-value {
+                font-weight: var(--font-weight-bold);
+                color: var(--color-success-600);
+                font-size: var(--font-size-base);
+            }
+
+            .deal-value-details {
+                display: flex;
+                gap: var(--spacing-2);
+            }
+
+            .deal-currency,
+            .deal-type {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-500);
+                background-color: var(--color-neutral-100);
+                padding: 0.125rem 0.375rem;
+                border-radius: var(--radius-sm);
+            }
+
+            .stage-container {
+                display: flex;
+                flex-direction: column;
+                gap: var(--spacing-2);
+            }
+
+            .stage-pill--clickable {
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: inline-flex;
+                align-items: center;
+                gap: var(--spacing-1);
+                padding: 0.375rem 0.75rem;
+                border: none;
+                background: transparent;
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                border-radius: var(--radius-full);
+            }
+
+            .stage-pill--clickable:hover {
+                transform: translateX(2px);
+                box-shadow: var(--shadow-sm);
+            }
+
+            .stage-progress {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .stage-progress-bar {
+                width: 100%;
+                height: 4px;
+                background-color: var(--color-neutral-200);
+                border-radius: var(--radius-full);
+                overflow: hidden;
+            }
+
+            .stage-progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+                transition: width 0.3s ease;
+            }
+
+            .stage-progress-text {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+                text-align: center;
+            }
+
+            .close-date-container {
+                display: flex;
+                flex-direction: column;
+                gap: var(--spacing-1);
+            }
+
+            .close-date {
+                font-weight: var(--font-weight-semibold);
+                color: var(--color-neutral-900);
+            }
+
+            .close-date-status {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .days-remaining {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-medium);
+                padding: 0.125rem 0.375rem;
+                border-radius: var(--radius-sm);
+            }
+
+            .days-remaining--warning {
+                background-color: var(--color-warning-100);
+                color: var(--color-warning-700);
+            }
+
+            .days-remaining--danger {
+                background-color: var(--color-error-100);
+                color: var(--color-error-700);
+            }
+
+            .days-remaining--safe {
+                background-color: var(--color-success-100);
+                color: var(--color-success-700);
+            }
+
+            .close-date-confidence {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+                font-style: italic;
+            }
+
+            .probability-container {
+                display: flex;
+                flex-direction: column;
+                gap: var(--spacing-2);
+            }
+
+            .probability-fill--high {
+                background: linear-gradient(90deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
+            }
+
+            .probability-fill--medium {
+                background: linear-gradient(90deg, var(--color-warning-500) 0%, var(--color-warning-600) 100%);
+            }
+
+            .probability-fill--low {
+                background: linear-gradient(90deg, var(--color-error-500) 0%, var(--color-error-600) 100%);
+            }
+
+            .probability-trend {
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-1);
+            }
+
+            .probability-trend-icon--up {
+                color: var(--color-success-600);
+            }
+
+            .probability-trend-icon--down {
+                color: var(--color-error-600);
+            }
+
+            .probability-change {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+            }
+
+            /* Enhanced Action Menu */
+            .action-menu__trigger--enhanced {
+                width: 36px;
+                height: 36px;
+                border-radius: var(--radius-base);
+                border: 1px solid var(--color-neutral-300);
+                background: white;
+                transition: all 0.2s ease;
+            }
+
+            .action-menu__trigger--enhanced:hover {
+                border-color: var(--color-primary-400);
+                box-shadow: var(--shadow-sm);
+            }
+
+            .action-menu__content--enhanced {
+                min-width: 280px;
+                max-height: 500px;
+                overflow-y: auto;
+                padding: var(--spacing-2);
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .action-menu__section {
+                padding: var(--spacing-2) 0;
+                border-bottom: 1px solid var(--color-neutral-200);
+            }
+
+            .action-menu__section:last-child {
+                border-bottom: none;
+            }
+
+            .action-menu__section-title {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+                color: var(--color-neutral-500);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: var(--spacing-2);
+                padding: 0 var(--spacing-2);
+            }
+
+            .action-menu__item {
+                display: flex;
+                align-items: flex-start;
+                gap: var(--spacing-3);
+                width: 100%;
+                padding: var(--spacing-3);
+                border: none;
+                background: transparent;
+                border-radius: var(--radius-base);
+                cursor: pointer;
+                transition: all 0.15s ease;
+                text-align: left;
+            }
+
+            .action-menu__item:hover {
+                background-color: var(--color-neutral-50);
+            }
+
+            .action-menu__item--warning:hover {
+                background-color: var(--color-warning-50);
+                color: var(--color-warning-700);
+            }
+
+            .action-menu__item--success:hover {
+                background-color: var(--color-success-50);
+                color: var(--color-success-700);
+            }
+
+            .action-menu__item--danger:hover {
+                background-color: var(--color-error-50);
+                color: var(--color-error-700);
+            }
+
+            .action-menu__item-content {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                flex: 1;
+            }
+
+            .action-menu__item-title {
+                font-size: var(--font-size-sm);
+                font-weight: var(--font-weight-medium);
+                color: var(--color-neutral-900);
+            }
+
+            .action-menu__item-description {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+                line-height: 1.3;
+            }
+
+            /* Additional Row States */
+            .data-table__row--at-risk {
+                border-left: 4px solid var(--color-warning-500);
+                background: linear-gradient(90deg, rgba(245, 158, 11, 0.02) 0%, transparent 100%);
+            }
+
+            .data-table__row--won {
+                border-left: 4px solid var(--color-success-500);
+                background: linear-gradient(90deg, rgba(34, 197, 94, 0.02) 0%, transparent 100%);
+            }
+
+            .data-table__row--lost {
+                border-left: 4px solid var(--color-neutral-400);
+                background: linear-gradient(90deg, rgba(156, 163, 175, 0.02) 0%, transparent 100%);
+            }
+
+            /* Table Column Width Alignment */
+            .data-table {
+                table-layout: fixed;
+                width: 100%;
+            }
+
+            .data-table th:nth-child(1),
+            .data-table td:nth-child(1) {
+                width: 25%;
+                min-width: 200px;
+            }
+
+            .data-table th:nth-child(2),
+            .data-table td:nth-child(2) {
+                width: 18%;
+                min-width: 150px;
+            }
+
+            .data-table th:nth-child(3),
+            .data-table td:nth-child(3) {
+                width: 12%;
+                min-width: 100px;
+                text-align: right;
+            }
+
+            .data-table th:nth-child(4),
+            .data-table td:nth-child(4) {
+                width: 15%;
+                min-width: 120px;
+            }
+
+            .data-table th:nth-child(5),
+            .data-table td:nth-child(5) {
+                width: 15%;
+                min-width: 120px;
+            }
+
+            .data-table th:nth-child(6),
+            .data-table td:nth-child(6) {
+                width: 10%;
+                min-width: 80px;
+            }
+
+            .data-table th:nth-child(7),
+            .data-table td:nth-child(7) {
+                width: 5%;
+                min-width: 60px;
+                text-align: center;
+            }
+
+            /* Header Button Alignment */
+            .sort-button {
+                width: 100%;
+                text-align: left;
+                justify-content: flex-start;
+                padding: var(--spacing-2);
+            }
+
+            .data-table th:nth-child(3) .sort-button {
+                text-align: right;
+                justify-content: flex-end;
+            }
+
+            .data-table th:nth-child(7) .sort-button {
+                text-align: center;
+                justify-content: center;
+            }
+
+            /* Pipeline Overview Styles */
+            .pipeline-overview {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: var(--spacing-4);
+                margin-bottom: var(--spacing-8);
+                padding: var(--spacing-6);
+                background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--color-neutral-200);
+            }
+
+            .pipeline-stage {
+                background: white;
+                border-radius: var(--radius-base);
+                padding: var(--spacing-4);
+                box-shadow: var(--shadow-sm);
+                transition: all 0.2s ease;
+                cursor: pointer;
+            }
+
+            .pipeline-stage:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-md);
+            }
+
+            .pipeline-stage--won {
+                background: linear-gradient(135deg, var(--color-success-50) 0%, var(--color-success-100) 100%);
+                border: 1px solid var(--color-success-200);
+            }
+
+            .pipeline-stage__header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: var(--spacing-2);
+            }
+
+            .pipeline-stage__title {
+                font-size: var(--font-size-sm);
+                font-weight: var(--font-weight-semibold);
+                color: var(--color-neutral-700);
+                margin: 0;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .pipeline-stage__count {
+                background: var(--color-primary-100);
+                color: var(--color-primary-700);
+                padding: 0.25rem 0.5rem;
+                border-radius: var(--radius-full);
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-bold);
+            }
+
+            .pipeline-stage--won .pipeline-stage__count {
+                background: var(--color-success-200);
+                color: var(--color-success-800);
+            }
+
+            .pipeline-stage__value {
+                font-size: var(--font-size-xl);
+                font-weight: var(--font-weight-bold);
+                color: var(--color-neutral-900);
+                margin-bottom: var(--spacing-3);
+            }
+
+            .pipeline-stage__bar {
+                height: 4px;
+                background: var(--color-neutral-200);
+                border-radius: var(--radius-full);
+                overflow: hidden;
+            }
+
+            .pipeline-stage__fill {
+                height: 100%;
+                background: linear-gradient(90deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+                transition: width 0.3s ease;
+            }
+
+            .pipeline-stage--won .pipeline-stage__fill {
+                background: linear-gradient(90deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
+            }
+
+            /* Quick Stats */
+            .quick-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: var(--spacing-4);
+                margin-bottom: var(--spacing-8);
+            }
+
+            .quick-stat {
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-3);
+                background: white;
+                padding: var(--spacing-4);
+                border-radius: var(--radius-base);
+                border: 1px solid var(--color-neutral-200);
+                box-shadow: var(--shadow-sm);
+            }
+
+            .quick-stat__icon {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: var(--color-primary-100);
+                color: var(--color-primary-600);
+                border-radius: var(--radius-base);
+            }
+
+            .quick-stat__content {
+                flex: 1;
+            }
+
+            .quick-stat__value {
+                font-size: var(--font-size-lg);
+                font-weight: var(--font-weight-bold);
+                color: var(--color-neutral-900);
+                margin: 0 0 0.25rem 0;
+            }
+
+            .quick-stat__label {
+                font-size: var(--font-size-sm);
+                color: var(--color-neutral-600);
+                margin: 0;
+            }
+
+            /* Funnel Chart */
+            .funnel-chart {
+                padding: var(--spacing-4);
+            }
+
+            .funnel-stage {
+                margin-bottom: var(--spacing-3);
+            }
+
+            .funnel-stage__bar {
+                display: flex;
+                align-items: center;
+                height: 40px;
+                border-radius: var(--radius-base);
+                margin-bottom: var(--spacing-1);
+                position: relative;
+                transition: all 0.2s ease;
+            }
+
+            .funnel-stage__bar:hover {
+                transform: translateX(4px);
+            }
+
+            .funnel-stage__content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                padding: 0 var(--spacing-3);
+                color: white;
+                font-weight: var(--font-weight-semibold);
+            }
+
+            .funnel-stage__title {
+                font-size: var(--font-size-sm);
+            }
+
+            .funnel-stage__count {
+                font-size: var(--font-size-sm);
+            }
+
+            .funnel-stage__time {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+                text-align: center;
+            }
+
+            .funnel-arrow {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: var(--spacing-2);
+                margin: var(--spacing-2) 0;
+                color: var(--color-neutral-500);
+            }
+
+            .funnel-conversion {
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-medium);
+                color: var(--color-neutral-600);
+            }
+
+            .funnel-summary {
+                display: flex;
+                gap: var(--spacing-6);
+                justify-content: center;
+                margin-top: var(--spacing-4);
+                padding-top: var(--spacing-4);
+                border-top: 1px solid var(--color-neutral-200);
+            }
+
+            .funnel-summary__stat {
+                text-align: center;
+            }
+
+            .funnel-summary__stat strong {
+                display: block;
+                font-size: var(--font-size-base);
+                color: var(--color-neutral-900);
+                margin-bottom: var(--spacing-1);
+            }
+
+            .funnel-summary__stat span {
+                font-size: var(--font-size-sm);
+                color: var(--color-neutral-600);
+            }
+
+            .content-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: var(--spacing-6);
+                margin-bottom: var(--spacing-8);
+            }
+
+            @media (max-width: 1024px) {
+                .content-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .pipeline-overview {
+                    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                }
+
+                .quick-stats {
+                    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                }
+
+                .funnel-summary {
+                    flex-direction: column;
+                    gap: var(--spacing-3);
+                }
+
+                /* Responsive Table */
+                .data-table th:nth-child(1),
+                .data-table td:nth-child(1) {
+                    width: 30%;
+                    min-width: 180px;
+                }
+
+                .data-table th:nth-child(2),
+                .data-table td:nth-child(2) {
+                    width: 20%;
+                    min-width: 130px;
+                }
+
+                .data-table th:nth-child(3),
+                .data-table td:nth-child(3) {
+                    width: 15%;
+                    min-width: 80px;
+                }
+
+                .data-table th:nth-child(4),
+                .data-table td:nth-child(4) {
+                    width: 15%;
+                    min-width: 100px;
+                }
+
+                .data-table th:nth-child(5),
+                .data-table td:nth-child(5) {
+                    width: 12%;
+                    min-width: 90px;
+                }
+
+                .data-table th:nth-child(6),
+                .data-table td:nth-child(6) {
+                    width: 8%;
+                    min-width: 60px;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .data-table-container {
+                    overflow-x: auto;
+                }
+
+                .data-table {
+                    min-width: 800px;
+                }
+            }
+
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('💼 Enterprise Opportunities Manager loaded with AA compliance');
+    </script>
+</body>
+</html>

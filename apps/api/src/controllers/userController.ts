@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { User, UserRole, AuditLog } from '../../../packages/shared/src/types/user.js';
+import { User, UserRole, AuditLog } from '../../../../packages/shared/src/types/user.js';
 import { AuthenticatedRequest } from '../middleware/authorization.js';
 import { createError } from '../middleware/errorHandler.js';
 
