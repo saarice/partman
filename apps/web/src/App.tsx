@@ -74,7 +74,7 @@ function App() {
           element={
             <ProtectedRoute>
               <AppLayout title="Opportunity Management">
-                <Opportunities />
+                <OpportunitiesPage />
               </AppLayout>
             </ProtectedRoute>
           }

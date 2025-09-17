@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Partnership Management Platform</title>
+    <title>Partnerships Dashboard - Partnership Management Platform</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -44,26 +44,26 @@
         <main class="app-main" role="main">
             <!-- Breadcrumb -->
             <nav class="breadcrumb" aria-label="Breadcrumb">
-                <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Overall Dashboard</span>
+                <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Partnerships Dashboard</span>
             </nav>
 
             <!-- Page Header -->
             <div class="page-header">
                 <div class="page-header__content">
-                    <h1>Overall Dashboard</h1>
-                    <p>Executive KPIs and cross-functional metrics overview</p>
+                    <h1>Partnerships Dashboard</h1>
+                    <p>Partner performance metrics, relationship analytics, and partnership health monitoring</p>
                 </div>
-                <button class="btn-primary" id="generate-report-btn">
-                    <svg class="icon" aria-hidden="true"><use href="#icon-bar-chart-3"></use></svg>
-                    Generate Report
+                <button class="btn-primary" id="export-report-btn">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+                    Export Report
                 </button>
             </div>
 
-            <!-- KPI Cards -->
+            <!-- Partnership KPI Cards -->
             <div class="kpi-grid" role="region" aria-label="Key partnership metrics">
                 <div class="kpi-card">
                     <div class="kpi-card__header">
-                        <h2 class="kpi-card__title">Total Partners</h2>
+                        <h2 class="kpi-card__title">Active Partners</h2>
                         <svg class="icon icon--lg" style="color: var(--color-primary-500);" aria-hidden="true">
                             <use href="#icon-users"></use>
                         </svg>
@@ -76,13 +76,13 @@
                         </div>
                     </div>
                     <div class="kpi-card__footer">
-                        <a href="/partnership-manager-enterprise.html" class="kpi-card__link">View partners</a>
+                        <a href="/partnership-manager-enterprise.html" class="kpi-card__link">Manage partners</a>
                     </div>
                 </div>
 
                 <div class="kpi-card">
                     <div class="kpi-card__header">
-                        <h2 class="kpi-card__title">Quarterly Revenue</h2>
+                        <h2 class="kpi-card__title">Partner Revenue</h2>
                         <svg class="icon icon--lg" style="color: var(--color-success-500);" aria-hidden="true">
                             <use href="#icon-dollar-sign"></use>
                         </svg>
@@ -95,26 +95,26 @@
                         </div>
                     </div>
                     <div class="kpi-card__footer">
-                        <a href="#" class="kpi-card__link">View report</a>
+                        <a href="#" class="kpi-card__link">View breakdown</a>
                     </div>
                 </div>
 
                 <div class="kpi-card">
                     <div class="kpi-card__header">
-                        <h2 class="kpi-card__title">Active Opportunities</h2>
-                        <svg class="icon icon--lg" style="color: var(--color-warning-500);" aria-hidden="true">
-                            <use href="#icon-briefcase"></use>
+                        <h2 class="kpi-card__title">Partnership Health</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-info-500);" aria-hidden="true">
+                            <use href="#icon-heart"></use>
                         </svg>
                     </div>
                     <div class="kpi-card__content">
-                        <div class="kpi-card__value">89</div>
+                        <div class="kpi-card__value">94.2%</div>
                         <div class="kpi-card__change kpi-card__change--positive">
                             <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
-                            +5.2% from last week
+                            +2.1% from last month
                         </div>
                     </div>
                     <div class="kpi-card__footer">
-                        <a href="#" class="kpi-card__link">View opportunities</a>
+                        <a href="#" class="kpi-card__link">Health details</a>
                     </div>
                 </div>
 
@@ -122,7 +122,7 @@
                     <div class="kpi-card__header">
                         <h2 class="kpi-card__title">At-Risk Partners</h2>
                         <svg class="icon icon--lg" style="color: var(--color-error-500);" aria-hidden="true">
-                            <use href="#icon-alert-circle"></use>
+                            <use href="#icon-alert-triangle"></use>
                         </svg>
                     </div>
                     <div class="kpi-card__content">
@@ -133,19 +133,19 @@
                         </div>
                     </div>
                     <div class="kpi-card__footer">
-                        <a href="#" class="kpi-card__link">View details</a>
+                        <a href="#" class="kpi-card__link">View at-risk</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Charts Section -->
+            <!-- Analytics Charts Section -->
             <div class="content-grid">
-                <!-- Revenue Distribution Chart -->
+                <!-- Partner Tier Distribution -->
                 <div class="chart-container">
                     <div class="chart-header">
                         <div>
-                            <h2 class="chart-title">Revenue Distribution by Category</h2>
-                            <p class="chart-subtitle">Quarterly breakdown across business segments</p>
+                            <h2 class="chart-title">Partner Tier Distribution</h2>
+                            <p class="chart-subtitle">Current breakdown by partnership tier</p>
                         </div>
                         <div class="chart-actions">
                             <button class="btn-secondary btn-secondary--sm">
@@ -155,79 +155,54 @@
                         </div>
                     </div>
 
-                    <div class="chart-legend">
-                        <div class="legend-item">
-                            <span class="legend-color" style="background-color: var(--color-primary-500);"></span>
-                            <span class="legend-label">FinOps</span>
-                            <span class="legend-value">$890K</span>
+                    <div class="chart-metrics">
+                        <div class="chart-metric">
+                            <div class="chart-metric__value">45</div>
+                            <div class="chart-metric__label">Enterprise</div>
+                            <div class="chart-metric__change chart-metric__change--positive">18.2%</div>
                         </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background-color: var(--color-warning-500);"></span>
-                            <span class="legend-label">Security</span>
-                            <span class="legend-value">$640K</span>
+                        <div class="chart-metric">
+                            <div class="chart-metric__value">124</div>
+                            <div class="chart-metric__label">Premium</div>
+                            <div class="chart-metric__change chart-metric__change--positive">50.2%</div>
                         </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background-color: #06b6d4;"></span>
-                            <span class="legend-label">DevOps</span>
-                            <span class="legend-value">$520K</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background-color: var(--color-success-500);"></span>
-                            <span class="legend-label">Data Analytics</span>
-                            <span class="legend-value">$380K</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color" style="background-color: #8b5cf6;"></span>
-                            <span class="legend-label">Observability</span>
-                            <span class="legend-value">$290K</span>
+                        <div class="chart-metric">
+                            <div class="chart-metric__value">78</div>
+                            <div class="chart-metric__label">Standard</div>
+                            <div class="chart-metric__change chart-metric__change--neutral">31.6%</div>
                         </div>
                     </div>
 
-                    <div class="stacked-bar-chart">
-                        <div class="bar-group">
-                            <div class="bar-row">
-                                <div class="bar-label">Q3 2024</div>
-                                <div class="bar-container">
-                                    <span class="bar-segment bar-segment--finops" style="width: 33%;"></span>
-                                    <span class="bar-segment bar-segment--security" style="width: 24%;"></span>
-                                    <span class="bar-segment bar-segment--devops" style="width: 19%;"></span>
-                                    <span class="bar-segment bar-segment--data" style="width: 14%;"></span>
-                                    <span class="bar-segment bar-segment--observability" style="width: 10%;"></span>
-                                </div>
-                                <div class="bar-value">$2.72M</div>
-                            </div>
-                            <div class="bar-row">
-                                <div class="bar-label">Q2 2024</div>
-                                <div class="bar-container">
-                                    <span class="bar-segment bar-segment--finops" style="width: 31%;"></span>
-                                    <span class="bar-segment bar-segment--security" style="width: 26%;"></span>
-                                    <span class="bar-segment bar-segment--devops" style="width: 20%;"></span>
-                                    <span class="bar-segment bar-segment--data" style="width: 13%;"></span>
-                                    <span class="bar-segment bar-segment--observability" style="width: 10%;"></span>
-                                </div>
-                                <div class="bar-value">$2.31M</div>
-                            </div>
-                            <div class="bar-row">
-                                <div class="bar-label">Q1 2024</div>
-                                <div class="bar-container">
-                                    <span class="bar-segment bar-segment--finops" style="width: 29%;"></span>
-                                    <span class="bar-segment bar-segment--security" style="width: 28%;"></span>
-                                    <span class="bar-segment bar-segment--devops" style="width: 22%;"></span>
-                                    <span class="bar-segment bar-segment--data" style="width: 12%;"></span>
-                                    <span class="bar-segment bar-segment--observability" style="width: 9%;"></span>
-                                </div>
-                                <div class="bar-value">$1.97M</div>
-                            </div>
-                        </div>
+                    <div class="donut-chart">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Enterprise (18.2% = 65.52 degrees) -->
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="var(--color-primary-500)"
+                                    stroke-width="20" stroke-dasharray="65.52 299.48"
+                                    stroke-dashoffset="25" transform="rotate(-90 100 100)"/>
+
+                            <!-- Premium (50.2% = 180.72 degrees) -->
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="var(--color-success-500)"
+                                    stroke-width="20" stroke-dasharray="180.72 184.28"
+                                    stroke-dashoffset="-65.52" transform="rotate(-90 100 100)"/>
+
+                            <!-- Standard (31.6% = 113.76 degrees) -->
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="var(--color-warning-500)"
+                                    stroke-width="20" stroke-dasharray="113.76 251.24"
+                                    stroke-dashoffset="-246.24" transform="rotate(-90 100 100)"/>
+
+                            <!-- Center text -->
+                            <text x="100" y="95" text-anchor="middle" class="chart-center-text">247</text>
+                            <text x="100" y="115" text-anchor="middle" class="chart-center-label">Partners</text>
+                        </svg>
                     </div>
                 </div>
 
-                <!-- Performance Trends -->
+                <!-- Partnership Performance Trends -->
                 <div class="chart-container">
                     <div class="chart-header">
                         <div>
                             <h2 class="chart-title">Partnership Performance Trends</h2>
-                            <p class="chart-subtitle">Monthly growth and health metrics</p>
+                            <p class="chart-subtitle">6-month growth and health metrics</p>
                         </div>
                     </div>
 
@@ -238,19 +213,14 @@
                             <div class="chart-metric__change chart-metric__change--positive">+4.2%</div>
                         </div>
                         <div class="chart-metric">
-                            <div class="chart-metric__value">94.2%</div>
-                            <div class="chart-metric__label">Health Score</div>
-                            <div class="chart-metric__change chart-metric__change--positive">+2.1%</div>
+                            <div class="chart-metric__value">$1.2M</div>
+                            <div class="chart-metric__label">Avg Partner Value</div>
+                            <div class="chart-metric__change chart-metric__change--positive">+8.4%</div>
                         </div>
                         <div class="chart-metric">
                             <div class="chart-metric__value">87.5%</div>
-                            <div class="chart-metric__label">Retention</div>
+                            <div class="chart-metric__label">Retention Rate</div>
                             <div class="chart-metric__change chart-metric__change--positive">+1.8%</div>
-                        </div>
-                        <div class="chart-metric">
-                            <div class="chart-metric__value">$42K</div>
-                            <div class="chart-metric__label">Avg Deal Size</div>
-                            <div class="chart-metric__change chart-metric__change--positive">+12%</div>
                         </div>
                     </div>
 
@@ -264,21 +234,21 @@
                                 <line x1="50" y1="110" x2="380" y2="110" stroke="var(--color-neutral-200)" stroke-width="1"/>
                             </g>
 
-                            <!-- Area fill -->
-                            <path d="M 60 100 L 120 85 L 180 70 L 240 60 L 300 45 L 360 35 L 360 120 L 60 120 Z"
-                                  fill="var(--color-primary-100)" opacity="0.3"/>
+                            <!-- Partnership Growth Area -->
+                            <path d="M 60 110 L 120 95 L 180 85 L 240 70 L 300 55 L 360 40 L 360 120 L 60 120 Z"
+                                  fill="var(--color-success-100)" opacity="0.3"/>
 
-                            <!-- Line -->
-                            <path d="M 60 100 L 120 85 L 180 70 L 240 60 L 300 45 L 360 35"
-                                  stroke="var(--color-primary-500)" stroke-width="3" fill="none"/>
+                            <!-- Partnership Growth Line -->
+                            <path d="M 60 110 L 120 95 L 180 85 L 240 70 L 300 55 L 360 40"
+                                  stroke="var(--color-success-500)" stroke-width="3" fill="none"/>
 
                             <!-- Data points -->
-                            <circle cx="60" cy="100" r="4" fill="var(--color-primary-600)"/>
-                            <circle cx="120" cy="85" r="4" fill="var(--color-primary-600)"/>
-                            <circle cx="180" cy="70" r="4" fill="var(--color-primary-600)"/>
-                            <circle cx="240" cy="60" r="4" fill="var(--color-primary-600)"/>
-                            <circle cx="300" cy="45" r="4" fill="var(--color-primary-600)"/>
-                            <circle cx="360" cy="35" r="4" fill="var(--color-primary-600)"/>
+                            <circle cx="60" cy="110" r="4" fill="var(--color-success-600)"/>
+                            <circle cx="120" cy="95" r="4" fill="var(--color-success-600)"/>
+                            <circle cx="180" cy="85" r="4" fill="var(--color-success-600)"/>
+                            <circle cx="240" cy="70" r="4" fill="var(--color-success-600)"/>
+                            <circle cx="300" cy="55" r="4" fill="var(--color-success-600)"/>
+                            <circle cx="360" cy="40" r="4" fill="var(--color-success-600)"/>
 
                             <!-- Labels -->
                             <text x="60" y="140" text-anchor="middle" class="chart-axis-label">Jan</text>
@@ -292,12 +262,90 @@
                 </div>
             </div>
 
-            <!-- Recent Activity Table -->
+            <!-- Revenue by Partner Category -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div>
+                        <h2 class="chart-title">Revenue by Partner Category</h2>
+                        <p class="chart-subtitle">Quarterly revenue breakdown across partner types</p>
+                    </div>
+                    <div class="chart-actions">
+                        <button class="btn-secondary btn-secondary--sm">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-filter"></use></svg>
+                            Filter
+                        </button>
+                        <button class="btn-secondary btn-secondary--sm">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-external-link"></use></svg>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: var(--color-primary-500);"></span>
+                        <span class="legend-label">Technology Partners</span>
+                        <span class="legend-value">$890K</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: var(--color-success-500);"></span>
+                        <span class="legend-label">Channel Partners</span>
+                        <span class="legend-value">$640K</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: var(--color-warning-500);"></span>
+                        <span class="legend-label">Integration Partners</span>
+                        <span class="legend-value">$520K</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background-color: var(--color-info-500);"></span>
+                        <span class="legend-label">Reseller Partners</span>
+                        <span class="legend-value">$380K</span>
+                    </div>
+                </div>
+
+                <div class="stacked-bar-chart">
+                    <div class="bar-group">
+                        <div class="bar-row">
+                            <div class="bar-label">Q3 2024</div>
+                            <div class="bar-container">
+                                <span class="bar-segment" style="width: 37%; background-color: var(--color-primary-500);"></span>
+                                <span class="bar-segment" style="width: 26%; background-color: var(--color-success-500);"></span>
+                                <span class="bar-segment" style="width: 22%; background-color: var(--color-warning-500);"></span>
+                                <span class="bar-segment" style="width: 15%; background-color: var(--color-info-500);"></span>
+                            </div>
+                            <div class="bar-value">$2.43M</div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="bar-label">Q2 2024</div>
+                            <div class="bar-container">
+                                <span class="bar-segment" style="width: 35%; background-color: var(--color-primary-500);"></span>
+                                <span class="bar-segment" style="width: 28%; background-color: var(--color-success-500);"></span>
+                                <span class="bar-segment" style="width: 22%; background-color: var(--color-warning-500);"></span>
+                                <span class="bar-segment" style="width: 15%; background-color: var(--color-info-500);"></span>
+                            </div>
+                            <div class="bar-value">$2.05M</div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="bar-label">Q1 2024</div>
+                            <div class="bar-container">
+                                <span class="bar-segment" style="width: 33%; background-color: var(--color-primary-500);"></span>
+                                <span class="bar-segment" style="width: 30%; background-color: var(--color-success-500);"></span>
+                                <span class="bar-segment" style="width: 22%; background-color: var(--color-warning-500);"></span>
+                                <span class="bar-segment" style="width: 15%; background-color: var(--color-info-500);"></span>
+                            </div>
+                            <div class="bar-value">$1.87M</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Performing Partners -->
             <div class="data-table-container">
                 <div class="data-table-header">
                     <div class="data-table-title">
-                        <h2>Recent Partnership Activity</h2>
-                        <p>Latest updates and changes across your partnership portfolio</p>
+                        <h2>Top Performing Partners</h2>
+                        <p>Highest revenue generating partnerships this quarter</p>
                     </div>
                     <div class="data-table-actions">
                         <button class="btn-secondary btn-secondary--sm">
@@ -305,7 +353,7 @@
                             Filter
                         </button>
                         <a href="/partnership-manager-enterprise.html" class="btn-primary btn-primary--sm">
-                            View All Partners
+                            Manage All Partners
                         </a>
                     </div>
                 </div>
@@ -314,10 +362,11 @@
                     <thead class="data-table__header">
                         <tr role="row">
                             <th role="columnheader">Partner</th>
-                            <th role="columnheader">Activity</th>
-                            <th role="columnheader">Date</th>
-                            <th role="columnheader">Impact</th>
-                            <th role="columnheader">Status</th>
+                            <th role="columnheader">Category</th>
+                            <th role="columnheader">Revenue</th>
+                            <th role="columnheader">Growth</th>
+                            <th role="columnheader">Health Score</th>
+                            <th role="columnheader">Action</th>
                         </tr>
                     </thead>
                     <tbody class="data-table__body">
@@ -328,13 +377,18 @@
                                     <span class="partner-tier">Enterprise</span>
                                 </div>
                             </td>
-                            <td class="data-table__cell">Contract renewal completed</td>
-                            <td class="data-table__cell">2 hours ago</td>
+                            <td class="data-table__cell">Technology</td>
                             <td class="data-table__cell">
-                                <span class="impact-indicator impact-indicator--high">+$250K</span>
+                                <span class="revenue-amount">$420K</span>
                             </td>
                             <td class="data-table__cell">
-                                <span class="status-pill status-pill--success">Active</span>
+                                <span class="growth-indicator growth-indicator--positive">+28.4%</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--success">Excellent</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <button class="btn-secondary btn-secondary--sm">View Details</button>
                             </td>
                         </tr>
                         <tr role="row" class="data-table__row">
@@ -344,45 +398,60 @@
                                     <span class="partner-tier">Premium</span>
                                 </div>
                             </td>
-                            <td class="data-table__cell">New opportunity created</td>
-                            <td class="data-table__cell">5 hours ago</td>
+                            <td class="data-table__cell">Channel</td>
                             <td class="data-table__cell">
-                                <span class="impact-indicator impact-indicator--medium">+$75K</span>
+                                <span class="revenue-amount">$380K</span>
                             </td>
                             <td class="data-table__cell">
-                                <span class="status-pill status-pill--warning">In Progress</span>
+                                <span class="growth-indicator growth-indicator--positive">+22.1%</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--success">Good</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <button class="btn-secondary btn-secondary--sm">View Details</button>
                             </td>
                         </tr>
                         <tr role="row" class="data-table__row">
                             <td class="data-table__cell">
                                 <div class="partner-info">
                                     <strong>DevOps Pro</strong>
-                                    <span class="partner-tier">Standard</span>
+                                    <span class="partner-tier">Premium</span>
                                 </div>
                             </td>
-                            <td class="data-table__cell">Health score updated</td>
-                            <td class="data-table__cell">1 day ago</td>
+                            <td class="data-table__cell">Integration</td>
                             <td class="data-table__cell">
-                                <span class="impact-indicator impact-indicator--neutral">Monitor</span>
+                                <span class="revenue-amount">$295K</span>
                             </td>
                             <td class="data-table__cell">
-                                <span class="status-pill status-pill--info">Review</span>
+                                <span class="growth-indicator growth-indicator--positive">+15.7%</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--warning">Monitor</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <button class="btn-secondary btn-secondary--sm">View Details</button>
                             </td>
                         </tr>
                         <tr role="row" class="data-table__row">
                             <td class="data-table__cell">
                                 <div class="partner-info">
                                     <strong>Analytics Plus</strong>
-                                    <span class="partner-tier">Premium</span>
+                                    <span class="partner-tier">Standard</span>
                                 </div>
                             </td>
-                            <td class="data-table__cell">Commission payment processed</td>
-                            <td class="data-table__cell">2 days ago</td>
+                            <td class="data-table__cell">Reseller</td>
                             <td class="data-table__cell">
-                                <span class="impact-indicator impact-indicator--high">$45K</span>
+                                <span class="revenue-amount">$240K</span>
                             </td>
                             <td class="data-table__cell">
-                                <span class="status-pill status-pill--success">Completed</span>
+                                <span class="growth-indicator growth-indicator--positive">+18.3%</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--success">Good</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <button class="btn-secondary btn-secondary--sm">View Details</button>
                             </td>
                         </tr>
                         <tr role="row" class="data-table__row">
@@ -392,13 +461,18 @@
                                     <span class="partner-tier">Enterprise</span>
                                 </div>
                             </td>
-                            <td class="data-table__cell">Risk assessment flagged</td>
-                            <td class="data-table__cell">3 days ago</td>
+                            <td class="data-table__cell">Technology</td>
                             <td class="data-table__cell">
-                                <span class="impact-indicator impact-indicator--risk">At Risk</span>
+                                <span class="revenue-amount">$185K</span>
                             </td>
                             <td class="data-table__cell">
-                                <span class="status-pill status-pill--error">Action Required</span>
+                                <span class="growth-indicator growth-indicator--negative">-5.2%</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--error">At Risk</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <button class="btn-primary btn-primary--sm">Review</button>
                             </td>
                         </tr>
                     </tbody>
@@ -424,22 +498,9 @@
                 console.warn('Could not load icons:', error);
             });
 
-        // Sidebar toggle is now handled by shared navigation
-
-        // Navigation handling
-        document.querySelectorAll('.nav-item').forEach(item => {
-            const text = item.textContent.trim();
-            if (['Commissions', 'Analytics', 'Settings'].includes(text)) {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    showNotification(`${text} page - Coming soon!`);
-                });
-            }
-        });
-
-        // Generate Report button
-        document.getElementById('generate-report-btn').addEventListener('click', function() {
-            showNotification('Generating comprehensive partnership report...');
+        // Export Report button
+        document.getElementById('export-report-btn').addEventListener('click', function() {
+            showNotification('Generating partnerships analytics report...');
         });
 
         // Notification system
@@ -479,7 +540,7 @@
             });
         }
 
-        // Add styles for dashboard-specific elements
+        // Add styles for partnerships dashboard
         const style = document.createElement('style');
         style.textContent = `
             .partner-info {
@@ -494,7 +555,12 @@
                 font-weight: var(--font-weight-medium);
             }
 
-            .impact-indicator {
+            .revenue-amount {
+                font-weight: var(--font-weight-semibold);
+                color: var(--color-success-700);
+            }
+
+            .growth-indicator {
                 display: inline-flex;
                 align-items: center;
                 padding: 0.25rem 0.5rem;
@@ -503,24 +569,31 @@
                 font-weight: var(--font-weight-semibold);
             }
 
-            .impact-indicator--high {
+            .growth-indicator--positive {
                 background-color: var(--color-success-100);
                 color: var(--color-success-700);
             }
 
-            .impact-indicator--medium {
-                background-color: var(--color-warning-100);
-                color: var(--color-warning-700);
-            }
-
-            .impact-indicator--neutral {
-                background-color: var(--color-neutral-100);
-                color: var(--color-neutral-700);
-            }
-
-            .impact-indicator--risk {
+            .growth-indicator--negative {
                 background-color: var(--color-error-100);
                 color: var(--color-error-700);
+            }
+
+            .donut-chart {
+                display: flex;
+                justify-content: center;
+                margin-top: var(--spacing-4);
+            }
+
+            .chart-center-text {
+                font-size: 24px;
+                font-weight: var(--font-weight-bold);
+                fill: var(--color-neutral-900);
+            }
+
+            .chart-center-label {
+                font-size: 12px;
+                fill: var(--color-neutral-600);
             }
 
             .content-grid {
@@ -535,22 +608,10 @@
                     grid-template-columns: 1fr;
                 }
             }
-
-            .sr-only {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                margin: -1px;
-                overflow: hidden;
-                clip: rect(0, 0, 0, 0);
-                white-space: nowrap;
-                border: 0;
-            }
         `;
         document.head.appendChild(style);
 
-        console.log('🏠 Enterprise Dashboard loaded with AA compliance');
+        console.log('📈 Partnerships Dashboard loaded with comprehensive analytics');
     </script>
 </body>
 </html>

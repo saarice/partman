@@ -18,8 +18,9 @@ export const isValidPhoneNumber = (phone: string): boolean => {
 
 export const isValidUrl = (url: string): boolean => {
   try {
-    new URL(url);
-    return true;
+    // Simple URL validation using regex
+    const urlPattern = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+    return urlPattern.test(url);
   } catch {
     return false;
   }
