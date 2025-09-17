@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partnership Manager - Partnership Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/design-system/components/enterprise.css">
+    <link rel="stylesheet" href="/src/design-system/components/charts.css">
+</head>
+<body>
+    <!-- Include Lucide Icons -->
+    <div id="lucide-icons" style="display: none;"></div>
+
+    <!-- App Shell -->
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="app-header" role="banner">
+            <div class="app-header__brand">
+                <button id="sidebar-toggle" class="action-menu__trigger" aria-label="Toggle sidebar" aria-expanded="true">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+                </button>
+                <h1 class="app-header__title">Partnership Management Platform</h1>
+            </div>
+            <div class="app-header__actions">
+                <button class="action-menu__trigger" aria-label="User menu">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-user"></use></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <nav class="app-sidebar" role="navigation" aria-label="Main navigation">
+            <div class="app-sidebar__nav">
+                <div class="nav-section">
+                    <h2 class="nav-section__title">Core</h2>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-layout-dashboard"></use></svg>
+                        Dashboard
+                    </a>
+                    <a href="#" class="nav-item nav-item--active" aria-current="page">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-users"></use></svg>
+                        Partnerships
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-briefcase"></use></svg>
+                        Opportunities
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <h2 class="nav-section__title">Operations</h2>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-dollar-sign"></use></svg>
+                        Commissions
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-bar-chart-3"></use></svg>
+                        Analytics
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg class="nav-item__icon" aria-hidden="true"><use href="#icon-settings"></use></svg>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main" role="main">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <span class="breadcrumb__item">Partnerships</span>
+                <span class="breadcrumb__separator" aria-hidden="true">
+                    <svg class="icon icon--sm"><use href="#icon-chevron-right"></use></svg>
+                </span>
+                <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Directory</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header__content">
+                    <h1>Partnership Directory</h1>
+                    <p>Manage strategic partnerships and track relationship health across your portfolio</p>
+                </div>
+                <button class="btn-primary" id="add-partner-btn">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                    Add Partner
+                </button>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid" role="region" aria-label="Key partnership metrics">
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Total Partners</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-primary-500);" aria-hidden="true">
+                            <use href="#icon-users"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__value">24</div>
+                    <div class="kpi-card__footer">
+                        <div class="trend-indicator trend-indicator--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            +3 this quarter
+                        </div>
+                        <a href="#" class="text-sm" style="color: var(--color-primary-600);">View report</a>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Quarterly Revenue</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-success-500);" aria-hidden="true">
+                            <use href="#icon-dollar-sign"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__value">$2.32M</div>
+                    <div class="kpi-card__footer">
+                        <div class="trend-indicator trend-indicator--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            +12.5%
+                        </div>
+                        <a href="#" class="text-sm" style="color: var(--color-primary-600);">View report</a>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Active Opportunities</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-warning-500);" aria-hidden="true">
+                            <use href="#icon-activity"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__value">47</div>
+                    <div class="kpi-card__footer">
+                        <div class="trend-indicator trend-indicator--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            +8 this month
+                        </div>
+                        <a href="#" class="text-sm" style="color: var(--color-primary-600);">View report</a>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">At-Risk Partners</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-error-500);" aria-hidden="true">
+                            <use href="#icon-alert-circle"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__value">3</div>
+                    <div class="kpi-card__footer">
+                        <div class="trend-indicator trend-indicator--negative">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            Needs attention
+                        </div>
+                        <a href="#" class="text-sm" style="color: var(--color-primary-600);">View report</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-table-container" role="region" aria-label="Partner directory table">
+                <div class="data-table__toolbar">
+                    <div class="data-table__filters">
+                        <div class="search-input">
+                            <svg class="icon icon--sm" style="color: var(--color-neutral-400);" aria-hidden="true">
+                                <use href="#icon-search"></use>
+                            </svg>
+                            <input type="search" placeholder="Search partners..." aria-label="Search partners">
+                        </div>
+                        <div class="filter-dropdown">
+                            <button class="filter-button filter-button--dropdown" aria-label="Filter by partner type" aria-haspopup="menu" id="partner-type-filter">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-filter"></use></svg>
+                                Partner Type
+                                <svg class="icon icon--xs filter-dropdown__arrow" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                            </button>
+                            <div class="filter-dropdown__menu" id="partner-type-menu" style="display: none;">
+                                <div class="filter-dropdown__header">
+                                    <span class="filter-dropdown__title">Filter by Category</span>
+                                    <button class="filter-dropdown__clear" id="clear-category-filter">Clear</button>
+                                </div>
+                                <div class="filter-dropdown__options">
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox" value="FinOps" checked>
+                                        <span class="filter-option__label">FinOps</span>
+                                        <span class="filter-option__count" id="count-finops">1</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox" value="Security" checked>
+                                        <span class="filter-option__label">Security</span>
+                                        <span class="filter-option__count" id="count-security">1</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox" value="DevOps" checked>
+                                        <span class="filter-option__label">DevOps</span>
+                                        <span class="filter-option__count" id="count-devops">1</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox" value="Data Analytics" checked>
+                                        <span class="filter-option__label">Data Analytics</span>
+                                        <span class="filter-option__count" id="count-data">1</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox" value="Observability" checked>
+                                        <span class="filter-option__label">Observability</span>
+                                        <span class="filter-option__count" id="count-observability">1</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown">
+                            <button class="filter-button filter-button--dropdown" aria-label="Filter by health score" aria-haspopup="menu" id="health-score-filter">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-activity"></use></svg>
+                                Health Score
+                                <svg class="icon icon--xs filter-dropdown__arrow" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                            </button>
+                            <div class="filter-dropdown__menu" id="health-score-menu" style="display: none;">
+                                <div class="filter-dropdown__header">
+                                    <span class="filter-dropdown__title">Filter by Health Score</span>
+                                    <button class="filter-dropdown__clear" id="clear-health-filter">Clear</button>
+                                </div>
+                                <div class="filter-dropdown__options">
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox health-filter" value="excellent" checked>
+                                        <span class="filter-option__label">
+                                            <span class="health-indicator health-indicator--excellent"></span>
+                                            Excellent (80-100)
+                                        </span>
+                                        <span class="filter-option__count" id="count-excellent">0</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox health-filter" value="good" checked>
+                                        <span class="filter-option__label">
+                                            <span class="health-indicator health-indicator--good"></span>
+                                            Good (60-79)
+                                        </span>
+                                        <span class="filter-option__count" id="count-good">0</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox health-filter" value="poor" checked>
+                                        <span class="filter-option__label">
+                                            <span class="health-indicator health-indicator--poor"></span>
+                                            Poor (0-59)
+                                        </span>
+                                        <span class="filter-option__count" id="count-poor">0</span>
+                                    </label>
+                                </div>
+                                <div class="filter-range-section">
+                                    <label class="range-label">Custom Range</label>
+                                    <div class="range-inputs">
+                                        <input type="number" class="range-input" id="health-min" placeholder="Min" min="0" max="100">
+                                        <span class="range-separator">to</span>
+                                        <input type="number" class="range-input" id="health-max" placeholder="Max" min="0" max="100">
+                                    </div>
+                                    <button class="btn-secondary btn--sm" id="apply-health-range">Apply Range</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown">
+                            <button class="filter-button filter-button--dropdown" aria-label="Filter by status" aria-haspopup="menu" id="status-filter">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-check-circle-2"></use></svg>
+                                Status
+                                <svg class="icon icon--xs filter-dropdown__arrow" aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
+                            </button>
+                            <div class="filter-dropdown__menu" id="status-menu" style="display: none;">
+                                <div class="filter-dropdown__header">
+                                    <span class="filter-dropdown__title">Filter by Status</span>
+                                    <button class="filter-dropdown__clear" id="clear-status-filter">Clear</button>
+                                </div>
+                                <div class="filter-dropdown__options">
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox status-filter" value="Active" checked>
+                                        <span class="filter-option__label">
+                                            <span class="status-indicator status-indicator--active"></span>
+                                            Active
+                                        </span>
+                                        <span class="filter-option__count" id="count-active">0</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox status-filter" value="Renewal Due" checked>
+                                        <span class="filter-option__label">
+                                            <span class="status-indicator status-indicator--renewal"></span>
+                                            Renewal Due
+                                        </span>
+                                        <span class="filter-option__count" id="count-renewal">0</span>
+                                    </label>
+                                    <label class="filter-option">
+                                        <input type="checkbox" class="filter-option__checkbox status-filter" value="At Risk" checked>
+                                        <span class="filter-option__label">
+                                            <span class="status-indicator status-indicator--risk"></span>
+                                            At Risk
+                                        </span>
+                                        <span class="filter-option__count" id="count-risk">0</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="data-table" role="table">
+                    <thead class="data-table__header">
+                        <tr role="row">
+                            <th role="columnheader">
+                                <button class="sortable-header" aria-label="Sort by partner name" data-sort="partner">
+                                    <span class="sortable-header__text">Partner</span>
+                                    <svg class="icon icon--sm sortable-header__icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader">
+                                <button class="sortable-header" aria-label="Sort by category" data-sort="category">
+                                    <span class="sortable-header__text">Category</span>
+                                    <svg class="icon icon--sm sortable-header__icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader">
+                                <button class="sortable-header" aria-label="Sort by health score" data-sort="health">
+                                    <span class="sortable-header__text">Health Score</span>
+                                    <svg class="icon icon--sm sortable-header__icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader">
+                                <button class="sortable-header" aria-label="Sort by quarterly revenue" data-sort="revenue">
+                                    <span class="sortable-header__text">Quarterly Revenue</span>
+                                    <svg class="icon icon--sm sortable-header__icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader">
+                                <button class="sortable-header" aria-label="Sort by active opportunities" data-sort="opportunities">
+                                    <span class="sortable-header__text">Active Opportunities</span>
+                                    <svg class="icon icon--sm sortable-header__icon" aria-hidden="true"><use href="#icon-arrow-up-down"></use></svg>
+                                </button>
+                            </th>
+                            <th role="columnheader">Status</th>
+                            <th role="columnheader">
+                                <span class="sr-only">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-table__body">
+                        <tr role="row" tabindex="0" data-partner-id="1" class="clickable-row">
+                            <td role="gridcell" class="partner-cell">
+                                <div class="partner-cell__name">ACME FinOps Solutions</div>
+                                <div class="partner-cell__tier">Strategic Partner</div>
+                            </td>
+                            <td role="gridcell">
+                                <span class="category-pill">FinOps</span>
+                            </td>
+                            <td role="gridcell" class="health-cell">
+                                <div class="health-bar">
+                                    <div class="health-bar__progress">
+                                        <div class="health-bar__fill health-bar__fill--excellent" style="width: 95%" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" aria-label="Health score 95 out of 100"></div>
+                                    </div>
+                                    <span class="health-bar__score">95</span>
+                                </div>
+                            </td>
+                            <td role="gridcell">
+                                <strong>$1.25M</strong>
+                            </td>
+                            <td role="gridcell">
+                                <strong>8</strong>
+                            </td>
+                            <td role="gridcell">
+                                <span class="status-pill status-pill--active">Active</span>
+                            </td>
+                            <td role="gridcell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="Partner actions for ACME FinOps Solutions" aria-haspopup="menu" data-partner-id="1">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__dropdown" style="display: none;">
+                                        <button class="action-menu__item" data-action="edit" data-partner-id="1">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit Partner
+                                        </button>
+                                        <button class="action-menu__item" data-action="view" data-partner-id="1">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger" data-action="delete" data-partner-id="1">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Remove Partner
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr role="row" tabindex="0" data-partner-id="2" class="clickable-row">
+                            <td role="gridcell" class="partner-cell">
+                                <div class="partner-cell__name">SecureGuard Technologies</div>
+                                <div class="partner-cell__tier">Strategic Partner</div>
+                            </td>
+                            <td role="gridcell">
+                                <span class="category-pill">Security</span>
+                            </td>
+                            <td role="gridcell" class="health-cell">
+                                <div class="health-bar">
+                                    <div class="health-bar__progress">
+                                        <div class="health-bar__fill health-bar__fill--good" style="width: 72%" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="Health score 72 out of 100"></div>
+                                    </div>
+                                    <span class="health-bar__score">72</span>
+                                </div>
+                            </td>
+                            <td role="gridcell">
+                                <strong>$890K</strong>
+                            </td>
+                            <td role="gridcell">
+                                <strong>5</strong>
+                            </td>
+                            <td role="gridcell">
+                                <span class="status-pill status-pill--renewal">Renewal Due</span>
+                            </td>
+                            <td role="gridcell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="Partner actions for SecureGuard Technologies" aria-haspopup="menu" data-partner-id="2">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__dropdown" style="display: none;">
+                                        <button class="action-menu__item" data-action="edit" data-partner-id="2">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit Partner
+                                        </button>
+                                        <button class="action-menu__item" data-action="view" data-partner-id="2">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger" data-action="delete" data-partner-id="2">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Remove Partner
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr role="row" tabindex="0" data-partner-id="3" class="clickable-row">
+                            <td role="gridcell" class="partner-cell">
+                                <div class="partner-cell__name">DataFlow Analytics</div>
+                                <div class="partner-cell__tier">Tactical Partner</div>
+                            </td>
+                            <td role="gridcell">
+                                <span class="category-pill">Data Analytics</span>
+                            </td>
+                            <td role="gridcell" class="health-cell">
+                                <div class="health-bar">
+                                    <div class="health-bar__progress">
+                                        <div class="health-bar__fill health-bar__fill--poor" style="width: 45%" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="Health score 45 out of 100"></div>
+                                    </div>
+                                    <span class="health-bar__score">45</span>
+                                </div>
+                            </td>
+                            <td role="gridcell">
+                                <strong>$180K</strong>
+                            </td>
+                            <td role="gridcell">
+                                <strong>2</strong>
+                            </td>
+                            <td role="gridcell">
+                                <span class="status-pill status-pill--at-risk">At Risk</span>
+                            </td>
+                            <td role="gridcell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="Partner actions for DataFlow Analytics" aria-haspopup="menu" data-partner-id="3">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__dropdown" style="display: none;">
+                                        <button class="action-menu__item" data-action="edit" data-partner-id="3">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit Partner
+                                        </button>
+                                        <button class="action-menu__item" data-action="view" data-partner-id="3">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger" data-action="delete" data-partner-id="3">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Remove Partner
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr role="row" tabindex="0" data-partner-id="4" class="clickable-row">
+                            <td role="gridcell" class="partner-cell">
+                                <div class="partner-cell__name">CloudOps Innovations</div>
+                                <div class="partner-cell__tier">Emerging Partner</div>
+                            </td>
+                            <td role="gridcell">
+                                <span class="category-pill">DevOps</span>
+                            </td>
+                            <td role="gridcell" class="health-cell">
+                                <div class="health-bar">
+                                    <div class="health-bar__progress">
+                                        <div class="health-bar__fill health-bar__fill--excellent" style="width: 88%" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100" aria-label="Health score 88 out of 100"></div>
+                                    </div>
+                                    <span class="health-bar__score">88</span>
+                                </div>
+                            </td>
+                            <td role="gridcell">
+                                <strong>$420K</strong>
+                            </td>
+                            <td role="gridcell">
+                                <strong>6</strong>
+                            </td>
+                            <td role="gridcell">
+                                <span class="status-pill status-pill--active">Active</span>
+                            </td>
+                            <td role="gridcell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="Partner actions for CloudOps Innovations" aria-haspopup="menu" data-partner-id="4">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__dropdown" style="display: none;">
+                                        <button class="action-menu__item" data-action="edit" data-partner-id="4">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit Partner
+                                        </button>
+                                        <button class="action-menu__item" data-action="view" data-partner-id="4">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger" data-action="delete" data-partner-id="4">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Remove Partner
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr role="row" tabindex="0" data-partner-id="5" class="clickable-row">
+                            <td role="gridcell" class="partner-cell">
+                                <div class="partner-cell__name">ObserveTech Solutions</div>
+                                <div class="partner-cell__tier">Strategic Partner</div>
+                            </td>
+                            <td role="gridcell">
+                                <span class="category-pill">Observability</span>
+                            </td>
+                            <td role="gridcell" class="health-cell">
+                                <div class="health-bar">
+                                    <div class="health-bar__progress">
+                                        <div class="health-bar__fill health-bar__fill--good" style="width: 79%" role="progressbar" aria-valuenow="79" aria-valuemin="0" aria-valuemax="100" aria-label="Health score 79 out of 100"></div>
+                                    </div>
+                                    <span class="health-bar__score">79</span>
+                                </div>
+                            </td>
+                            <td role="gridcell">
+                                <strong>$750K</strong>
+                            </td>
+                            <td role="gridcell">
+                                <strong>4</strong>
+                            </td>
+                            <td role="gridcell">
+                                <span class="status-pill status-pill--active">Active</span>
+                            </td>
+                            <td role="gridcell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="Partner actions for ObserveTech Solutions" aria-haspopup="menu" data-partner-id="5">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                    <div class="action-menu__dropdown" style="display: none;">
+                                        <button class="action-menu__item" data-action="edit" data-partner-id="5">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                            Edit Partner
+                                        </button>
+                                        <button class="action-menu__item" data-action="view" data-partner-id="5">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                            View Details
+                                        </button>
+                                        <button class="action-menu__item action-menu__item--danger" data-action="delete" data-partner-id="5">
+                                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                            Remove Partner
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Revenue Analytics -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div>
+                        <h2 class="chart-title">Revenue Distribution by Category</h2>
+                        <p class="chart-subtitle">Quarterly revenue breakdown and trend analysis</p>
+                    </div>
+                    <div class="chart-actions">
+                        <button class="filter-button" aria-label="Change time period">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-clock"></use></svg>
+                            Q4 2024
+                        </button>
+                        <button class="filter-button" aria-label="Export chart data">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-external-link"></use></svg>
+                            Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-primary-500);"></div>
+                        <span class="legend-label">FinOps:</span>
+                        <span class="legend-value">$1.25M</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-warning-500);"></div>
+                        <span class="legend-label">Security:</span>
+                        <span class="legend-value">$890K</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #06b6d4;"></div>
+                        <span class="legend-label">DevOps:</span>
+                        <span class="legend-value">$750K</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-success-500);"></div>
+                        <span class="legend-label">Data Analytics:</span>
+                        <span class="legend-value">$420K</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #8b5cf6;"></div>
+                        <span class="legend-label">Observability:</span>
+                        <span class="legend-value">$180K</span>
+                    </div>
+                </div>
+
+                <div class="stacked-bar-chart">
+                    <div class="bar-group">
+                        <div class="bar-row">
+                            <div class="bar-label">Current Quarter</div>
+                            <div class="bar-container">
+                                <div class="bar-segment bar-segment--finops" style="width: 36%" title="FinOps: $1.25M"></div>
+                                <div class="bar-segment bar-segment--security" style="width: 26%" title="Security: $890K"></div>
+                                <div class="bar-segment bar-segment--devops" style="width: 22%" title="DevOps: $750K"></div>
+                                <div class="bar-segment bar-segment--data" style="width: 12%" title="Data Analytics: $420K"></div>
+                                <div class="bar-segment bar-segment--observability" style="width: 5%" title="Observability: $180K"></div>
+                            </div>
+                            <div class="bar-value">$3.49M</div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="bar-label">Previous Quarter</div>
+                            <div class="bar-container">
+                                <div class="bar-segment bar-segment--finops" style="width: 32%" title="FinOps: $980K"></div>
+                                <div class="bar-segment bar-segment--security" style="width: 28%" title="Security: $850K"></div>
+                                <div class="bar-segment bar-segment--devops" style="width: 20%" title="DevOps: $610K"></div>
+                                <div class="bar-segment bar-segment--data" style="width: 15%" title="Data Analytics: $460K"></div>
+                                <div class="bar-segment bar-segment--observability" style="width: 5%" title="Observability: $150K"></div>
+                            </div>
+                            <div class="bar-value">$3.05M</div>
+                        </div>
+                        <div class="bar-row">
+                            <div class="bar-label">Year Ago</div>
+                            <div class="bar-container">
+                                <div class="bar-segment bar-segment--finops" style="width: 30%" title="FinOps: $750K"></div>
+                                <div class="bar-segment bar-segment--security" style="width: 25%" title="Security: $625K"></div>
+                                <div class="bar-segment bar-segment--devops" style="width: 20%" title="DevOps: $500K"></div>
+                                <div class="bar-segment bar-segment--data" style="width: 18%" title="Data Analytics: $450K"></div>
+                                <div class="bar-segment bar-segment--observability" style="width: 7%" title="Observability: $175K"></div>
+                            </div>
+                            <div class="bar-value">$2.50M</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="line-chart">
+                    <svg viewBox="0 0 400 120" role="img" aria-label="Revenue trend over time">
+                        <defs>
+                            <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color: var(--color-primary-500); stop-opacity: 0.3"/>
+                                <stop offset="100%" style="stop-color: var(--color-primary-500); stop-opacity: 0"/>
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Grid lines -->
+                        <g class="chart-grid">
+                            <line x1="0" y1="20" x2="400" y2="20" />
+                            <line x1="0" y1="40" x2="400" y2="40" />
+                            <line x1="0" y1="60" x2="400" y2="60" />
+                            <line x1="0" y1="80" x2="400" y2="80" />
+                            <line x1="0" y1="100" x2="400" y2="100" />
+                        </g>
+
+                        <!-- Area under curve -->
+                        <path class="area" d="M 50 90 L 100 85 L 150 80 L 200 75 L 250 70 L 300 65 L 350 55 L 350 100 L 50 100 Z" fill="url(#areaGradient)" />
+
+                        <!-- Trend line -->
+                        <path class="line" d="M 50 90 L 100 85 L 150 80 L 200 75 L 250 70 L 300 65 L 350 55" />
+
+                        <!-- Data points -->
+                        <circle class="dot" cx="50" cy="90" title="Q1 2023: $1.8M" />
+                        <circle class="dot" cx="100" cy="85" title="Q2 2023: $2.1M" />
+                        <circle class="dot" cx="150" cy="80" title="Q3 2023: $2.3M" />
+                        <circle class="dot" cx="200" cy="75" title="Q4 2023: $2.5M" />
+                        <circle class="dot" cx="250" cy="70" title="Q1 2024: $2.8M" />
+                        <circle class="dot" cx="300" cy="65" title="Q2 2024: $3.1M" />
+                        <circle class="dot" cx="350" cy="55" title="Q3 2024: $3.5M" />
+
+                        <!-- Axis labels -->
+                        <text class="chart-axis-label" x="50" y="115" text-anchor="middle">Q1 '23</text>
+                        <text class="chart-axis-label" x="150" y="115" text-anchor="middle">Q3 '23</text>
+                        <text class="chart-axis-label" x="250" y="115" text-anchor="middle">Q1 '24</text>
+                        <text class="chart-axis-label" x="350" y="115" text-anchor="middle">Q3 '24</text>
+                    </svg>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Add Partner Modal -->
+    <div id="add-partner-modal" class="modal-overlay" style="display: none;">
+        <div class="modal modal--md">
+            <div class="modal__header">
+                <h2 class="modal__title">Add New Partner</h2>
+                <button class="modal__close" id="close-add-partner-modal" aria-label="Close modal">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="add-partner-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Partner Name
+                                <span style="color: var(--color-error-500);">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="partner-name" name="partner-name" required placeholder="e.g., ACME Solutions">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-input" id="partner-website" name="partner-website" placeholder="https://example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Category
+                                <span style="color: var(--color-error-500);">*</span>
+                            </label>
+                            <select class="form-input form-select" id="partner-category" name="partner-category" required>
+                                <option value="">Select Category</option>
+                                <option value="FinOps">FinOps</option>
+                                <option value="Security">Security</option>
+                                <option value="DevOps">DevOps</option>
+                                <option value="Data Analytics">Data Analytics</option>
+                                <option value="Observability">Observability</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                Partner Tier
+                                <span style="color: var(--color-error-500);">*</span>
+                            </label>
+                            <select class="form-input form-select" id="partner-tier" name="partner-tier" required>
+                                <option value="">Select Tier</option>
+                                <option value="Strategic">Strategic Partner</option>
+                                <option value="Tactical">Tactical Partner</option>
+                                <option value="Emerging">Emerging Partner</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-input form-textarea" id="partner-description" name="partner-description" rows="3" placeholder="Brief description of the partner and their services..."></textarea>
+                    </div>
+
+                    <h3 style="margin: var(--spacing-6) 0 var(--spacing-4) 0; color: var(--color-neutral-700); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">Primary Contact</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Contact Name
+                                <span style="color: var(--color-error-500);">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="contact-name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact Role</label>
+                            <input type="text" class="form-input" id="contact-role" placeholder="VP Partnerships">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Contact Email
+                                <span style="color: var(--color-error-500);">*</span>
+                            </label>
+                            <input type="email" class="form-input" id="contact-email" required placeholder="john@partner.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact Phone</label>
+                            <input type="tel" class="form-input" id="contact-phone" placeholder="+1-555-0123">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="cancel-add-partner">Cancel</button>
+                <button type="submit" class="btn-primary" form="add-partner-form">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                    Add Partner
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Partner Modal -->
+    <div id="edit-partner-modal" class="modal-overlay" style="display: none;">
+        <div class="modal modal--md">
+            <div class="modal__header">
+                <h2 class="modal__title">Edit Partner</h2>
+                <button class="modal__close" id="close-edit-partner-modal" aria-label="Close edit partner modal">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+                </button>
+            </div>
+
+            <form id="edit-partner-form" class="modal__body">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Partner Name
+                            <span style="color: var(--color-error-500);">*</span>
+                        </label>
+                        <input type="text" class="form-input" id="edit-partner-name" name="partner-name" required placeholder="e.g., ACME Solutions">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Website</label>
+                        <input type="url" class="form-input" id="edit-partner-website" name="partner-website" placeholder="https://example.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">
+                            Category
+                            <span style="color: var(--color-error-500);">*</span>
+                        </label>
+                        <select class="form-input form-select" id="edit-partner-category" name="partner-category" required>
+                            <option value="">Select Category</option>
+                            <option value="FinOps">FinOps</option>
+                            <option value="Security">Security</option>
+                            <option value="DevOps">DevOps</option>
+                            <option value="Data Analytics">Data Analytics</option>
+                            <option value="Observability">Observability</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            Partner Tier
+                            <span style="color: var(--color-error-500);">*</span>
+                        </label>
+                        <select class="form-input form-select" id="edit-partner-tier" name="partner-tier" required>
+                            <option value="">Select Tier</option>
+                            <option value="Strategic">Strategic Partner</option>
+                            <option value="Tactical">Tactical Partner</option>
+                            <option value="Emerging">Emerging Partner</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-input form-textarea" id="edit-partner-description" name="partner-description" rows="3" placeholder="Brief description of the partner and their services..."></textarea>
+                </div>
+
+                <h3 style="margin: var(--spacing-6) 0 var(--spacing-4) 0; color: var(--color-neutral-700); font-size: var(--font-size-base); font-weight: var(--font-weight-semibold);">Primary Contact</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Contact Name</label>
+                        <input type="text" class="form-input" id="edit-contact-name" name="contact-name" placeholder="e.g., John Smith">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-input" id="edit-contact-title" name="contact-title" placeholder="e.g., VP of Partnerships">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="edit-contact-email" name="contact-email" placeholder="contact@partner.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" id="edit-contact-phone" name="contact-phone" placeholder="+1 (555) 123-4567">
+                    </div>
+                </div>
+
+                <div class="modal__footer">
+                    <button type="button" class="btn-secondary" id="cancel-edit-partner">Cancel</button>
+                    <button type="submit" class="btn-primary">Update Partner</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Partner Details Modal -->
+    <div id="view-partner-modal" class="modal-overlay" style="display: none;">
+        <div class="modal modal--lg">
+            <div class="modal__header">
+                <h2 class="modal__title">Partner Details</h2>
+                <button class="modal__close" id="close-view-partner-modal" aria-label="Close partner details modal">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+                </button>
+            </div>
+
+            <div class="modal__body">
+                <!-- Partner Overview -->
+                <div class="partner-details-section">
+                    <h3 class="partner-details-section__title">Partnership Overview</h3>
+                    <div class="partner-details-grid">
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Partner Name</label>
+                            <div class="partner-detail-value" id="view-partner-name">-</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Partnership Tier</label>
+                            <div class="partner-detail-value" id="view-partner-tier">-</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Category</label>
+                            <div class="partner-detail-value" id="view-partner-category">-</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Health Score</label>
+                            <div class="partner-detail-value" id="view-partner-health">-</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Status</label>
+                            <div class="partner-detail-value" id="view-partner-status">-</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Partnership Start Date</label>
+                            <div class="partner-detail-value" id="view-partner-start-date">January 2023</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Metrics -->
+                <div class="partner-details-section">
+                    <h3 class="partner-details-section__title">Financial Performance</h3>
+                    <div class="partner-details-grid">
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Quarterly Revenue</label>
+                            <div class="partner-detail-value" id="view-partner-revenue">-</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Active Opportunities</label>
+                            <div class="partner-detail-value" id="view-partner-opportunities">-</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Total Contract Value</label>
+                            <div class="partner-detail-value">$2.4M</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Commission Rate</label>
+                            <div class="partner-detail-value">15%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="partner-details-section">
+                    <h3 class="partner-details-section__title">Primary Contact</h3>
+                    <div class="partner-details-grid">
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Contact Name</label>
+                            <div class="partner-detail-value">Sarah Johnson</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Job Title</label>
+                            <div class="partner-detail-value">VP of Partnerships</div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Email</label>
+                            <div class="partner-detail-value">
+                                <a href="mailto:sarah.johnson@partner.com" class="partner-detail-link">sarah.johnson@partner.com</a>
+                            </div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Phone</label>
+                            <div class="partner-detail-value">
+                                <a href="tel:+15551234567" class="partner-detail-link">+1 (555) 123-4567</a>
+                            </div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">LinkedIn</label>
+                            <div class="partner-detail-value">
+                                <a href="#" class="partner-detail-link" target="_blank">linkedin.com/in/sarahjohnson</a>
+                            </div>
+                        </div>
+                        <div class="partner-detail-item">
+                            <label class="partner-detail-label">Last Contact</label>
+                            <div class="partner-detail-value">3 days ago</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="partner-details-section">
+                    <h3 class="partner-details-section__title">Recent Activity</h3>
+                    <div class="activity-timeline">
+                        <div class="activity-item">
+                            <div class="activity-date">Today</div>
+                            <div class="activity-description">Revenue report submitted for Q4</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">2 days ago</div>
+                            <div class="activity-description">New opportunity: Enterprise Security Assessment</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-date">1 week ago</div>
+                            <div class="activity-description">Quarterly business review completed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal__footer">
+                <button type="button" class="btn-secondary" id="close-view-partner-details">Close</button>
+                <button type="button" class="btn-primary" id="edit-from-view">
+                    <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                    Edit Partner
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load Lucide icons
+        fetch('/src/design-system/icons/lucide-icons.svg')
+            .then(response => response.text())
+            .then(svg => {
+                document.getElementById('lucide-icons').innerHTML = svg;
+            });
+
+        // Table row click handling
+        document.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (e.target.closest('.action-menu')) return;
+
+                // Remove previous selection
+                document.querySelectorAll('.clickable-row[aria-selected="true"]').forEach(r => {
+                    r.setAttribute('aria-selected', 'false');
+                });
+
+                // Select current row
+                this.setAttribute('aria-selected', 'true');
+
+                const partnerId = this.dataset.partnerId;
+                const partnerName = this.querySelector('.partner-cell__name').textContent;
+                console.log('Partner selected:', partnerName, partnerId);
+
+                // In a real app, this would open a side drawer with partner details
+                showNotification(`Selected ${partnerName} - Details panel would open here`);
+            });
+
+            // Keyboard support
+            row.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        // Enhanced sortable headers
+        document.querySelectorAll('.sortable-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const sortColumn = this.dataset.sort;
+                const columnName = this.querySelector('.sortable-header__text').textContent.trim();
+
+                // Determine sort direction BEFORE removing classes
+                let direction = 'asc';
+                if (this.classList.contains('sortable-header--active')) {
+                    // If already active, toggle direction
+                    if (this.classList.contains('sortable-header--asc')) {
+                        direction = 'desc';
+                    } else if (this.classList.contains('sortable-header--desc')) {
+                        direction = 'asc';
+                    } else {
+                        direction = 'desc'; // default to desc if active but no direction
+                    }
+                }
+
+                // Remove active state from all headers and reset icons
+                document.querySelectorAll('.sortable-header').forEach(h => {
+                    h.classList.remove('sortable-header--active', 'sortable-header--asc', 'sortable-header--desc');
+                    const icon = h.querySelector('.sortable-header__icon use');
+                    if (icon) icon.setAttribute('href', '#icon-arrow-up-down');
+                });
+
+                // Add active state with direction
+                this.classList.add('sortable-header--active', `sortable-header--${direction}`);
+
+                // Update aria-label for accessibility
+                this.setAttribute('aria-label', `Sort by ${columnName} ${direction === 'asc' ? 'ascending' : 'descending'}`);
+
+                console.log('Sort by:', sortColumn, direction);
+                showNotification(`Sorted by ${columnName} (${direction === 'asc' ? 'ascending' : 'descending'})`);
+
+                // Update icon for the active column
+                const activeIcon = this.querySelector('.sortable-header__icon use');
+                if (activeIcon) {
+                    activeIcon.setAttribute('href', direction === 'asc' ? '#icon-chevron-up' : '#icon-chevron-down');
+                }
+
+                // Sort the table
+                sortTable(sortColumn, direction);
+            });
+        });
+
+        // Table sorting function
+        function sortTable(column, direction) {
+            const tableBody = document.querySelector('.data-table__body');
+            const rows = Array.from(tableBody.querySelectorAll('tr'));
+
+            // Sort rows based on column and direction
+            rows.sort((a, b) => {
+                let aValue, bValue;
+
+                switch (column) {
+                    case 'partner':
+                        aValue = a.querySelector('.partner-cell__name').textContent.trim().toLowerCase();
+                        bValue = b.querySelector('.partner-cell__name').textContent.trim().toLowerCase();
+                        break;
+
+                    case 'category':
+                        aValue = a.querySelector('.category-pill').textContent.trim().toLowerCase();
+                        bValue = b.querySelector('.category-pill').textContent.trim().toLowerCase();
+                        break;
+
+                    case 'health':
+                        aValue = parseInt(a.querySelector('.health-bar__score').textContent.trim());
+                        bValue = parseInt(b.querySelector('.health-bar__score').textContent.trim());
+                        break;
+
+                    case 'revenue':
+                        aValue = parseRevenue(a.querySelector('td:nth-child(4) strong').textContent.trim());
+                        bValue = parseRevenue(b.querySelector('td:nth-child(4) strong').textContent.trim());
+                        break;
+
+                    case 'opportunities':
+                        aValue = parseInt(a.querySelector('td:nth-child(5) strong').textContent.trim());
+                        bValue = parseInt(b.querySelector('td:nth-child(5) strong').textContent.trim());
+                        break;
+
+                    default:
+                        return 0;
+                }
+
+                // Handle different data types
+                if (typeof aValue === 'string') {
+                    return direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+                } else {
+                    return direction === 'asc' ? aValue - bValue : bValue - aValue;
+                }
+            });
+
+            // Clear table body and re-append sorted rows
+            tableBody.innerHTML = '';
+            rows.forEach(row => tableBody.appendChild(row));
+        }
+
+        // Helper function to parse revenue values
+        function parseRevenue(revenueText) {
+            const cleanText = revenueText.replace(/[$,]/g, '').trim();
+            let value = parseFloat(cleanText);
+
+            // Handle K and M suffixes
+            if (revenueText.includes('K')) {
+                value *= 1000;
+            } else if (revenueText.includes('M')) {
+                value *= 1000000;
+            }
+
+            return value || 0;
+        }
+
+        // Position dropdown using fixed positioning
+        function positionDropdown(trigger, dropdown) {
+            const triggerRect = trigger.getBoundingClientRect();
+            const dropdownHeight = 300; // Approximate max height
+            const viewportHeight = window.innerHeight;
+            const spaceBelow = viewportHeight - triggerRect.bottom;
+            const spaceAbove = triggerRect.top;
+
+            // Calculate horizontal position
+            const rightPos = window.innerWidth - triggerRect.right;
+
+            // Position above if not enough space below
+            if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+                dropdown.style.top = 'auto';
+                dropdown.style.bottom = (viewportHeight - triggerRect.top + 4) + 'px';
+                dropdown.style.right = rightPos + 'px';
+            } else {
+                dropdown.style.top = (triggerRect.bottom + 4) + 'px';
+                dropdown.style.bottom = 'auto';
+                dropdown.style.right = rightPos + 'px';
+            }
+        }
+
+        // Partner Type Filter functionality
+        document.getElementById('partner-type-filter').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('partner-type-menu');
+            const isOpen = dropdown.style.display === 'block';
+
+            // Close all other dropdowns
+            document.querySelectorAll('.filter-dropdown__menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('filter-dropdown--open');
+            });
+
+            // Toggle current dropdown
+            if (!isOpen) {
+                positionDropdown(this, dropdown);
+                dropdown.style.display = 'block';
+                this.parentElement.classList.add('filter-dropdown--open');
+                updateCategoryCounts();
+            }
+        });
+
+        // Clear category filter
+        document.getElementById('clear-category-filter').addEventListener('click', function() {
+            document.querySelectorAll('.filter-option__checkbox').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            applyFilters();
+        });
+
+        // Category filter checkboxes
+        document.querySelectorAll('.filter-option__checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                applyFilters();
+            });
+        });
+
+        // Health Score Filter functionality
+        document.getElementById('health-score-filter').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('health-score-menu');
+            const isOpen = dropdown.style.display === 'block';
+
+            // Close all other dropdowns
+            document.querySelectorAll('.filter-dropdown__menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('filter-dropdown--open');
+            });
+
+            // Toggle current dropdown
+            if (!isOpen) {
+                positionDropdown(this, dropdown);
+                dropdown.style.display = 'block';
+                this.parentElement.classList.add('filter-dropdown--open');
+                updateHealthCounts();
+            }
+        });
+
+        // Clear health filter
+        document.getElementById('clear-health-filter').addEventListener('click', function() {
+            document.querySelectorAll('.health-filter').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            document.getElementById('health-min').value = '';
+            document.getElementById('health-max').value = '';
+            applyFilters();
+        });
+
+        // Health filter checkboxes
+        document.querySelectorAll('.health-filter').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Clear custom range when using predefined ranges
+                document.getElementById('health-min').value = '';
+                document.getElementById('health-max').value = '';
+                applyFilters();
+            });
+        });
+
+        // Apply custom health range
+        document.getElementById('apply-health-range').addEventListener('click', function() {
+            const minValue = parseInt(document.getElementById('health-min').value);
+            const maxValue = parseInt(document.getElementById('health-max').value);
+
+            if (isNaN(minValue) || isNaN(maxValue)) {
+                showNotification('Please enter valid min and max values');
+                return;
+            }
+
+            if (minValue > maxValue) {
+                showNotification('Min value cannot be greater than max value');
+                return;
+            }
+
+            // Uncheck all predefined ranges
+            document.querySelectorAll('.health-filter').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+
+            applyFilters();
+        });
+
+        // Status Filter functionality
+        document.getElementById('status-filter').addEventListener('click', function(e) {
+            e.preventDefault();
+            const dropdown = document.getElementById('status-menu');
+            const isOpen = dropdown.style.display === 'block';
+
+            // Close all other dropdowns
+            document.querySelectorAll('.filter-dropdown__menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                dropdown.classList.remove('filter-dropdown--open');
+            });
+
+            // Toggle current dropdown
+            if (!isOpen) {
+                positionDropdown(this, dropdown);
+                dropdown.style.display = 'block';
+                this.parentElement.classList.add('filter-dropdown--open');
+                updateStatusCounts();
+            }
+        });
+
+        // Clear status filter
+        document.getElementById('clear-status-filter').addEventListener('click', function() {
+            document.querySelectorAll('.status-filter').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            applyFilters();
+        });
+
+        // Status filter checkboxes
+        document.querySelectorAll('.status-filter').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                applyFilters();
+            });
+        });
+
+
+
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.filter-dropdown')) {
+                document.querySelectorAll('.filter-dropdown__menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+                document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('filter-dropdown--open');
+                });
+            }
+        });
+
+        // Filter application function
+        function applyFilters() {
+            // Get selected categories
+            const selectedCategories = Array.from(document.querySelectorAll('.filter-option__checkbox:not(.health-filter):not(.status-filter):checked'))
+                .map(checkbox => checkbox.value);
+
+            // Get selected health ranges
+            const selectedHealthRanges = Array.from(document.querySelectorAll('.health-filter:checked'))
+                .map(checkbox => checkbox.value);
+
+            // Get selected statuses
+            const selectedStatuses = Array.from(document.querySelectorAll('.status-filter:checked'))
+                .map(checkbox => checkbox.value);
+
+            // Get custom health range
+            const customMinHealth = parseInt(document.getElementById('health-min').value);
+            const customMaxHealth = parseInt(document.getElementById('health-max').value);
+            const hasCustomRange = !isNaN(customMinHealth) && !isNaN(customMaxHealth);
+
+            const tableRows = document.querySelectorAll('.data-table__body tr');
+            let visibleCount = 0;
+
+            tableRows.forEach(row => {
+                let showRow = true;
+
+                // Category filter
+                const categoryElement = row.querySelector('.category-pill');
+                const category = categoryElement ? categoryElement.textContent.trim() : '';
+                if (!selectedCategories.includes(category)) {
+                    showRow = false;
+                }
+
+                // Health score filter
+                if (showRow) {
+                    const healthElement = row.querySelector('.health-bar__score');
+                    const healthScore = healthElement ? parseInt(healthElement.textContent.trim()) : 0;
+
+                    let healthMatches = false;
+
+                    if (hasCustomRange) {
+                        // Use custom range
+                        healthMatches = healthScore >= customMinHealth && healthScore <= customMaxHealth;
+                    } else {
+                        // Use predefined ranges
+                        for (const range of selectedHealthRanges) {
+                            switch (range) {
+                                case 'excellent':
+                                    if (healthScore >= 80 && healthScore <= 100) healthMatches = true;
+                                    break;
+                                case 'good':
+                                    if (healthScore >= 60 && healthScore < 80) healthMatches = true;
+                                    break;
+                                case 'poor':
+                                    if (healthScore >= 0 && healthScore < 60) healthMatches = true;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (!healthMatches) {
+                        showRow = false;
+                    }
+                }
+
+                // Status filter
+                if (showRow) {
+                    const statusElement = row.querySelector('.status-pill');
+                    const status = statusElement ? statusElement.textContent.trim() : '';
+
+                    if (!selectedStatuses.includes(status)) {
+                        showRow = false;
+                    }
+                }
+
+                // Show/hide row
+                if (showRow) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Update counts
+            updateCategoryCounts();
+            updateHealthCounts();
+            updateStatusCounts();
+
+            // Show notification
+            const totalRows = tableRows.length;
+            if (visibleCount === totalRows) {
+                showNotification('Showing all partners');
+            } else {
+                showNotification(`Filtered to ${visibleCount} of ${totalRows} partners`);
+            }
+        }
+
+        // Update category counts
+        function updateCategoryCounts() {
+            const visibleRows = document.querySelectorAll('.data-table__body tr[style=""], .data-table__body tr:not([style*="none"])');
+
+            // Count each category
+            const counts = {
+                'FinOps': 0,
+                'Security': 0,
+                'DevOps': 0,
+                'Data Analytics': 0,
+                'Observability': 0
+            };
+
+            visibleRows.forEach(row => {
+                const categoryElement = row.querySelector('.category-pill');
+                if (categoryElement) {
+                    const category = categoryElement.textContent.trim();
+                    if (counts.hasOwnProperty(category)) {
+                        counts[category]++;
+                    }
+                }
+            });
+
+            // Update count displays
+            document.getElementById('count-finops').textContent = counts['FinOps'];
+            document.getElementById('count-security').textContent = counts['Security'];
+            document.getElementById('count-devops').textContent = counts['DevOps'];
+            document.getElementById('count-data').textContent = counts['Data Analytics'];
+            document.getElementById('count-observability').textContent = counts['Observability'];
+        }
+
+        // Update health score counts
+        function updateHealthCounts() {
+            const visibleRows = document.querySelectorAll('.data-table__body tr[style=""], .data-table__body tr:not([style*="none"])');
+
+            // Count each health range
+            const healthCounts = {
+                'excellent': 0,
+                'good': 0,
+                'poor': 0
+            };
+
+            visibleRows.forEach(row => {
+                const healthElement = row.querySelector('.health-bar__score');
+                if (healthElement) {
+                    const healthScore = parseInt(healthElement.textContent.trim());
+
+                    if (healthScore >= 80) {
+                        healthCounts['excellent']++;
+                    } else if (healthScore >= 60) {
+                        healthCounts['good']++;
+                    } else {
+                        healthCounts['poor']++;
+                    }
+                }
+            });
+
+            // Update count displays
+            document.getElementById('count-excellent').textContent = healthCounts['excellent'];
+            document.getElementById('count-good').textContent = healthCounts['good'];
+            document.getElementById('count-poor').textContent = healthCounts['poor'];
+        }
+
+        // Update status counts
+        function updateStatusCounts() {
+            const visibleRows = document.querySelectorAll('.data-table__body tr[style=""], .data-table__body tr:not([style*="none"])');
+
+            // Count each status
+            const statusCounts = {
+                'Active': 0,
+                'Renewal Due': 0,
+                'At Risk': 0
+            };
+
+            visibleRows.forEach(row => {
+                const statusElement = row.querySelector('.status-pill');
+                if (statusElement) {
+                    const status = statusElement.textContent.trim();
+                    if (statusCounts.hasOwnProperty(status)) {
+                        statusCounts[status]++;
+                    }
+                }
+            });
+
+            // Update count displays
+            document.getElementById('count-active').textContent = statusCounts['Active'];
+            document.getElementById('count-renewal').textContent = statusCounts['Renewal Due'];
+            document.getElementById('count-risk').textContent = statusCounts['At Risk'];
+        }
+
+        // Other filter buttons (simplified for now)
+        document.querySelectorAll('.filter-button:not(.filter-button--dropdown)').forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.textContent.trim();
+                console.log('Filter:', filter);
+                showNotification(`${filter} filter coming soon`);
+            });
+        });
+
+        // Search input
+        document.querySelector('.search-input input').addEventListener('input', function(e) {
+            const query = e.target.value;
+            if (query.length > 2) {
+                console.log('Search:', query);
+                showNotification(`Searching for: ${query}`);
+            }
+        });
+
+        // Add partner button - Open modal
+        document.getElementById('add-partner-btn').addEventListener('click', function() {
+            console.log('Add partner clicked');
+            document.getElementById('add-partner-modal').style.display = 'flex';
+            document.getElementById('partner-name').focus();
+        });
+
+        // Modal close handlers
+        document.getElementById('close-add-partner-modal').addEventListener('click', function() {
+            document.getElementById('add-partner-modal').style.display = 'none';
+        });
+
+        document.getElementById('cancel-add-partner').addEventListener('click', function() {
+            document.getElementById('add-partner-modal').style.display = 'none';
+        });
+
+        // Close modal on overlay click
+        document.getElementById('add-partner-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Form submission
+        document.getElementById('add-partner-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const tierValue = formData.get('partner-tier');
+            const tierDisplay = tierValue ? `${tierValue} Partner` : 'Partner';
+
+            const newPartner = {
+                name: formData.get('partner-name'),
+                tier: tierDisplay,
+                category: formData.get('partner-category'),
+                healthScore: 85, // Default for new partners
+                revenue: '$0', // Will be updated later
+                opportunities: 0,
+                status: 'Active'
+            };
+
+            // Create new table row
+            const tableBody = document.querySelector('.data-table__body');
+            const newRowId = Date.now(); // Simple ID generation
+
+            // Determine health bar class and category pill class
+            const healthClass = newPartner.healthScore >= 80 ? 'excellent' : newPartner.healthScore >= 60 ? 'good' : 'poor';
+
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('role', 'row');
+            newRow.setAttribute('tabindex', '0');
+            newRow.setAttribute('data-partner-id', newRowId);
+            newRow.className = 'clickable-row';
+
+            newRow.innerHTML = `
+                <td role="gridcell" class="partner-cell">
+                    <div class="partner-cell__name">${newPartner.name}</div>
+                    <div class="partner-cell__tier">${newPartner.tier}</div>
+                </td>
+                <td role="gridcell">
+                    <span class="category-pill">${newPartner.category}</span>
+                </td>
+                <td role="gridcell" class="health-cell">
+                    <div class="health-bar">
+                        <div class="health-bar__progress">
+                            <div class="health-bar__fill health-bar__fill--${healthClass}" style="width: ${newPartner.healthScore}%" role="progressbar" aria-valuenow="${newPartner.healthScore}" aria-valuemin="0" aria-valuemax="100" aria-label="Health score ${newPartner.healthScore} out of 100"></div>
+                        </div>
+                        <span class="health-bar__score">${newPartner.healthScore}</span>
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <strong>${newPartner.revenue}</strong>
+                </td>
+                <td role="gridcell">
+                    <strong>${newPartner.opportunities}</strong>
+                </td>
+                <td role="gridcell">
+                    <span class="status-pill status-pill--active">${newPartner.status}</span>
+                </td>
+                <td role="gridcell">
+                    <div class="action-menu">
+                        <button class="action-menu__trigger" aria-label="Partner actions for ${newPartner.name}" aria-haspopup="menu" data-partner-id="${newRowId}">
+                            <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                        </button>
+                        <div class="action-menu__dropdown" style="display: none;">
+                            <button class="action-menu__item" data-action="edit" data-partner-id="${newRowId}">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-edit-3"></use></svg>
+                                Edit Partner
+                            </button>
+                            <button class="action-menu__item" data-action="view" data-partner-id="${newRowId}">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-eye"></use></svg>
+                                View Details
+                            </button>
+                            <button class="action-menu__item action-menu__item--danger" data-action="delete" data-partner-id="${newRowId}">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-x"></use></svg>
+                                Remove Partner
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            `;
+
+            // Add the new row to the table
+            tableBody.appendChild(newRow);
+
+            console.log('New partner added to table:', newPartner);
+            showNotification(`Partner "${newPartner.name}" added successfully`);
+
+            // Reset form and close modal
+            this.reset();
+            document.getElementById('add-partner-modal').style.display = 'none';
+        });
+
+        // Edit modal close handlers
+        document.getElementById('close-edit-partner-modal').addEventListener('click', function() {
+            document.getElementById('edit-partner-modal').style.display = 'none';
+        });
+
+        document.getElementById('cancel-edit-partner').addEventListener('click', function() {
+            document.getElementById('edit-partner-modal').style.display = 'none';
+        });
+
+        // Close edit modal on overlay click
+        document.getElementById('edit-partner-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Edit partner form submission
+        document.getElementById('edit-partner-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const partnerId = this.dataset.partnerId;
+            const formData = new FormData(this);
+            const tierValue = formData.get('partner-tier');
+            const tierDisplay = tierValue ? `${tierValue} Partner` : 'Partner';
+
+            const updatedPartner = {
+                name: formData.get('partner-name'),
+                tier: tierDisplay,
+                category: formData.get('partner-category')
+            };
+
+            // Update the table row
+            const row = document.querySelector(`tr[data-partner-id="${partnerId}"]`);
+            if (row) {
+                const nameEl = row.querySelector('.partner-cell__name');
+                const tierEl = row.querySelector('.partner-cell__tier');
+                const categoryEl = row.querySelector('.category-pill');
+
+                if (nameEl) nameEl.textContent = updatedPartner.name;
+                if (tierEl) tierEl.textContent = updatedPartner.tier;
+                if (categoryEl) categoryEl.textContent = updatedPartner.category;
+
+                // Update aria labels
+                const trigger = row.querySelector('.action-menu__trigger');
+                if (trigger) {
+                    trigger.setAttribute('aria-label', `Partner actions for ${updatedPartner.name}`);
+                }
+            }
+
+            console.log('Partner updated:', updatedPartner);
+            showNotification(`Partner "${updatedPartner.name}" updated successfully`);
+
+            // Close modal
+            this.style.display = 'none';
+            document.getElementById('edit-partner-modal').style.display = 'none';
+        });
+
+        // View modal close handlers
+        document.getElementById('close-view-partner-modal').addEventListener('click', function() {
+            document.getElementById('view-partner-modal').style.display = 'none';
+        });
+
+        document.getElementById('close-view-partner-details').addEventListener('click', function() {
+            document.getElementById('view-partner-modal').style.display = 'none';
+        });
+
+        // Close view modal on overlay click
+        document.getElementById('view-partner-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Edit from view modal
+        document.getElementById('edit-from-view').addEventListener('click', function() {
+            const partnerId = this.dataset.partnerId;
+            document.getElementById('view-partner-modal').style.display = 'none';
+            handleEditPartner(partnerId);
+        });
+
+        // Keyboard accessibility - Close modal on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const addModal = document.getElementById('add-partner-modal');
+                const editModal = document.getElementById('edit-partner-modal');
+                const viewModal = document.getElementById('view-partner-modal');
+
+                if (addModal.style.display === 'flex') {
+                    addModal.style.display = 'none';
+                }
+                if (editModal.style.display === 'flex') {
+                    editModal.style.display = 'none';
+                }
+                if (viewModal.style.display === 'flex') {
+                    viewModal.style.display = 'none';
+                }
+                // Also close any open action menus
+                const openDropdowns = document.querySelectorAll('.action-menu__dropdown[style*="block"]');
+                openDropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                    dropdown.classList.remove('action-menu__dropdown--above', 'action-menu__dropdown--below');
+                });
+            }
+        });
+
+        // Action menu functionality
+        document.addEventListener('click', function(e) {
+            // Close all dropdowns when clicking outside
+            if (!e.target.closest('.action-menu')) {
+                const dropdowns = document.querySelectorAll('.action-menu__dropdown');
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                    dropdown.classList.remove('action-menu__dropdown--above', 'action-menu__dropdown--below');
+                });
+            }
+
+            // Handle action menu trigger clicks
+            if (e.target.closest('.action-menu__trigger')) {
+                e.preventDefault();
+                const trigger = e.target.closest('.action-menu__trigger');
+                const dropdown = trigger.parentElement.querySelector('.action-menu__dropdown');
+
+                // Close all other dropdowns
+                const allDropdowns = document.querySelectorAll('.action-menu__dropdown');
+                allDropdowns.forEach(d => {
+                    if (d !== dropdown) {
+                        d.style.display = 'none';
+                        d.classList.remove('action-menu__dropdown--above', 'action-menu__dropdown--below');
+                    }
+                });
+
+                // Toggle current dropdown
+                if (dropdown.style.display === 'block') {
+                    dropdown.style.display = 'none';
+                    dropdown.classList.remove('action-menu__dropdown--above', 'action-menu__dropdown--below');
+                } else {
+                    dropdown.style.display = 'block';
+
+                    // Position dropdown using fixed positioning
+                    const triggerRect = trigger.getBoundingClientRect();
+                    const dropdownHeight = 120; // Approximate height of dropdown
+                    const viewportHeight = window.innerHeight;
+                    const spaceBelow = viewportHeight - triggerRect.bottom;
+                    const spaceAbove = triggerRect.top;
+
+                    // Calculate horizontal position (align to right edge of trigger)
+                    const rightPos = window.innerWidth - triggerRect.right;
+
+                    // Position above if not enough space below
+                    if (spaceBelow < dropdownHeight && spaceAbove > dropdownHeight) {
+                        dropdown.classList.add('action-menu__dropdown--above');
+                        dropdown.classList.remove('action-menu__dropdown--below');
+                        dropdown.style.top = 'auto';
+                        dropdown.style.bottom = (viewportHeight - triggerRect.top + 4) + 'px';
+                        dropdown.style.right = rightPos + 'px';
+                    } else {
+                        dropdown.classList.add('action-menu__dropdown--below');
+                        dropdown.classList.remove('action-menu__dropdown--above');
+                        dropdown.style.top = (triggerRect.bottom + 4) + 'px';
+                        dropdown.style.bottom = 'auto';
+                        dropdown.style.right = rightPos + 'px';
+                    }
+                }
+            }
+
+            // Handle action menu item clicks
+            if (e.target.closest('.action-menu__item')) {
+                const item = e.target.closest('.action-menu__item');
+                const action = item.dataset.action;
+                const partnerId = item.dataset.partnerId;
+
+                // Close the dropdown
+                const dropdown = item.closest('.action-menu__dropdown');
+                dropdown.style.display = 'none';
+
+                // Handle different actions
+                switch (action) {
+                    case 'edit':
+                        handleEditPartner(partnerId);
+                        break;
+                    case 'view':
+                        handleViewPartner(partnerId);
+                        break;
+                    case 'delete':
+                        handleDeletePartner(partnerId);
+                        break;
+                }
+            }
+        });
+
+        // Partner action handlers
+        function handleEditPartner(partnerId) {
+            const row = document.querySelector(`tr[data-partner-id="${partnerId}"]`);
+            if (!row) return;
+
+            // Extract current partner data from the row
+            const nameEl = row.querySelector('.partner-cell__name');
+            const tierEl = row.querySelector('.partner-cell__tier');
+            const categoryEl = row.querySelector('.category-pill');
+
+            const currentName = nameEl?.textContent.trim() || '';
+            const currentTier = tierEl?.textContent.trim().replace(' Partner', '') || '';
+            const currentCategory = categoryEl?.textContent.trim() || '';
+
+            // Populate the edit form
+            document.getElementById('edit-partner-name').value = currentName;
+            document.getElementById('edit-partner-category').value = currentCategory;
+            document.getElementById('edit-partner-tier').value = currentTier;
+
+            // Store the partner ID for the form submission
+            document.getElementById('edit-partner-form').dataset.partnerId = partnerId;
+
+            // Open the edit modal
+            document.getElementById('edit-partner-modal').style.display = 'flex';
+            document.getElementById('edit-partner-name').focus();
+        }
+
+        function handleViewPartner(partnerId) {
+            const row = document.querySelector(`tr[data-partner-id="${partnerId}"]`);
+            if (!row) return;
+
+            // Extract partner data from the row
+            const nameEl = row.querySelector('.partner-cell__name');
+            const tierEl = row.querySelector('.partner-cell__tier');
+            const categoryEl = row.querySelector('.category-pill');
+            const healthEl = row.querySelector('.health-bar__score');
+            const revenueEl = row.querySelector('td:nth-child(4) strong');
+            const opportunitiesEl = row.querySelector('td:nth-child(5) strong');
+            const statusEl = row.querySelector('.status-pill');
+
+            const partnerName = nameEl?.textContent.trim() || 'Unknown Partner';
+            const partnerTier = tierEl?.textContent.trim() || 'Unknown Tier';
+            const partnerCategory = categoryEl?.textContent.trim() || 'Unknown Category';
+            const healthScore = healthEl?.textContent.trim() || '0';
+            const revenue = revenueEl?.textContent.trim() || '$0';
+            const opportunities = opportunitiesEl?.textContent.trim() || '0';
+            const status = statusEl?.textContent.trim() || 'Unknown';
+
+            // Populate the view modal
+            document.getElementById('view-partner-name').textContent = partnerName;
+            document.getElementById('view-partner-tier').textContent = partnerTier;
+            document.getElementById('view-partner-category').textContent = partnerCategory;
+            document.getElementById('view-partner-health').textContent = `${healthScore}/100`;
+            document.getElementById('view-partner-revenue').textContent = revenue;
+            document.getElementById('view-partner-opportunities').textContent = opportunities;
+            document.getElementById('view-partner-status').textContent = status;
+
+            // Store partner ID for potential edit action
+            document.getElementById('edit-from-view').dataset.partnerId = partnerId;
+
+            // Open the view modal
+            document.getElementById('view-partner-modal').style.display = 'flex';
+        }
+
+        function handleDeletePartner(partnerId) {
+            if (confirm('Are you sure you want to remove this partner? This action cannot be undone.')) {
+                const row = document.querySelector(`tr[data-partner-id="${partnerId}"]`);
+                if (row) {
+                    row.remove();
+                    showNotification('Partner removed successfully');
+                }
+            }
+        }
+
+        // Sidebar toggle
+        document.getElementById('sidebar-toggle').addEventListener('click', function() {
+            const sidebar = document.querySelector('.app-sidebar');
+            const isOpen = !sidebar.classList.contains('app-sidebar--closed');
+
+            if (isOpen) {
+                sidebar.classList.add('app-sidebar--closed');
+                this.setAttribute('aria-expanded', 'false');
+            } else {
+                sidebar.classList.remove('app-sidebar--closed');
+                this.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        // Simple notification system
+        function showNotification(message) {
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 24px;
+                background: var(--color-primary-600);
+                color: white;
+                padding: 12px 16px;
+                border-radius: var(--radius-base);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                font-size: 14px;
+                font-weight: 500;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+            .clickable-row {
+                cursor: pointer;
+            }
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('🚀 Enterprise Partnership Manager loaded with AA compliance');
+
+        // Initialize all filter counts and density on page load
+        updateCategoryCounts();
+        updateHealthCounts();
+        updateStatusCounts();
+    </script>
+</body>
+</html>
