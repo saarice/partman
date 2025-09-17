@@ -2,31 +2,71 @@
 
 ## Component Architecture
 
-### Component Organization
+### Executive-Class Component Organization (Epic 7)
 ```
 src/
+├── design-system/           # Epic 7: Executive Design System
+│   ├── tokens/              # Design tokens and theme system
+│   │   ├── colors.ts        # Professional color palette
+│   │   ├── typography.ts    # Executive typography scale
+│   │   ├── spacing.ts       # 8px grid system
+│   │   ├── shadows.ts       # Sophisticated elevation system
+│   │   └── animations.ts    # Smooth transition definitions
+│   ├── components/          # Executive-grade component library
+│   │   ├── Button/          # Professional button variants
+│   │   ├── Card/            # Executive card components
+│   │   ├── Table/           # Advanced data tables
+│   │   ├── Form/            # Sophisticated form components
+│   │   ├── Navigation/      # Multi-level navigation system
+│   │   ├── Layout/          # Executive layout components
+│   │   └── StatusPill/      # Professional status indicators
+│   ├── charts/              # Advanced data visualization
+│   │   ├── ExecutiveChart/  # Base chart component with themes
+│   │   ├── PipelineFunnel/  # Interactive funnel visualization
+│   │   ├── RevenueChart/    # Revenue trend analysis
+│   │   ├── Heatmap/         # Partner relationship heatmaps
+│   │   ├── ProgressRing/    # Goal progress visualization
+│   │   └── CustomChart/     # Custom chart builder
+│   └── themes/              # Professional theming system
+│       ├── executive.ts     # Executive theme configuration
+│       ├── light.ts         # Light mode theme
+│       ├── dark.ts          # Dark mode theme
+│       └── provider.tsx     # Theme provider component
 ├── components/
-│   ├── common/              # Reusable components
-│   │   ├── Layout/
-│   │   ├── Navigation/
-│   │   ├── DataTable/
-│   │   └── Charts/
+│   ├── common/              # Reusable components (enhanced)
+│   │   ├── Layout/          # Executive layout system
+│   │   ├── Navigation/      # Sophisticated navigation
+│   │   ├── DataTable/       # Advanced virtualized tables
+│   │   ├── Search/          # Global search component
+│   │   └── ErrorBoundary/   # Error handling components
 │   ├── dashboard/           # Executive dashboard components
-│   │   ├── KPICards/
-│   │   ├── PipelineFunnel/
-│   │   └── TeamPerformance/
+│   │   ├── ExecutiveDashboard/    # Main executive interface
+│   │   ├── KPICards/              # Real-time KPI widgets
+│   │   ├── PipelineFunnel/        # Interactive pipeline visualization
+│   │   ├── TeamPerformance/       # Team analytics dashboard
+│   │   ├── RevenueOverview/       # Revenue tracking components
+│   │   └── AlertCenter/           # Executive alert management
+│   ├── visualization/       # Advanced analytics components
+│   │   ├── InteractiveCharts/     # Chart.js + D3.js components
+│   │   ├── DataExplorer/          # Drill-down analytics
+│   │   ├── ForecastingCharts/     # Revenue forecasting
+│   │   ├── RelationshipMaps/      # Partner relationship visualization
+│   │   └── CustomReports/         # Executive reporting interface
 │   ├── partners/            # Partner management components
 │   │   ├── PartnerList/
 │   │   ├── PartnerForm/
-│   │   └── CommissionCalculator/
+│   │   ├── CommissionCalculator/
+│   │   └── RelationshipHealth/    # Partner health dashboard
 │   ├── opportunities/       # Pipeline management components
-│   │   ├── OpportunityKanban/
+│   │   ├── OpportunityKanban/     # Enhanced kanban board
 │   │   ├── OpportunityForm/
-│   │   └── PipelineAnalytics/
-│   ├── configuration/       # Configuration management UI
-│   │   ├── ConfigurationPanel/
-│   │   ├── SchemaEditor/
-│   │   └── TenantSettings/
+│   │   ├── PipelineAnalytics/
+│   │   └── ForecastingTools/      # Revenue forecasting
+│   ├── admin/               # User management components (Epic 6)
+│   │   ├── UserManagement/
+│   │   ├── RoleEditor/
+│   │   ├── AuditLog/
+│   │   └── SystemSettings/
 │   └── auth/               # Authentication components
 │       ├── LoginForm/
 │       └── ProtectedRoute/
@@ -57,50 +97,234 @@ src/
     └── opportunity.ts
 ```
 
-### Component Template
+## Epic 7: Design System Architecture
+
+### Design Token System
+```typescript
+// Design tokens for executive-class theming
+export const designTokens = {
+  colors: {
+    primary: {
+      50: '#eff6ff',
+      100: '#dbeafe',
+      500: '#3b82f6',
+      600: '#2563eb',
+      900: '#1e3a8a'
+    },
+    executive: {
+      50: '#f8fafc',
+      100: '#f1f5f9',
+      500: '#64748b',
+      900: '#0f172a'
+    },
+    semantic: {
+      success: '#22c55e',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      info: '#3b82f6'
+    }
+  },
+  typography: {
+    fontFamily: {
+      primary: 'Inter, system-ui, sans-serif',
+      mono: 'JetBrains Mono, monospace'
+    },
+    scale: {
+      xs: '0.75rem',
+      sm: '0.875rem',
+      base: '1rem',
+      lg: '1.125rem',
+      xl: '1.25rem',
+      '2xl': '1.5rem',
+      '3xl': '1.875rem'
+    }
+  },
+  spacing: {
+    1: '0.25rem',
+    2: '0.5rem',
+    4: '1rem',
+    6: '1.5rem',
+    8: '2rem',
+    12: '3rem',
+    16: '4rem'
+  },
+  shadows: {
+    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+    xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+  },
+  animations: {
+    fast: '150ms ease',
+    normal: '200ms ease',
+    slow: '300ms ease'
+  }
+};
+```
+
+### Executive Component Template
 ```typescript
 import React from 'react';
-import { Box, Card, CardContent, Typography, useTheme } from '@mui/material';
-import { useConfiguration } from '../../hooks/useConfiguration';
+import { Box, Card, useTheme } from '@mui/material';
+import { useDesignTokens } from '../../design-system/hooks/useDesignTokens';
+import { ExecutiveThemeProvider } from '../../design-system/themes/provider';
 
-interface ConfigurableComponentProps {
-  organizationId: string;
-  category: string;
+interface ExecutiveComponentProps {
+  variant?: 'primary' | 'secondary' | 'accent';
+  size?: 'sm' | 'md' | 'lg';
+  elevation?: 'low' | 'medium' | 'high';
   children?: React.ReactNode;
+  className?: string;
 }
 
-export const ConfigurableComponent: React.FC<ConfigurableComponentProps> = ({
-  organizationId,
-  category,
-  children
+export const ExecutiveComponent: React.FC<ExecutiveComponentProps> = ({
+  variant = 'primary',
+  size = 'md',
+  elevation = 'medium',
+  children,
+  className
 }) => {
   const theme = useTheme();
-  const { getConfigValue, loading } = useConfiguration(organizationId);
+  const tokens = useDesignTokens();
 
-  // Get component-specific configuration
-  const componentConfig = getConfigValue(category, 'component_settings', {
-    showHeader: true,
-    allowEdit: false,
-    refreshInterval: 30000
-  });
+  const getElevationStyles = () => {
+    switch (elevation) {
+      case 'low': return { boxShadow: tokens.shadows.sm };
+      case 'high': return { boxShadow: tokens.shadows.xl };
+      default: return { boxShadow: tokens.shadows.md };
+    }
+  };
 
-  if (loading) {
-    return <Box>Loading configuration...</Box>;
-  }
+  const getSizeStyles = () => {
+    switch (size) {
+      case 'sm': return { padding: tokens.spacing[4] };
+      case 'lg': return { padding: tokens.spacing[8] };
+      default: return { padding: tokens.spacing[6] };
+    }
+  };
 
   return (
-    <Card elevation={2}>
-      {componentConfig.showHeader && (
-        <CardContent>
-          <Typography variant="h6" component="h2">
-            Configurable Component
-          </Typography>
-        </CardContent>
-      )}
-      <Box sx={{ p: 2 }}>
-        {children}
-      </Box>
+    <Card
+      className={className}
+      sx={{
+        ...getElevationStyles(),
+        ...getSizeStyles(),
+        borderRadius: tokens.spacing[3],
+        transition: `all ${tokens.animations.normal}`,
+        backgroundColor: theme.palette.background.paper,
+        '&:hover': {
+          transform: 'translateY(-2px)',
+          boxShadow: tokens.shadows.lg
+        }
+      }}
+    >
+      {children}
     </Card>
+  );
+};
+```
+
+### Advanced Chart Component Template
+```typescript
+import React, { useMemo } from 'react';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { useTheme } from '@mui/material';
+import { useDesignTokens } from '../../design-system/hooks/useDesignTokens';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+interface ExecutiveChartProps {
+  data: any[];
+  type: 'bar' | 'line' | 'pie' | 'funnel';
+  title?: string;
+  interactive?: boolean;
+  exportable?: boolean;
+  height?: number;
+  onDataPointClick?: (data: any) => void;
+}
+
+export const ExecutiveChart: React.FC<ExecutiveChartProps> = ({
+  data,
+  type,
+  title,
+  interactive = true,
+  exportable = true,
+  height = 400,
+  onDataPointClick
+}) => {
+  const theme = useTheme();
+  const tokens = useDesignTokens();
+
+  const chartOptions = useMemo(() => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+        labels: {
+          font: {
+            family: tokens.typography.fontFamily.primary,
+            size: parseInt(tokens.typography.scale.sm)
+          },
+          color: theme.palette.text.primary
+        }
+      },
+      title: {
+        display: !!title,
+        text: title,
+        font: {
+          family: tokens.typography.fontFamily.primary,
+          size: parseInt(tokens.typography.scale.lg),
+          weight: '600'
+        },
+        color: theme.palette.text.primary
+      },
+      tooltip: {
+        backgroundColor: theme.palette.background.paper,
+        titleColor: theme.palette.text.primary,
+        bodyColor: theme.palette.text.secondary,
+        borderColor: theme.palette.divider,
+        borderWidth: 1,
+        cornerRadius: parseInt(tokens.spacing[2])
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          color: theme.palette.divider,
+          drawBorder: false
+        },
+        ticks: {
+          color: theme.palette.text.secondary,
+          font: {
+            family: tokens.typography.fontFamily.primary
+          }
+        }
+      },
+      y: {
+        grid: {
+          color: theme.palette.divider,
+          drawBorder: false
+        },
+        ticks: {
+          color: theme.palette.text.secondary,
+          font: {
+            family: tokens.typography.fontFamily.primary
+          }
+        }
+      }
+    },
+    onClick: interactive ? onDataPointClick : undefined,
+    animation: {
+      duration: parseInt(tokens.animations.slow.replace('ms', ''))
+    }
+  }), [theme, tokens, title, interactive, onDataPointClick]);
+
+  return (
+    <div style={{ height }}>
+      <Bar data={data} options={chartOptions} />
+    </div>
   );
 };
 ```
@@ -135,14 +359,40 @@ interface AuthState {
 }
 
 interface UIState {
-  theme: 'light' | 'dark';
-  dashboardLayout: string;
+  // Epic 7: Executive theming and personalization
+  theme: 'light' | 'dark' | 'auto' | 'high-contrast';
+  density: 'compact' | 'standard' | 'comfortable';
+  fontFamily: 'inter' | 'roboto' | 'system';
+  fontSize: 'sm' | 'md' | 'lg' | 'xl';
+  animations: boolean;
+
+  // Layout and navigation
+  dashboardLayout: DashboardLayout;
   sidebarOpen: boolean;
+  sidebarCollapsed: boolean;
+  navigationStyle: 'sidebar' | 'tabs' | 'breadcrumb';
+
+  // Personalization
+  customColors?: CustomColorScheme;
+  savedLayouts: Record<string, DashboardLayout>;
+  preferences: UserPreferences;
+
+  // Notification settings
+  notificationPreferences: NotificationSettings;
+  alertSettings: AlertConfiguration;
 
   // Actions
-  setTheme: (theme: 'light' | 'dark') => void;
-  setDashboardLayout: (layout: string) => void;
+  setTheme: (theme: UIState['theme']) => void;
+  setDensity: (density: UIState['density']) => void;
+  setFontSettings: (family: UIState['fontFamily'], size: UIState['fontSize']) => void;
+  toggleAnimations: () => void;
+  setDashboardLayout: (layout: DashboardLayout) => void;
+  saveLayout: (name: string, layout: DashboardLayout) => void;
+  loadLayout: (name: string) => void;
+  updatePreferences: (preferences: Partial<UserPreferences>) => void;
   toggleSidebar: () => void;
+  setSidebarCollapsed: (collapsed: boolean) => void;
+  updateNotificationSettings: (settings: NotificationSettings) => void;
 }
 ```
 

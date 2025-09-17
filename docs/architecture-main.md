@@ -1,4 +1,11 @@
-# Partnership Management Platform - Fullstack Architecture Document
+# ISV Pipeline Tracker - Complete Architecture Document
+
+> **📁 COMPREHENSIVE REFERENCE**
+> This is the complete architecture document containing all technical specifications. For easier navigation, refer to the [sharded architecture documentation](./architecture/) which organizes this content into focused sections.
+>
+> **Recommended**: Use [Architecture Index](./architecture/) for better organization and Epic 7 updates.
+
+# Partnership Management Platform - Complete Architecture Reference
 
 ## Introduction
 

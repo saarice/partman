@@ -1,4 +1,11 @@
-# ISV Pipeline Tracker MVP - Technical Architecture
+# ISV Pipeline Tracker MVP - Legacy Technical Architecture
+
+> **⚠️ LEGACY DOCUMENTATION**
+> This document is preserved for historical reference. The current architecture documentation is located in [./architecture/](./architecture/) with comprehensive sharded documentation.
+>
+> **Current Architecture**: Please refer to [Architecture Documentation](./architecture/) for up-to-date technical specifications.
+
+# Original Technical Architecture (Legacy)
 
 ## Table of Contents
 1. [System Architecture Overview](#system-architecture-overview)
