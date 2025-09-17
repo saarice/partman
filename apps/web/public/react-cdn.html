@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React CDN Test</title>
+    <style>
+        .test-container {
+            padding: 50px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            border: 3px solid blue;
+            margin: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">Loading React...</div>
+
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <script>
+        console.log('Starting React CDN test...');
+
+        const { createElement, useState } = React;
+        const { createRoot } = ReactDOM;
+
+        function TestApp() {
+            const [count, setCount] = useState(0);
+
+            return createElement('div', { className: 'test-container' }, [
+                createElement('h1', { key: 'title', style: { color: 'blue' } }, '🚀 REACT CDN TEST WORKING!'),
+                createElement('p', { key: 'desc' }, 'This React app loads from CDN, not Vite modules.'),
+                createElement('p', { key: 'time' }, 'Time: ' + new Date().toLocaleString()),
+                createElement('button', {
+                    key: 'btn',
+                    onClick: () => setCount(count + 1),
+                    style: { padding: '10px 20px', fontSize: '16px', marginTop: '10px' }
+                }, `Clicked ${count} times`),
+                createElement('p', { key: 'status' }, count > 0 ? '✅ React state is working!' : 'Click the button to test React state')
+            ]);
+        }
+
+        try {
+            console.log('Creating React root...');
+            const root = createRoot(document.getElementById('root'));
+            console.log('Rendering React app...');
+            root.render(createElement(TestApp));
+            console.log('React app rendered successfully!');
+        } catch (error) {
+            console.error('React error:', error);
+            document.getElementById('root').innerHTML = '<h1 style="color: red;">React Error: ' + error.message + '</h1>';
+        }
+    </script>
+</body>
+</html>

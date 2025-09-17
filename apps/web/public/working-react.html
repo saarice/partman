@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working React App</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .header-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+        .main-content {
+            padding: 2rem;
+        }
+        .dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            margin: 0.5rem;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .action-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .action-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background-color: #22c55e; }
+        .status-info { background-color: #3b82f6; }
+        .status-warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <!-- Top Navigation -->
+        <div class="header">
+            <h1>🚀 Partnership Management Platform</h1>
+            <div class="header-user">
+                <div class="header-nav">
+                    <button class="nav-btn" onclick="navigateToPage('dashboard')">📊 Dashboard</button>
+                    <button class="nav-btn" onclick="navigateToPage('users')">👥 Users</button>
+                    <button class="nav-btn" onclick="navigateToPage('settings')">⚙️ Settings</button>
+                </div>
+                <span style="opacity: 0.9; font-size: 0.875rem;">Welcome, System Owner</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1 class="dashboard">Executive Dashboard</h1>
+            <p style="font-size: 1.25rem; color: #666; margin-bottom: 2rem;">Strategic overview and key performance indicators</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                <div class="card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white;">$</div>
+                        <span style="background: #dcfce7; color: #166534; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600;">+12.5%</span>
+                    </div>
+                    <h3 style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.875rem; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px;">Total Revenue</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin: 0; color: #1a1a1a;">$2.4M</div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white;">⚡</div>
+                        <span style="background: #dbeafe; color: #1e40af; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600;">+3</span>
+                    </div>
+                    <h3 style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.875rem; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px;">Active Partners</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin: 0; color: #1a1a1a;">24</div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white;">📊</div>
+                        <span style="background: #cffafe; color: #0e7490; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600;">+18.2%</span>
+                    </div>
+                    <h3 style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.875rem; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px;">Pipeline Value</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin: 0; color: #1a1a1a;">$8.7M</div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                        <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white;">🎯</div>
+                        <span style="background: #fef3c7; color: #92400e; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; font-weight: 600;">+5%</span>
+                    </div>
+                    <h3 style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.875rem; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px;">Goal Progress</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin: 0; color: #1a1a1a;">87%</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom: 1.5rem;">Quick Actions</h2>
+                <div class="action-grid">
+                    <div class="action-card" onclick="navigateToPage('partnership-manager')">
+                        <span class="action-icon">🤝</span>
+                        <h3 style="margin: 0 0 0.5rem 0;">New Partnership</h3>
+                        <p style="margin: 0; color: #666; font-size: 0.875rem;">Create a new partnership agreement</p>
+                    </div>
+                    <div class="action-card" onclick="navigateToPage('opportunities')">
+                        <span class="action-icon">🔍</span>
+                        <h3 style="margin: 0 0 0.5rem 0;">Review Opportunities</h3>
+                        <p style="margin: 0; color: #666; font-size: 0.875rem;">Review pending opportunities</p>
+                    </div>
+                    <div class="action-card" onclick="navigateToPage('commissions')">
+                        <span class="action-icon">💎</span>
+                        <h3 style="margin: 0 0 0.5rem 0;">Commission Review</h3>
+                        <p style="margin: 0; color: #666; font-size: 0.875rem;">Approve pending commissions</p>
+                    </div>
+                    <div class="action-card" onclick="navigateToPage('meetings')">
+                        <span class="action-icon">📅</span>
+                        <h3 style="margin: 0 0 0.5rem 0;">Schedule Meeting</h3>
+                        <p style="margin: 0; color: #666; font-size: 0.875rem;">Schedule partner meetings</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 style="margin-bottom: 1.5rem;">Recent Activity</h2>
+                <div class="metric">
+                    <span><span class="status-indicator status-success"></span>New partnership agreement signed with TechCorp</span>
+                    <span style="color: #666; font-size: 0.875rem;">2 hours ago</span>
+                </div>
+                <div class="metric">
+                    <span><span class="status-indicator status-info"></span>Pipeline opportunity moved to "Negotiation" stage</span>
+                    <span style="color: #666; font-size: 0.875rem;">4 hours ago</span>
+                </div>
+                <div class="metric">
+                    <span><span class="status-indicator status-success"></span>Commission payment of $15,000 approved</span>
+                    <span style="color: #666; font-size: 0.875rem;">6 hours ago</span>
+                </div>
+                <div class="metric">
+                    <span><span class="status-indicator status-warning"></span>Quarterly review meeting scheduled</span>
+                    <span style="color: #666; font-size: 0.875rem;">8 hours ago</span>
+                </div>
+                <div class="metric">
+                    <span><span class="status-indicator status-info"></span>New lead assigned to sales team</span>
+                    <span style="color: #666; font-size: 0.875rem;">12 hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('Executive Dashboard loaded successfully!');
+
+        function navigateToPage(page) {
+            console.log(`Navigating to ${page} page...`);
+
+            // Create a visual feedback
+            const targetCard = event.currentTarget;
+            const originalTransform = targetCard.style.transform;
+
+            targetCard.style.transform = 'scale(0.95)';
+            targetCard.style.transition = 'transform 0.1s';
+
+            setTimeout(() => {
+                targetCard.style.transform = originalTransform;
+            }, 150);
+
+            // Show a subtle notification instead of popup
+            showNotification(`Opening ${page} management...`);
+
+            // In a real app, this would navigate to the actual page
+            // window.location.href = `/${page}`;
+        }
+
+        function showNotification(message) {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    color: white;
+                    padding: 12px 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    z-index: 1000;
+                    font-weight: 500;
+                    animation: slideIn 0.3s ease-out;
+                ">
+                    ✨ ${message}
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Auto remove after 2 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideOut 0.3s ease-in';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.remove();
+                        }
+                    }, 300);
+                }
+            }, 2000);
+        }
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, adding interactivity...');
+
+            // Add hover effects and click handlers
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Update time every second
+            const timeElement = document.createElement('div');
+            timeElement.style.cssText = 'position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 8px 12px; border-radius: 4px; font-size: 0.875rem;';
+            document.body.appendChild(timeElement);
+
+            function updateTime() {
+                timeElement.textContent = 'Live: ' + new Date().toLocaleTimeString();
+            }
+
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // Add CSS animations
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes slideOut {
+                    from {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                    to {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            console.log('✅ Executive Dashboard fully loaded and interactive!');
+        });
+    </script>
+</body>
+</html>

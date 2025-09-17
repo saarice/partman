@@ -18,7 +18,8 @@ import {
 import { GetApp } from '@mui/icons-material';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { PipelineTrend, pipelineService } from '../../services/pipelineService';
+import { pipelineService } from '../../services/pipelineService';
+import type { PipelineTrend } from '../../services/pipelineService';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Partnership Management Platform</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 4px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-1px);
+        }
+        .main-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dashboard-title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .action-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+        .action-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+        .action-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+        <h1>🚀 Partnership Management Platform</h1>
+        <div>
+            <a href="/" class="nav-btn">📊 Dashboard</a>
+            <a href="/partners" class="nav-btn">🤝 Partners</a>
+            <a href="/admin/users" class="nav-btn">👥 Users</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 class="dashboard-title">Executive Dashboard</h1>
+        <p style="font-size: 1.25rem; color: #666; margin-bottom: 2rem;">Partnership Management Platform is working!</p>
+
+        <div class="card">
+            <h2>Quick Actions</h2>
+            <div class="action-grid">
+                <a href="/partners" class="action-card">
+                    <span class="action-icon">🤝</span>
+                    <h3 style="margin: 0 0 0.5rem 0;">Partnership Manager</h3>
+                    <p style="margin: 0; color: #666; font-size: 0.875rem;">Manage partner relationships</p>
+                </a>
+                <a href="/admin/users" class="action-card">
+                    <span class="action-icon">👥</span>
+                    <h3 style="margin: 0 0 0.5rem 0;">User Management</h3>
+                    <p style="margin: 0; color: #666; font-size: 0.875rem;">Manage system users</p>
+                </a>
+                <a href="/opportunities" class="action-card">
+                    <span class="action-icon">🔍</span>
+                    <h3 style="margin: 0 0 0.5rem 0;">Opportunities</h3>
+                    <p style="margin: 0; color: #666; font-size: 0.875rem;">Review opportunities</p>
+                </a>
+                <a href="/commissions" class="action-card">
+                    <span class="action-icon">💎</span>
+                    <h3 style="margin: 0 0 0.5rem 0;">Commissions</h3>
+                    <p style="margin: 0; color: #666; font-size: 0.875rem;">Commission management</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>System Status</h2>
+            <p>✅ Application is running</p>
+            <p>✅ Navigation is working</p>
+            <p>⚠️ React modules need fixing</p>
+            <p><strong>Server:</strong> localhost:3002 (Vite development server)</p>
+            <p><strong>Time:</strong> <span id="current-time"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            document.getElementById('current-time').textContent = new Date().toLocaleString();
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        console.log('🚀 Partnership Management Platform - Static version working!');
+    </script>
+  </body>
+</html>

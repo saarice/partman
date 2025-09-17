@@ -1,4 +1,5 @@
-import { pipelineService, PipelineData, PipelineFilters, PipelineTrend } from '../pipelineService';
+import { pipelineService } from '../pipelineService';
+import type { PipelineData, PipelineFilters, PipelineTrend } from '../pipelineService';
 
 // Mock axios
 jest.mock('axios');

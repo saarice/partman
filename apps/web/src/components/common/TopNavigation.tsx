@@ -14,14 +14,15 @@ import {
   Business,
   Dashboard as DashboardIcon,
   Calculate,
-  Timeline
+  Timeline,
+  SupervisorAccount
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../stores/authStoreSimple';
 
 interface TopNavigationProps {
   title?: string;
-  currentPage?: 'dashboard' | 'partners' | 'commissions' | 'opportunities';
+  currentPage?: 'dashboard' | 'partners' | 'commissions' | 'opportunities' | 'admin';
 }
 
 const TopNavigation: React.FC<TopNavigationProps> = ({
@@ -98,6 +99,19 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           >
             <Timeline />
           </IconButton>
+          {user?.role === 'system_owner' && (
+            <IconButton
+              color="inherit"
+              onClick={() => navigate('/admin/users')}
+              title="User Management"
+              sx={{
+                backgroundColor: isCurrentPage('admin') ? 'rgba(255,255,255,0.2)' : 'transparent',
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' }
+              }}
+            >
+              <SupervisorAccount />
+            </IconButton>
+          )}
           <Typography variant="body2" color="inherit">
             Welcome, {user?.firstName} {user?.lastName}
           </Typography>

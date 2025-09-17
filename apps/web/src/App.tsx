@@ -1,11 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { useAuthStore } from './stores/authStore';
+import { useAuthStore } from './stores/authStoreSimple';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Login from './pages/Auth/Login';
 import Partners from './pages/Partners/Partners';
 import Commissions from './pages/Commissions/Commissions';
 import Opportunities from './pages/Opportunities/Opportunities';
+import UserManagement from './pages/Admin/UserManagement';
 import ProtectedRoute from './components/common/ProtectedRoute';
 
 function App() {
@@ -47,6 +48,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Opportunities />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <UserManagement />
             </ProtectedRoute>
           }
         />

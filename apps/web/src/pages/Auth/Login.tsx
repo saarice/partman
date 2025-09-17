@@ -9,7 +9,7 @@ import {
   Alert,
   CircularProgress
 } from '@mui/material';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../stores/authStoreSimple';
 import { authApi } from '../../services/api';
 
 const Login: React.FC = () => {

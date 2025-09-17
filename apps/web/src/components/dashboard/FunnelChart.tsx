@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Tooltip, Typography } from '@mui/material';
-import { PipelineStage } from '../../services/pipelineService';
+import type { PipelineStage } from '../../services/pipelineService';
 
 interface FunnelChartProps {
   stages: PipelineStage[];

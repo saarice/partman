@@ -30,9 +30,10 @@ import {
   PersonAdd as PersonAddIcon,
   AdminPanelSettings as AdminIcon
 } from '@mui/icons-material';
-import { UserRole, User } from '../../../../packages/shared/src/types/user';
+import { UserRole, User } from '../../../../../packages/shared/src/types/user';
 import UserTable from '../../components/admin/UserTable';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../stores/authStoreSimple';
+import TopNavigation from '../../components/common/TopNavigation';
 
 interface UserFormData {
   email: string;
@@ -262,7 +263,9 @@ const UserManagement: React.FC = () => {
   };
 
   return (
-    <Box p={3}>
+    <Box>
+      <TopNavigation title="User Management" currentPage="admin" />
+      <Box p={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
         <Typography variant="h4" fontWeight="bold">
           User Management
@@ -492,6 +495,7 @@ const UserManagement: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      </Box>
     </Box>
   );
 };

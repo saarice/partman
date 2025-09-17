@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import FunnelChart from '../FunnelChart';
-import { PipelineStage } from '../../../services/pipelineService';
+import type { PipelineStage } from '../../../services/pipelineService';
 
 const mockStages: PipelineStage[] = [
   {

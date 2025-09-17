@@ -12,6 +12,7 @@ import { partnerRoutes } from './routes/partners.js';
 import { opportunityRoutes } from './routes/opportunities.js';
 import { alertRoutes } from './routes/alerts.js';
 import { pipelineRoutes } from './routes/pipeline.js';
+import userRoutes from './routes/users.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './utils/logger.js';
 import { insertSampleData } from './utils/sampleData.js';
@@ -49,6 +50,7 @@ app.use('/api/partners', partnerRoutes);
 app.use('/api/opportunities', opportunityRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/pipeline', pipelineRoutes);
+app.use('/api/users', userRoutes);
 
 // WebSocket connection handling
 io.on('connection', (socket) => {

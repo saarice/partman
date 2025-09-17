@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct HTML Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+            background-color: #f0f8ff;
+        }
+        .test-box {
+            background-color: #ffeeee;
+            border: 3px solid #ff0000;
+            padding: 30px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-box">
+        <h1 style="color: red;">🟢 DIRECT HTML TEST</h1>
+        <p>This is a direct HTML file served by Vite.</p>
+        <p>Time: <span id="time"></span></p>
+        <button onclick="alert('JavaScript is working!')">Test JavaScript</button>
+        <button onclick="updateTime()">Update Time</button>
+    </div>
+
+    <script>
+        console.log('Direct HTML test - JavaScript loading...');
+
+        function updateTime() {
+            document.getElementById('time').textContent = new Date().toLocaleString();
+        }
+
+        // Update time immediately
+        updateTime();
+
+        console.log('Direct HTML test - JavaScript loaded successfully!');
+    </script>
+</body>
+</html>

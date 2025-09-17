@@ -1,10 +1,32 @@
 export var UserRole;
 (function (UserRole) {
-    UserRole["VP"] = "vp";
+    UserRole["SYSTEM_OWNER"] = "system_owner";
+    UserRole["VP_STRATEGIC_PARTNERSHIPS"] = "vp_strategic_partnerships";
     UserRole["SALES_MANAGER"] = "sales_manager";
     UserRole["PARTNERSHIP_MANAGER"] = "partnership_manager";
-    UserRole["TEAM_MEMBER"] = "team_member";
+    UserRole["SALES_REP"] = "sales_rep";
+    UserRole["READ_ONLY"] = "read_only";
 })(UserRole || (UserRole = {}));
+export var PermissionResource;
+(function (PermissionResource) {
+    PermissionResource["USERS"] = "users";
+    PermissionResource["PARTNERS"] = "partners";
+    PermissionResource["OPPORTUNITIES"] = "opportunities";
+    PermissionResource["COMMISSIONS"] = "commissions";
+    PermissionResource["REPORTS"] = "reports";
+    PermissionResource["SYSTEM"] = "system";
+    PermissionResource["AUDIT_LOGS"] = "audit_logs";
+})(PermissionResource || (PermissionResource = {}));
+export var PermissionAction;
+(function (PermissionAction) {
+    PermissionAction["CREATE"] = "create";
+    PermissionAction["READ"] = "read";
+    PermissionAction["UPDATE"] = "update";
+    PermissionAction["DELETE"] = "delete";
+    PermissionAction["MANAGE"] = "manage";
+    PermissionAction["IMPERSONATE"] = "impersonate";
+    PermissionAction["EXPORT"] = "export";
+})(PermissionAction || (PermissionAction = {}));
 export var TaskPriority;
 (function (TaskPriority) {
     TaskPriority["LOW"] = "low";

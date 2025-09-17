@@ -3,44 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partnership Management Platform</title>
-    <!-- Design System -->
-    <link rel="stylesheet" href="/src/design-system/design-system.css">
-    <script src="/src/design-system/icons/icons.js"></script>
+    <title>🚀 Partnership Management Platform</title>
     <style>
-        /* Application-specific overrides */
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
         .header {
-            background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-secondary-600) 100%);
-            color: var(--color-neutral-0);
-            padding: var(--spacing-4) var(--spacing-6);
-            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
         .header h1 {
             margin: 0;
-            font-size: var(--font-size-xl);
-            font-weight: var(--font-weight-bold);
+            font-size: 1.5rem;
+            font-weight: 700;
         }
         .header-user {
             display: flex;
             align-items: center;
-            gap: var(--spacing-4);
+            gap: 1rem;
         }
         .header-nav {
             display: flex;
-            gap: var(--spacing-2);
+            gap: 0.5rem;
         }
         .nav-btn {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
-            color: var(--color-neutral-0);
-            padding: var(--spacing-2) var(--spacing-4);
-            border-radius: var(--radius-md);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: var(--font-size-sm);
-            transition: all var(--duration-fast) var(--easing-smooth);
+            font-size: 0.875rem;
+            transition: all 0.2s;
             text-decoration: none;
         }
         .nav-btn:hover {
@@ -49,101 +49,206 @@
         }
         .nav-btn.active {
             background: rgba(255,255,255,0.3);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         .main-content {
-            padding: var(--spacing-8);
+            padding: 2rem;
             max-width: 1400px;
             margin: 0 auto;
         }
         .page-hidden {
             display: none;
         }
-        .dashboard-title {
-            background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-secondary-600) 100%);
+        .dashboard {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-size: var(--font-size-5xl);
-            font-weight: var(--font-weight-black);
-            margin-bottom: var(--spacing-4);
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
         }
-        /* Custom application styles using design system variables */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
         .metric {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: var(--spacing-4);
-            margin: var(--spacing-2) 0;
-            background: var(--color-neutral-50);
-            border-radius: var(--radius-md);
-            border-left: 4px solid var(--color-success-500);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4caf50;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            margin: 0.5rem;
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+        .btn-danger {
+            background: #dc3545;
         }
         .action-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-4);
-            margin: var(--spacing-4) 0;
+            gap: 1rem;
+            margin: 1rem 0;
         }
         .action-card {
-            background: var(--color-neutral-0);
-            border: 2px solid var(--color-neutral-200);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-6);
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
             cursor: pointer;
-            transition: all var(--duration-fast) var(--easing-smooth);
+            transition: all 0.2s;
             text-align: center;
         }
         .action-card:hover {
-            border-color: var(--color-primary-600);
+            border-color: #667eea;
             transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
         }
         .action-icon {
             font-size: 2.5rem;
-            margin-bottom: var(--spacing-4);
+            margin-bottom: 1rem;
             display: block;
         }
-        .status-dot {
+        .status-indicator {
             display: inline-block;
             width: 8px;
             height: 8px;
-            border-radius: var(--radius-full);
-            margin-right: var(--spacing-2);
+            border-radius: 50%;
+            margin-right: 8px;
         }
-        .status-dot--success { background-color: var(--color-success-500); }
-        .status-dot--info { background-color: var(--color-info-500); }
-        .status-dot--warning { background-color: var(--color-warning-500); }
-        .status-dot--error { background-color: var(--color-error-500); }
+        .status-success { background-color: #22c55e; }
+        .status-info { background-color: #3b82f6; }
+        .status-warning { background-color: #f59e0b; }
+        .status-error { background-color: #ef4444; }
 
-        /* Removed - using design system table, form, badge, and tab classes */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        .table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .badge-success {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .badge-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .badge-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        .badge-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-6);
-            margin-bottom: var(--spacing-8);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        /* Custom modal styles - using design system modal as base */
-        .custom-modal {
+        .tab-container {
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+        }
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        .tab-content {
             display: none;
         }
-
-        .custom-modal.show {
-            display: flex;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-4);
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
@@ -151,54 +256,34 @@
     <div id="root">
         <!-- Top Navigation -->
         <div class="header">
-            <h1>Partnership Management Platform</h1>
+            <h1>🚀 Partnership Management Platform</h1>
             <div class="header-user">
                 <div class="header-nav">
-                    <button class="nav-btn" onclick="showPage('dashboard')" id="nav-dashboard">
-                        <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-dashboard"></use></svg>
-                        Dashboard
-                    </button>
-                    <button class="nav-btn" onclick="showPage('partners')" id="nav-partners">
-                        <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-users"></use></svg>
-                        Partners
-                    </button>
-                    <button class="nav-btn" onclick="showPage('opportunities')" id="nav-opportunities">
-                        <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-search"></use></svg>
-                        Opportunities
-                    </button>
-                    <button class="nav-btn" onclick="showPage('commissions')" id="nav-commissions">
-                        <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-dollar-sign"></use></svg>
-                        Commissions
-                    </button>
-                    <button class="nav-btn" onclick="showPage('users')" id="nav-users">
-                        <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-user"></use></svg>
-                        Users
-                    </button>
-                    <button class="nav-btn" onclick="showPage('settings')" id="nav-settings">
-                        <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-settings"></use></svg>
-                        Settings
-                    </button>
+                    <button class="nav-btn" onclick="showPage('dashboard')" id="nav-dashboard">📊 Dashboard</button>
+                    <button class="nav-btn" onclick="showPage('partners')" id="nav-partners">🤝 Partners</button>
+                    <button class="nav-btn" onclick="showPage('opportunities')" id="nav-opportunities">🔍 Opportunities</button>
+                    <button class="nav-btn" onclick="showPage('commissions')" id="nav-commissions">💎 Commissions</button>
+                    <button class="nav-btn" onclick="showPage('users')" id="nav-users">👥 Users</button>
+                    <button class="nav-btn" onclick="showPage('settings')" id="nav-settings">⚙️ Settings</button>
                 </div>
-                <span class="text-sm" style="opacity: 0.9;">Welcome, System Owner</span>
+                <span style="opacity: 0.9; font-size: 0.875rem;">Welcome, System Owner</span>
             </div>
         </div>
 
         <div class="main-content">
             <!-- DASHBOARD PAGE -->
             <div id="page-dashboard" class="page">
-                <h1 class="dashboard-title">Executive Dashboard</h1>
-                <p class="text-lg text-muted mb-8">Strategic overview and key performance indicators</p>
+                <h1 class="dashboard">Executive Dashboard</h1>
+                <p style="font-size: 1.25rem; color: #666; margin-bottom: 2rem;">Strategic overview and key performance indicators</p>
 
                 <div class="stats-grid">
                     <div class="card">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center justify-center w-12 h-12 rounded-xl bg-success text-white">
-                                <svg class="icon icon--lg" aria-hidden="true"><use href="#icon-dollar-sign"></use></svg>
-                            </div>
-                            <span class="badge badge--success">+12.5%</span>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+                            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white;">$</div>
+                            <span class="badge badge-success">+12.5%</span>
                         </div>
-                        <h3 class="text-xs font-semibold text-muted mb-2 uppercase tracking-wider">Total Revenue</h3>
-                        <div class="text-4xl font-black text-neutral-900">$2.4M</div>
+                        <h3 style="color: #666; margin: 0 0 0.5rem 0; font-size: 0.875rem; text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px;">Total Revenue</h3>
+                        <div style="font-size: 2.5rem; font-weight: 800; margin: 0; color: #1a1a1a;">$2.4M</div>
                     </div>
 
                     <div class="card">
@@ -311,8 +396,8 @@
                                     <td><strong>8</strong></td>
                                     <td><span class="badge badge-success">Active</span></td>
                                     <td>
-                                        <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="viewPartner(0)">View</button>
-                                        <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="editPartner(0)">Edit</button>
+                                        <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;">View</button>
+                                        <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;">Edit</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -323,8 +408,8 @@
                                     <td><strong>5</strong></td>
                                     <td><span class="badge badge-warning">Renewal Due</span></td>
                                     <td>
-                                        <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="viewPartner(1)">View</button>
-                                        <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="editPartner(1)">Edit</button>
+                                        <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;">View</button>
+                                        <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;">Edit</button>
                                     </td>
                                 </tr>
                                 <tr>
@@ -335,8 +420,8 @@
                                     <td><strong>2</strong></td>
                                     <td><span class="badge badge-error">At Risk</span></td>
                                     <td>
-                                        <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="viewPartner(2)">View</button>
-                                        <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="editPartner(2)">Edit</button>
+                                        <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;">View</button>
+                                        <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;">Edit</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -731,206 +816,6 @@
         </div>
     </div>
 
-    <!-- Add Partner Modal -->
-    <div id="addPartnerModal" class="modal-overlay custom-modal">
-        <div class="modal">
-            <div class="modal__header">
-                <h2 class="modal__title">Add New Partner</h2>
-                <button class="modal__close" onclick="closeAddPartnerModal()">
-                    <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
-                </button>
-            </div>
-            <div class="modal__body">
-                <form id="addPartnerForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label form-label--required">Partner Name</label>
-                            <input type="text" class="form-input" id="partnerName" required placeholder="e.g., ACME Solutions">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Website</label>
-                            <input type="url" class="form-input" id="partnerWebsite" placeholder="https://example.com">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label form-label--required">Category</label>
-                            <select class="form-input form-select" id="partnerCategory" required>
-                                <option value="">Select Category</option>
-                                <option value="FinOps">FinOps</option>
-                                <option value="Security">Security</option>
-                                <option value="Observability">Observability</option>
-                                <option value="DevOps">DevOps</option>
-                                <option value="Data">Data</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label form-label--required">Partner Tier</label>
-                            <select class="form-input form-select" id="partnerTier" required>
-                                <option value="">Select Tier</option>
-                                <option value="strategic">Strategic</option>
-                                <option value="tactical">Tactical</option>
-                                <option value="emerging">Emerging</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-input form-textarea" id="partnerDescription" rows="3" placeholder="Brief description of the partner and their services..."></textarea>
-                    </div>
-
-                <h3 style="margin: 2rem 0 1rem 0; color: #374151;">Primary Contact</h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Contact Name *</label>
-                        <input type="text" class="form-control" id="contactName" required placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Role</label>
-                        <input type="text" class="form-control" id="contactRole" placeholder="VP Partnerships">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Contact Email *</label>
-                        <input type="email" class="form-control" id="contactEmail" required placeholder="john@partner.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Phone</label>
-                        <input type="tel" class="form-control" id="contactPhone" placeholder="+1-555-0123">
-                    </div>
-                </div>
-
-                <h3 style="margin: 2rem 0 1rem 0; color: #374151;">Commission Structure</h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Commission Rate (%)</label>
-                        <input type="number" class="form-control" id="commissionRate" min="0" max="100" step="0.1" placeholder="10">
-                    </div>
-                    <div class="form-group">
-                        <label>Minimum Deal Threshold ($)</label>
-                        <input type="number" class="form-control" id="dealThreshold" min="0" step="1000" placeholder="50000">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Additional Tags (comma-separated)</label>
-                    <input type="text" class="form-control" id="partnerTags" placeholder="Enterprise, Cloud Cost, Strategic">
-                </div>
-
-                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                    <button type="button" class="btn btn-secondary" onclick="closeAddPartnerModal()">Cancel</button>
-                    <button type="submit" class="btn">Add Partner</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Edit Partner Modal -->
-    <div id="editPartnerModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>✏️ Edit Partner</h2>
-                <button class="modal-close" onclick="closeEditPartnerModal()">&times;</button>
-            </div>
-
-            <form id="editPartnerForm">
-                <input type="hidden" id="editPartnerIndex">
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Partner Name *</label>
-                        <input type="text" class="form-control" id="editPartnerName" required placeholder="e.g., ACME Solutions">
-                    </div>
-                    <div class="form-group">
-                        <label>Website</label>
-                        <input type="url" class="form-control" id="editPartnerWebsite" placeholder="https://example.com">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Category *</label>
-                        <select class="form-control" id="editPartnerCategory" required>
-                            <option value="">Select Category</option>
-                            <option value="FinOps">FinOps</option>
-                            <option value="Security">Security</option>
-                            <option value="Observability">Observability</option>
-                            <option value="DevOps">DevOps</option>
-                            <option value="Data">Data</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Partner Tier *</label>
-                        <select class="form-control" id="editPartnerTier" required>
-                            <option value="">Select Tier</option>
-                            <option value="strategic">Strategic</option>
-                            <option value="tactical">Tactical</option>
-                            <option value="emerging">Emerging</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea class="form-control" id="editPartnerDescription" rows="3" placeholder="Brief description of the partner and their services..."></textarea>
-                </div>
-
-                <h3 style="margin: 2rem 0 1rem 0; color: #374151;">Primary Contact</h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Contact Name *</label>
-                        <input type="text" class="form-control" id="editContactName" required placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Role</label>
-                        <input type="text" class="form-control" id="editContactRole" placeholder="VP Partnerships">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Contact Email *</label>
-                        <input type="email" class="form-control" id="editContactEmail" required placeholder="john@partner.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Contact Phone</label>
-                        <input type="tel" class="form-control" id="editContactPhone" placeholder="+1-555-0123">
-                    </div>
-                </div>
-
-                <h3 style="margin: 2rem 0 1rem 0; color: #374151;">Commission Structure</h3>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Commission Rate (%)</label>
-                        <input type="number" class="form-control" id="editCommissionRate" min="0" max="100" step="0.1" placeholder="10">
-                    </div>
-                    <div class="form-group">
-                        <label>Minimum Deal Threshold ($)</label>
-                        <input type="number" class="form-control" id="editDealThreshold" min="0" step="1000" placeholder="50000">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Additional Tags (comma-separated)</label>
-                    <input type="text" class="form-control" id="editPartnerTags" placeholder="Enterprise, Cloud Cost, Strategic">
-                </div>
-
-                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e5e7eb;">
-                    <button type="button" class="btn btn-secondary" onclick="closeEditPartnerModal()">Cancel</button>
-                    <button type="submit" class="btn">Update Partner</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <script>
         let currentPage = 'dashboard';
 
@@ -1016,118 +901,9 @@
             }, 2000);
         }
 
-        // Modal and form functions
+        // Placeholder functions for form actions
         function showAddPartnerForm() {
-            document.getElementById('addPartnerModal').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAddPartnerModal() {
-            document.getElementById('addPartnerModal').classList.remove('show');
-            document.body.style.overflow = '';
-            document.getElementById('addPartnerForm').reset();
-        }
-
-        // Partner data storage
-        let partnersData = [
-            {
-                name: 'ACME FinOps Solutions',
-                website: 'https://acme-finops.com',
-                category: 'FinOps',
-                tier: 'strategic',
-                description: 'Leading cloud cost optimization and financial operations platform',
-                contact: {
-                    name: 'John Smith',
-                    role: 'VP Partnerships',
-                    email: 'john@acme.com',
-                    phone: '+1-555-0123'
-                },
-                commission: {
-                    rate: '10',
-                    threshold: '100000'
-                },
-                tags: ['Enterprise', 'Cloud Cost', 'Strategic']
-            },
-            {
-                name: 'SecureGuard Technologies',
-                website: 'https://secureguard.com',
-                category: 'Security',
-                tier: 'strategic',
-                description: 'Comprehensive cybersecurity and compliance solutions',
-                contact: {
-                    name: 'Mike Davis',
-                    role: 'Director of Partnerships',
-                    email: 'mike@secureguard.com',
-                    phone: '+1-555-0456'
-                },
-                commission: {
-                    rate: '12',
-                    threshold: '75000'
-                },
-                tags: ['Cybersecurity', 'Compliance', 'Mid-Market']
-            },
-            {
-                name: 'DataFlow Analytics',
-                website: 'https://dataflow.com',
-                category: 'Data',
-                tier: 'tactical',
-                description: 'Advanced data visualization and analytics platform',
-                contact: {
-                    name: 'Emily Chen',
-                    role: 'Partnership Manager',
-                    email: 'emily@dataflow.com',
-                    phone: '+1-555-0789'
-                },
-                commission: {
-                    rate: '8',
-                    threshold: '25000'
-                },
-                tags: ['Analytics', 'SMB', 'Data Viz']
-            }
-        ];
-
-        function editPartner(partnerIndex) {
-            const partner = partnersData[partnerIndex];
-            if (!partner) {
-                showNotification('Partner not found');
-                return;
-            }
-
-            // Populate the edit form with existing data
-            document.getElementById('editPartnerIndex').value = partnerIndex;
-            document.getElementById('editPartnerName').value = partner.name;
-            document.getElementById('editPartnerWebsite').value = partner.website || '';
-            document.getElementById('editPartnerCategory').value = partner.category;
-            document.getElementById('editPartnerTier').value = partner.tier;
-            document.getElementById('editPartnerDescription').value = partner.description || '';
-
-            document.getElementById('editContactName').value = partner.contact.name;
-            document.getElementById('editContactRole').value = partner.contact.role || '';
-            document.getElementById('editContactEmail').value = partner.contact.email;
-            document.getElementById('editContactPhone').value = partner.contact.phone || '';
-
-            document.getElementById('editCommissionRate').value = partner.commission.rate || '';
-            document.getElementById('editDealThreshold').value = partner.commission.threshold || '';
-            document.getElementById('editPartnerTags').value = partner.tags.join(', ');
-
-            // Show the modal
-            document.getElementById('editPartnerModal').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeEditPartnerModal() {
-            document.getElementById('editPartnerModal').classList.remove('show');
-            document.body.style.overflow = '';
-            document.getElementById('editPartnerForm').reset();
-        }
-
-        function viewPartner(partnerIndex) {
-            const partner = partnersData[partnerIndex];
-            if (!partner) {
-                showNotification('Partner not found');
-                return;
-            }
-            showNotification(`Viewing details for ${partner.name}...`);
+            showNotification('Opening Add Partner form...');
         }
 
         function showAddOpportunityForm() {
@@ -1140,157 +916,6 @@
 
         function showAddUserForm() {
             showNotification('Opening Add User form...');
-        }
-
-        // Handle form submission
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('addPartnerForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Get form data
-                const partnerData = {
-                    name: document.getElementById('partnerName').value,
-                    website: document.getElementById('partnerWebsite').value,
-                    category: document.getElementById('partnerCategory').value,
-                    tier: document.getElementById('partnerTier').value,
-                    description: document.getElementById('partnerDescription').value,
-                    contact: {
-                        name: document.getElementById('contactName').value,
-                        role: document.getElementById('contactRole').value,
-                        email: document.getElementById('contactEmail').value,
-                        phone: document.getElementById('contactPhone').value
-                    },
-                    commission: {
-                        rate: document.getElementById('commissionRate').value,
-                        threshold: document.getElementById('dealThreshold').value
-                    },
-                    tags: document.getElementById('partnerTags').value.split(',').map(tag => tag.trim()).filter(tag => tag)
-                };
-
-                // Add partner to table (simulate saving)
-                addPartnerToTable(partnerData);
-
-                // Close modal and show success
-                closeAddPartnerModal();
-                showNotification(`✅ Partner "${partnerData.name}" added successfully!`);
-            });
-
-            // Close modal when clicking outside
-            document.getElementById('addPartnerModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeAddPartnerModal();
-                }
-            });
-
-            // Handle edit form submission
-            document.getElementById('editPartnerForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                const partnerIndex = parseInt(document.getElementById('editPartnerIndex').value);
-                const updatedPartnerData = {
-                    name: document.getElementById('editPartnerName').value,
-                    website: document.getElementById('editPartnerWebsite').value,
-                    category: document.getElementById('editPartnerCategory').value,
-                    tier: document.getElementById('editPartnerTier').value,
-                    description: document.getElementById('editPartnerDescription').value,
-                    contact: {
-                        name: document.getElementById('editContactName').value,
-                        role: document.getElementById('editContactRole').value,
-                        email: document.getElementById('editContactEmail').value,
-                        phone: document.getElementById('editContactPhone').value
-                    },
-                    commission: {
-                        rate: document.getElementById('editCommissionRate').value,
-                        threshold: document.getElementById('editDealThreshold').value
-                    },
-                    tags: document.getElementById('editPartnerTags').value.split(',').map(tag => tag.trim()).filter(tag => tag)
-                };
-
-                // Update the partner data
-                partnersData[partnerIndex] = updatedPartnerData;
-
-                // Update the table row
-                updatePartnerInTable(partnerIndex, updatedPartnerData);
-
-                // Close modal and show success
-                closeEditPartnerModal();
-                showNotification(`✅ Partner "${updatedPartnerData.name}" updated successfully!`);
-            });
-
-            // Close edit modal when clicking outside
-            document.getElementById('editPartnerModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeEditPartnerModal();
-                }
-            });
-        });
-
-        function addPartnerToTable(partnerData) {
-            const tableBody = document.querySelector('#tab-partners-directory tbody');
-            const newRow = document.createElement('tr');
-
-            const categoryColors = {
-                'FinOps': 'badge-info',
-                'Security': 'badge-warning',
-                'Observability': 'badge-info',
-                'DevOps': 'badge-success',
-                'Data': 'badge-info'
-            };
-
-            const tierLabels = {
-                'strategic': 'Strategic Partner',
-                'tactical': 'Tactical Partner',
-                'emerging': 'Emerging Partner'
-            };
-
-            newRow.innerHTML = `
-                <td><strong>${partnerData.name}</strong><br><small>${tierLabels[partnerData.tier] || partnerData.tier}</small></td>
-                <td><span class="badge ${categoryColors[partnerData.category] || 'badge-info'}">${partnerData.category}</span></td>
-                <td><span class="badge badge-info">New</span></td>
-                <td><strong>$0</strong></td>
-                <td><strong>0</strong></td>
-                <td><span class="badge badge-success">Active</span></td>
-                <td>
-                    <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;">View</button>
-                    <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;">Edit</button>
-                </td>
-            `;
-
-            tableBody.appendChild(newRow);
-        }
-
-        function updatePartnerInTable(partnerIndex, partnerData) {
-            const tableBody = document.querySelector('#tab-partners-directory tbody');
-            const rows = tableBody.querySelectorAll('tr');
-
-            if (rows[partnerIndex]) {
-                const categoryColors = {
-                    'FinOps': 'badge-info',
-                    'Security': 'badge-warning',
-                    'Observability': 'badge-info',
-                    'DevOps': 'badge-success',
-                    'Data': 'badge-info'
-                };
-
-                const tierLabels = {
-                    'strategic': 'Strategic Partner',
-                    'tactical': 'Tactical Partner',
-                    'emerging': 'Emerging Partner'
-                };
-
-                rows[partnerIndex].innerHTML = `
-                    <td><strong>${partnerData.name}</strong><br><small>${tierLabels[partnerData.tier] || partnerData.tier}</small></td>
-                    <td><span class="badge ${categoryColors[partnerData.category] || 'badge-info'}">${partnerData.category}</span></td>
-                    <td><span class="badge badge-success">95/100</span></td>
-                    <td><strong>$1.25M</strong></td>
-                    <td><strong>8</strong></td>
-                    <td><span class="badge badge-success">Active</span></td>
-                    <td>
-                        <button class="btn btn-secondary" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="viewPartner(${partnerIndex})">View</button>
-                        <button class="btn" style="margin: 0; padding: 6px 12px; font-size: 12px;" onclick="editPartner(${partnerIndex})">Edit</button>
-                    </td>
-                `;
-            }
         }
 
         // Add CSS animations
