@@ -2060,6 +2060,12 @@ class OpportunityManager {
         ];
 
         this.filteredOpportunities = [...this.opportunities];
+
+        // Force immediate count update after data load
+        console.log('📊 Forcing immediate pipeline count update after sample data load');
+        setTimeout(() => {
+            this.updatePipelineCounts();
+        }, 100);
     }
 }
 
