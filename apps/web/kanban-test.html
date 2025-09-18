@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Kanban Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .kanban-board {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .kanban-column {
+            min-width: 280px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .kanban-header {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .kanban-header__title {
+            font-weight: 600;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stage-count {
+            background: #3b82f6;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .kanban-header__value {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .kanban-body {
+            padding: 16px;
+            min-height: 400px;
+            flex: 1;
+        }
+
+        .opportunity-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 12px;
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .opportunity-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        }
+
+        .opportunity-card:active {
+            cursor: grabbing;
+        }
+
+        .opportunity-card__header {
+            margin-bottom: 8px;
+        }
+
+        .opportunity-card__title {
+            font-weight: 500;
+            color: #111827;
+            font-size: 14px;
+        }
+
+        .opportunity-card__content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .opportunity-card__value {
+            font-weight: 600;
+            color: #059669;
+            font-size: 16px;
+        }
+
+        .opportunity-card__probability {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        /* Stage specific colors */
+        .kanban-column[data-stage="lead"] .stage-count { background: #6b7280; }
+        .kanban-column[data-stage="demo"] .stage-count { background: #3b82f6; }
+        .kanban-column[data-stage="poc"] .stage-count { background: #f59e0b; }
+        .kanban-column[data-stage="proposal"] .stage-count { background: #8b5cf6; }
+        .kanban-column[data-stage="closed_won"] .stage-count { background: #10b981; }
+
+        /* Sortable ghost styles */
+        .sortable-ghost {
+            opacity: 0.4;
+        }
+
+        .sortable-chosen {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1 class="page-title">🚀 Simple Kanban Test</h1>
+        <p class="page-subtitle">Clean implementation with reliable drag & drop count updates</p>
+    </div>
+
+    <div class="kanban-board">
+        <!-- Lead Column -->
+        <div class="kanban-column" data-stage="lead">
+            <div class="kanban-header">
+                <div class="kanban-header__title">
+                    Lead
+                    <span class="stage-count" id="lead-count">-</span>
+                </div>
+                <div class="kanban-header__value" id="lead-value">-</div>
+            </div>
+            <div class="kanban-body" id="lead-column">
+                <!-- Cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Demo Column -->
+        <div class="kanban-column" data-stage="demo">
+            <div class="kanban-header">
+                <div class="kanban-header__title">
+                    Demo
+                    <span class="stage-count" id="demo-count">-</span>
+                </div>
+                <div class="kanban-header__value" id="demo-value">-</div>
+            </div>
+            <div class="kanban-body" id="demo-column">
+                <!-- Cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- POC Column -->
+        <div class="kanban-column" data-stage="poc">
+            <div class="kanban-header">
+                <div class="kanban-header__title">
+                    POC
+                    <span class="stage-count" id="poc-count">-</span>
+                </div>
+                <div class="kanban-header__value" id="poc-value">-</div>
+            </div>
+            <div class="kanban-body" id="poc-column">
+                <!-- Cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Proposal Column -->
+        <div class="kanban-column" data-stage="proposal">
+            <div class="kanban-header">
+                <div class="kanban-header__title">
+                    Proposal
+                    <span class="stage-count" id="proposal-count">-</span>
+                </div>
+                <div class="kanban-header__value" id="proposal-value">-</div>
+            </div>
+            <div class="kanban-body" id="proposal-column">
+                <!-- Cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Closed Won Column -->
+        <div class="kanban-column" data-stage="closed_won">
+            <div class="kanban-header">
+                <div class="kanban-header__title">
+                    Closed Won
+                    <span class="stage-count" id="won-count">-</span>
+                </div>
+                <div class="kanban-header__value" id="won-value">-</div>
+            </div>
+            <div class="kanban-body" id="won-column">
+                <!-- Cards will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Sortable.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+
+    <!-- Include our simple kanban implementation -->
+    <script src="/src/js/kanban-simple.js"></script>
+</body>
+</html>
