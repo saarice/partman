@@ -159,8 +159,16 @@ class OpportunityManager {
             return;
         }
 
-        // Test each column exists
-        const columnIds = ['lead-column', 'demo-column', 'poc-column', 'proposal-column', 'won-column'];
+        // Column to stage mapping
+        const columnStageMapping = {
+            'lead-column': 'lead',
+            'demo-column': 'demo',
+            'poc-column': 'poc',
+            'proposal-column': 'proposal',
+            'won-column': 'closed_won'
+        };
+
+        const columnIds = Object.keys(columnStageMapping);
         console.log('🔍 Checking columns...');
 
         columnIds.forEach(id => {
@@ -168,7 +176,7 @@ class OpportunityManager {
             console.log(`${id}:`, el ? 'EXISTS' : 'MISSING');
         });
 
-        // Minimal setup with maximum debugging
+        // Setup with comprehensive onEnd handler
         const instances = [];
 
         columnIds.forEach(id => {
@@ -178,16 +186,47 @@ class OpportunityManager {
 
                 try {
                     const instance = new window.Sortable(el, {
-                        group: 'test-group',
+                        group: 'kanban-pipeline',
+                        animation: 150,
                         onStart: (evt) => {
                             console.log(`🎯 DRAG START: ${evt.item.dataset.opportunityId}`);
                         },
                         onEnd: (evt) => {
-                            console.log(`🎯 DRAG END: ${evt.item.dataset.opportunityId} from ${evt.from.id} to ${evt.to.id}`);
+                            const opportunityId = evt.item.dataset.opportunityId;
+                            const fromColumnId = evt.from.id;
+                            const toColumnId = evt.to.id;
 
-                            // Minimal update - just log, no complex logic
-                            const oppId = evt.item.dataset.opportunityId;
-                            console.log(`📝 Would update ${oppId}`);
+                            console.log(`🎯 DRAG END: ${opportunityId} from ${fromColumnId} to ${toColumnId}`);
+
+                            // Only proceed if actually moved to different column
+                            if (fromColumnId === toColumnId) {
+                                console.log('📍 Same column - no update needed');
+                                return;
+                            }
+
+                            // Map column to stage
+                            const fromStage = columnStageMapping[fromColumnId];
+                            const newStage = columnStageMapping[toColumnId];
+
+                            if (!newStage) {
+                                console.error(`❌ Unknown target column: ${toColumnId}`);
+                                return;
+                            }
+
+                            console.log(`📝 Updating ${opportunityId}: ${fromStage} → ${newStage}`);
+
+                            // Update in-memory model
+                            this.updateOpportunityModel(opportunityId, newStage);
+
+                            // Recompute and update counts/values by querying text nodes only
+                            this.updatePipelineCounts();
+
+                            // Optional: async persist (with rollback on failure)
+                            this.persistStageChange(opportunityId, newStage, fromStage)
+                                .catch(error => {
+                                    console.error('❌ Persist failed, rolling back:', error);
+                                    this.rollbackStageChange(opportunityId, fromStage);
+                                });
                         }
                     });
 
@@ -221,33 +260,143 @@ class OpportunityManager {
         return mapping[columnId];
     }
 
-    updateModel(opportunityId, stage) {
+    updateOpportunityModel(opportunityId, newStage) {
         // Update JS data ONLY - no DOM manipulation
         const opportunity = this.opportunities.find(opp => opp.id === opportunityId);
         if (opportunity) {
-            opportunity.stage = stage;
-            opportunity.probability = this.pipelineStages[stage]?.probability || 50;
+            const oldStage = opportunity.stage;
+            opportunity.stage = newStage;
+            opportunity.probability = this.pipelineStages[newStage]?.probability || 50;
+            opportunity.updatedAt = new Date();
+
+            // Keep filteredOpportunities in sync
             this.filteredOpportunities = [...this.opportunities];
-            console.log(`📝 Updated ${opportunity.customerName} to ${stage}`);
-            window.showNotification(`Moved to ${this.pipelineStages[stage]?.label}`, 'success');
+
+            console.log(`📝 Updated ${opportunity.customerName}: ${oldStage} → ${newStage} (${opportunity.probability}%)`);
+            window.showNotification(`Moved "${opportunity.customerName}" to ${this.pipelineStages[newStage]?.label}`, 'success');
         }
+    }
+
+    updatePipelineCounts() {
+        // Currency formatter
+        const formatCurrency = (amount) => new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        }).format(amount);
+
+        // Stage to element ID mapping
+        const stageMapping = {
+            'lead': { countId: 'lead-count', valueId: 'lead-value' },
+            'demo': { countId: 'demo-count', valueId: 'demo-value' },
+            'poc': { countId: 'poc-count', valueId: 'poc-value' },
+            'proposal': { countId: 'proposal-count', valueId: 'proposal-value' },
+            'closed_won': { countId: 'won-count', valueId: 'won-value' }
+        };
+
+        let totalCount = 0;
+        let totalValue = 0;
+
+        // Update each stage by querying text nodes only
+        Object.entries(stageMapping).forEach(([stage, { countId, valueId }]) => {
+            const stageOpportunities = this.filteredOpportunities.filter(opp => opp.stage === stage);
+            const count = stageOpportunities.length;
+            const value = stageOpportunities.reduce((sum, opp) => sum + opp.dealValue, 0);
+
+            // Update count text node
+            const countEl = document.getElementById(countId);
+            if (countEl) {
+                countEl.textContent = count.toString();
+            }
+
+            // Update value text node with currency formatting
+            const valueEl = document.getElementById(valueId);
+            if (valueEl) {
+                valueEl.textContent = formatCurrency(value);
+            }
+
+            totalCount += count;
+            totalValue += value;
+
+            console.log(`📊 ${stage}: ${count} opportunities, ${formatCurrency(value)}`);
+        });
+
+        // Update overall pipeline metrics if they exist
+        const pipelineCountEl = document.getElementById('pipeline-count');
+        if (pipelineCountEl) {
+            pipelineCountEl.textContent = totalCount.toString();
+        }
+
+        const pipelineValueEl = document.getElementById('pipeline-value');
+        if (pipelineValueEl) {
+            pipelineValueEl.textContent = formatCurrency(totalValue);
+        }
+
+        console.log(`📊 Total Pipeline: ${totalCount} opportunities, ${formatCurrency(totalValue)}`);
+    }
+
+    async persistStageChange(opportunityId, newStage, fromStage) {
+        try {
+            console.log(`💾 Persisting stage change for ${opportunityId}: ${fromStage} → ${newStage}`);
+
+            // Simulate API call
+            const response = await fetch(`/api/opportunities/${opportunityId}/stage`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.getAuthToken()}`
+                },
+                body: JSON.stringify({
+                    stage: newStage,
+                    probability: this.pipelineStages[newStage]?.probability || 50,
+                    updatedAt: new Date().toISOString(),
+                    previousStage: fromStage
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log(`✅ Stage change persisted successfully:`, result);
+
+            return result;
+        } catch (error) {
+            console.error(`❌ Failed to persist stage change:`, error);
+            throw error;
+        }
+    }
+
+    rollbackStageChange(opportunityId, originalStage) {
+        console.log(`↩️ Rolling back ${opportunityId} to ${originalStage}`);
+
+        // Revert the in-memory model
+        const opportunity = this.opportunities.find(opp => opp.id === opportunityId);
+        if (opportunity) {
+            opportunity.stage = originalStage;
+            opportunity.probability = this.pipelineStages[originalStage]?.probability || 50;
+            opportunity.updatedAt = new Date();
+
+            // Keep filteredOpportunities in sync
+            this.filteredOpportunities = [...this.opportunities];
+
+            // Recompute counts after rollback
+            this.updatePipelineCounts();
+
+            window.showNotification(`Failed to update - reverted "${opportunity.customerName}" to ${this.pipelineStages[originalStage]?.label}`, 'error');
+        }
+    }
+
+    getAuthToken() {
+        // In a real app, this would get the token from auth store/localStorage
+        return 'mock-jwt-token-system-owner';
     }
 
     updateCountsAndKpis() {
         // Update counts/KPIs only - NEVER re-render cards
-        this.updateKanbanCounts();
+        this.updatePipelineCounts();
         this.updateKPIs();
-    }
-
-    getStageFromColumnId(columnId) {
-        const mapping = {
-            'lead-column': 'lead',
-            'demo-column': 'demo',
-            'poc-column': 'poc',
-            'proposal-column': 'proposal',
-            'won-column': 'closed_won'
-        };
-        return mapping[columnId];
     }
 
 
@@ -266,29 +415,8 @@ class OpportunityManager {
 
 
     updateKanbanCounts() {
-        // Update only counts and totals without re-rendering cards
-        const columnMapping = {
-            'lead': 'lead-column',
-            'demo': 'demo-column',
-            'poc': 'poc-column',
-            'proposal': 'proposal-column',
-            'closed_won': 'won-column'
-        };
-
-        Object.entries(columnMapping).forEach(([stage, columnId]) => {
-            const stageOpportunities = this.filteredOpportunities.filter(opp => opp.stage === stage);
-
-            // Update stage headers with correct ID mapping
-            const stageForId = stage.replace('_', '-');
-            const countEl = document.getElementById(`${stageForId}-count`);
-            const valueEl = document.getElementById(`${stageForId}-value`);
-
-            if (countEl) countEl.textContent = stageOpportunities.length;
-            if (valueEl) {
-                const totalValue = stageOpportunities.reduce((sum, opp) => sum + opp.dealValue, 0);
-                valueEl.textContent = this.formatCurrency(totalValue);
-            }
-        });
+        // Delegate to the new comprehensive method
+        this.updatePipelineCounts();
     }
 
     validateStageProgression(fromStage, toStage) {
@@ -424,7 +552,7 @@ class OpportunityManager {
 
         // Always update counts (safe)
         console.log('📊 Updating counts...');
-        this.updateKanbanCounts();
+        this.updatePipelineCounts();
         console.log('✅ renderKanbanView complete');
     }
 
@@ -628,7 +756,7 @@ class OpportunityManager {
         if (this.currentView === 'kanban' && this.sortableInstances.length > 0) {
             console.log('🎯 FILTER UPDATE - preserving Sortable, updating counts only');
             // NO DOM manipulation - just update counts
-            this.updateKanbanCounts();
+            this.updatePipelineCounts();
         } else {
             console.log('🔄 View re-render (safe - not kanban or first time)');
             this.renderCurrentView();
