@@ -11,7 +11,7 @@ interface SimpleAuthState {
   isAuthenticated: boolean;
 }
 
-export const useAuthStore = create<SimpleAuthState>()((set) => ({
+export const useAuthStore = create<SimpleAuthState>()(() => ({
   user: {
     id: 'system-owner-1',
     firstName: 'System',
