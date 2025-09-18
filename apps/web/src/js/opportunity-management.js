@@ -190,43 +190,76 @@ class OpportunityManager {
                         animation: 150,
                         onStart: (evt) => {
                             console.log(`🎯 DRAG START: ${evt.item.dataset.opportunityId}`);
+                            console.log(`  Item:`, evt.item);
+                            console.log(`  Dataset:`, evt.item.dataset);
                         },
                         onEnd: (evt) => {
+                            console.log(`🎯 MAIN SYSTEM DRAG END:`);
+
                             const opportunityId = evt.item.dataset.opportunityId;
                             const fromColumnId = evt.from.id;
                             const toColumnId = evt.to.id;
 
-                            console.log(`🎯 DRAG END: ${opportunityId} from ${fromColumnId} to ${toColumnId}`);
+                            console.log(`  ID: ${opportunityId}, From: ${fromColumnId}, To: ${toColumnId}`);
 
-                            // Only proceed if actually moved to different column
+                            // Skip if same column
                             if (fromColumnId === toColumnId) {
-                                console.log('📍 Same column - no update needed');
+                                console.log('  📍 Same column, no update needed');
                                 return;
                             }
 
-                            // Map column to stage
-                            const fromStage = columnStageMapping[fromColumnId];
-                            const newStage = columnStageMapping[toColumnId];
+                            // Get stage names using the same mapping as SimpleKanban
+                            const stageMap = {
+                                'lead-column': 'lead',
+                                'demo-column': 'demo',
+                                'poc-column': 'poc',
+                                'proposal-column': 'proposal',
+                                'won-column': 'closed_won'
+                            };
 
-                            if (!newStage) {
-                                console.error(`❌ Unknown target column: ${toColumnId}`);
+                            const fromStage = stageMap[fromColumnId];
+                            const toStage = stageMap[toColumnId];
+
+                            if (!toStage) {
+                                console.error(`  ❌ Unknown target stage for ${toColumnId}`);
                                 return;
                             }
 
-                            console.log(`📝 Updating ${opportunityId}: ${fromStage} → ${newStage}`);
+                            console.log(`  🔄 BEFORE UPDATE - Looking for opportunity ${opportunityId}`);
+                            const beforeOpp = this.opportunities.find(opp => opp.id === opportunityId);
+                            if (beforeOpp) {
+                                console.log(`    Found: ${beforeOpp.customerName} - stage: ${beforeOpp.stage}`);
+                            } else {
+                                console.log(`    NOT FOUND in ${this.opportunities.length} opportunities`);
+                                console.log('    Available IDs:', this.opportunities.slice(0, 5).map(o => o.id));
+                                return;
+                            }
 
-                            // Update in-memory model
-                            this.updateOpportunityModel(opportunityId, newStage);
+                            // Update the opportunity using SimpleKanban approach
+                            beforeOpp.stage = toStage;
+                            beforeOpp.probability = this.pipelineStages[toStage]?.probability || 50;
 
-                            // Recompute and update counts/values by querying text nodes only
+                            // Keep filtered list in sync - preserve active filters
+                            this.refreshFilteredOpportunities();
+
+                            console.log(`  🔄 AFTER UPDATE - ${beforeOpp.customerName} - stage: ${beforeOpp.stage}`);
+
+                            // Check if the dragged opportunity is still visible after filtering
+                            const stillVisible = this.filteredOpportunities.find(opp => opp.id === opportunityId);
+                            if (!stillVisible) {
+                                console.log(`  ⚠️ Note: ${beforeOpp.customerName} no longer matches active filters`);
+                                if (window.showNotification) {
+                                    window.showNotification(`${beforeOpp.customerName} moved to ${this.pipelineStages[toStage]?.label} (filtered from view)`, 'info');
+                                }
+                            }
+
+                            // Update kanban cards to reflect filtered changes
+                            this.updateKanbanCards();
+
+                            // Update counts immediately
                             this.updatePipelineCounts();
 
-                            // Optional: async persist (with rollback on failure)
-                            this.persistStageChange(opportunityId, newStage, fromStage)
-                                .catch(error => {
-                                    console.error('❌ Persist failed, rolling back:', error);
-                                    this.rollbackStageChange(opportunityId, fromStage);
-                                });
+                            console.log(`  ✅ Updated ${opportunityId}: ${fromStage} → ${toStage}`);
                         }
                     });
 
@@ -262,19 +295,31 @@ class OpportunityManager {
 
     updateOpportunityModel(opportunityId, newStage) {
         // Update JS data ONLY - no DOM manipulation
+        console.log(`🔄 UPDATE MODEL: Looking for opportunity ${opportunityId}`);
+        console.log(`🔄 Total opportunities: ${this.opportunities.length}`);
+
         const opportunity = this.opportunities.find(opp => opp.id === opportunityId);
         if (opportunity) {
             const oldStage = opportunity.stage;
+            console.log(`📝 BEFORE UPDATE: ${opportunity.customerName} - stage: ${oldStage}`);
+
             opportunity.stage = newStage;
             opportunity.probability = this.pipelineStages[newStage]?.probability || 50;
             opportunity.updatedAt = new Date();
+
+            console.log(`📝 AFTER UPDATE: ${opportunity.customerName} - stage: ${opportunity.stage}`);
 
             // Keep filteredOpportunities in sync by reapplying filter logic
             // This preserves any active filters without triggering a re-render
             this.refreshFilteredOpportunities();
 
-            console.log(`📝 Updated ${opportunity.customerName}: ${oldStage} → ${newStage} (${opportunity.probability}%)`);
-            window.showNotification(`Moved "${opportunity.customerName}" to ${this.pipelineStages[newStage]?.label}`, 'success');
+            console.log(`✅ Updated ${opportunity.customerName}: ${oldStage} → ${newStage} (${opportunity.probability}%)`);
+            if (window.showNotification) {
+                window.showNotification(`Moved "${opportunity.customerName}" to ${this.pipelineStages[newStage]?.label}`, 'success');
+            }
+        } else {
+            console.error(`❌ Opportunity ${opportunityId} not found in data model!`);
+            console.log('Available opportunities:', this.opportunities.map(o => ({ id: o.id, name: o.customerName })));
         }
     }
 
@@ -332,22 +377,9 @@ class OpportunityManager {
     }
 
     updatePipelineCounts() {
-        console.log('🔧 DEBUG: updatePipelineCounts called');
-        console.log('🔧 DEBUG: filteredOpportunities length:', this.filteredOpportunities ? this.filteredOpportunities.length : 'undefined');
+        console.log('📊 MAIN SYSTEM: Updating counts...');
 
-        if (this.filteredOpportunities) {
-            console.log('🔧 DEBUG: First few opportunities:', this.filteredOpportunities.slice(0, 3).map(o => ({ name: o.customerName, stage: o.stage, value: o.dealValue })));
-        }
-
-        // Currency formatter
-        const formatCurrency = (amount) => new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            maximumFractionDigits: 0
-        }).format(amount);
-
-        // Stage to element ID mapping
-        const stageMapping = {
+        const stageCountMap = {
             'lead': { countId: 'lead-count', valueId: 'lead-value' },
             'demo': { countId: 'demo-count', valueId: 'demo-value' },
             'poc': { countId: 'poc-count', valueId: 'poc-value' },
@@ -355,52 +387,36 @@ class OpportunityManager {
             'closed_won': { countId: 'won-count', valueId: 'won-value' }
         };
 
-        let totalCount = 0;
-        let totalValue = 0;
+        console.log(`  🔍 Total filteredOpportunities: ${this.filteredOpportunities.length}`);
 
-        // Update each stage by querying text nodes only
-        Object.entries(stageMapping).forEach(([stage, { countId, valueId }]) => {
-            const stageOpportunities = this.filteredOpportunities.filter(opp => opp.stage === stage);
-            const count = stageOpportunities.length;
-            const value = stageOpportunities.reduce((sum, opp) => sum + (Number(opp.dealValue) || 0), 0);
+        Object.entries(stageCountMap).forEach(([stage, { countId, valueId }]) => {
+            const stageOpps = this.filteredOpportunities.filter(opp => opp.stage === stage);
+            const count = stageOpps.length;
+            const value = stageOpps.reduce((sum, opp) => sum + opp.dealValue, 0);
 
-            console.log(`🔧 DEBUG: Stage ${stage} - count: ${count}, value: ${value}`);
+            console.log(`  🔢 ${stage}: found ${count} opportunities, total value: $${value}`);
 
-            // Update count text node
+            // Update count
             const countEl = document.getElementById(countId);
             if (countEl) {
-                console.log(`🔧 DEBUG: Updating ${countId} from '${countEl.textContent}' to '${count}'`);
+                const oldCount = countEl.textContent;
                 countEl.textContent = count.toString();
+                console.log(`  📊 ${stage} count: ${oldCount} → ${count}`);
             } else {
-                console.log(`🔧 DEBUG: Element ${countId} not found!`);
+                console.error(`  ❌ Count element ${countId} not found`);
             }
 
-            // Update value text node with currency formatting
+            // Update value
             const valueEl = document.getElementById(valueId);
             if (valueEl) {
-                const formattedValue = formatCurrency(value);
-                console.log(`🔧 DEBUG: Updating ${valueId} from '${valueEl.textContent}' to '${formattedValue}'`);
-                valueEl.textContent = formattedValue;
+                const oldValue = valueEl.textContent;
+                const newValue = this.formatCurrency(value);
+                valueEl.textContent = newValue;
+                console.log(`  💰 ${stage} value: ${oldValue} → ${newValue}`);
             } else {
-                console.log(`🔧 DEBUG: Element ${valueId} not found!`);
+                console.error(`  ❌ Value element ${valueId} not found`);
             }
-
-            totalCount += count;
-            totalValue += value;
         });
-
-        // Update overall pipeline metrics if they exist
-        const pipelineCountEl = document.getElementById('pipeline-count');
-        if (pipelineCountEl) {
-            pipelineCountEl.textContent = totalCount.toString();
-        }
-
-        const pipelineValueEl = document.getElementById('pipeline-value');
-        if (pipelineValueEl) {
-            pipelineValueEl.textContent = formatCurrency(totalValue);
-        }
-
-        console.log(`🔧 DEBUG: Total pipeline - count: ${totalCount}, value: ${formatCurrency(totalValue)}`);
     }
 
     async persistStageChange(opportunityId, newStage, fromStage) {
@@ -459,6 +475,91 @@ class OpportunityManager {
     getAuthToken() {
         // In a real app, this would get the token from auth store/localStorage
         return 'mock-jwt-token-system-owner';
+    }
+
+    // Test method to simulate drag operation
+    testDragUpdate() {
+        console.log('🧪 TESTING MAIN SYSTEM: Simulating drag update...');
+
+        if (!this.opportunities || this.opportunities.length === 0) {
+            console.error('❌ No opportunities found for test');
+            return;
+        }
+
+        // Check if filters are active
+        const partnerFilter = document.getElementById('partner-filter').value;
+        const assigneeFilter = document.getElementById('assignee-filter').value;
+        const valueFilter = document.getElementById('value-filter').value;
+        const dateFilter = document.getElementById('date-filter').value;
+        const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+        const hasActiveFilters = partnerFilter || assigneeFilter || valueFilter || dateFilter || searchTerm;
+
+        if (hasActiveFilters) {
+            console.log('🔍 Active filters detected, testing with filtered data');
+            console.log(`  Partner: ${partnerFilter}, Assignee: ${assigneeFilter}, Value: ${valueFilter}, Date: ${dateFilter}, Search: "${searchTerm}"`);
+        }
+
+        // Find the first lead opportunity from filtered results
+        const leadOpp = this.filteredOpportunities.find(opp => opp.stage === 'lead');
+        if (!leadOpp) {
+            console.error('❌ No lead opportunities found in filtered results for test');
+            console.log('Available stages:', [...new Set(this.filteredOpportunities.map(o => o.stage))]);
+            return;
+        }
+
+        console.log(`📊 BEFORE: ${leadOpp.customerName} is in stage ${leadOpp.stage}`);
+        console.log(`📊 Before filtered count: ${this.filteredOpportunities.length}`);
+
+        // Simulate moving it to demo (update the original data)
+        leadOpp.stage = 'demo';
+        leadOpp.probability = this.pipelineStages['demo']?.probability || 25;
+
+        // Refresh filtered data to respect active filters
+        this.refreshFilteredOpportunities();
+
+        console.log(`📊 AFTER: ${leadOpp.customerName} is in stage ${leadOpp.stage}`);
+        console.log(`📊 After filtered count: ${this.filteredOpportunities.length}`);
+
+        // Check if still visible after filters
+        const stillVisible = this.filteredOpportunities.find(opp => opp.id === leadOpp.id);
+        if (!stillVisible && hasActiveFilters) {
+            console.log(`⚠️ ${leadOpp.customerName} no longer matches active filters after move`);
+        }
+
+        // Update counts
+        this.updatePipelineCounts();
+
+        console.log('🧪 Test complete - check if counts updated correctly with filters');
+    }
+
+    updateKanbanCards() {
+        console.log('🎨 UPDATING KANBAN CARDS (preserving Sortable)...');
+
+        const columnMapping = {
+            'lead': 'lead-column',
+            'demo': 'demo-column',
+            'poc': 'poc-column',
+            'proposal': 'proposal-column',
+            'closed_won': 'won-column'
+        };
+
+        Object.entries(columnMapping).forEach(([stage, columnId]) => {
+            const column = document.getElementById(columnId);
+            const stageOpportunities = this.filteredOpportunities.filter(opp => opp.stage === stage);
+
+            console.log(`  📦 Updating ${stage} (${stageOpportunities.length} cards) in ${columnId}`);
+
+            if (column) {
+                // Update innerHTML while preserving Sortable instances
+                column.innerHTML = stageOpportunities.map(opp => this.createOpportunityCard(opp)).join('');
+                console.log(`  ✅ ${columnId} cards updated`);
+            } else {
+                console.error(`  ❌ Column ${columnId} not found!`);
+            }
+        });
+
+        console.log('✅ updateKanbanCards complete');
     }
 
     updateCountsAndKpis() {
@@ -822,8 +923,9 @@ class OpportunityManager {
 
         // NEVER re-render kanban after init - only update data/counts
         if (this.currentView === 'kanban' && this.sortableInstances.length > 0) {
-            console.log('🎯 FILTER UPDATE - preserving Sortable, updating counts only');
-            // NO DOM manipulation - just update counts
+            console.log('🎯 FILTER UPDATE - preserving Sortable, updating cards and counts');
+            // Update kanban cards without destroying Sortable instances
+            this.updateKanbanCards();
             this.updatePipelineCounts();
         } else {
             console.log('🔄 View re-render (safe - not kanban or first time)');
