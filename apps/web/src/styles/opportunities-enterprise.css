@@ -1842,7 +1842,9 @@ html body div#opportunity-modal.modal .modal__container,
 html body div#detail-modal.modal .modal__container,
 html body div#forecast-modal.modal .modal__container,
 html body div#pipeline-report-modal.modal .modal__container {
-  position: relative !important;
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
   width: 90vw !important;
   max-width: 600px !important;
   min-width: 400px !important;
@@ -1862,6 +1864,7 @@ html body div#pipeline-report-modal.modal .modal__container {
   flex-direction: column !important;
   animation: none !important;
   padding: 0 !important;
+  z-index: 10001 !important;
 }
 
 /* ANIMATION TRIGGER - Move container to visible position - MAX SPECIFICITY */
