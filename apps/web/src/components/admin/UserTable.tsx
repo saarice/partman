@@ -21,7 +21,7 @@ import {
   PersonPin as ImpersonateIcon,
   Security as SecurityIcon
 } from '@mui/icons-material';
-import { User, UserRole } from '../../../../../packages/shared/src/types/user';
+import type { User, UserRole } from '../../../../../packages/shared/src/types/user';
 
 interface UserTableProps {
   users: User[];

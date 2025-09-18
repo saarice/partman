@@ -30,7 +30,7 @@ import {
   PersonAdd as PersonAddIcon,
   AdminPanelSettings as AdminIcon
 } from '@mui/icons-material';
-import { UserRole, User } from '../../../../../packages/shared/src/types/user';
+import type { UserRole, User } from '../../../../../packages/shared/src/types/user';
 import UserTable from '../../components/admin/UserTable';
 import { useAuthStore } from '../../stores/authStoreSimple';
 

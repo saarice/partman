@@ -269,12 +269,67 @@ class OpportunityManager {
             opportunity.probability = this.pipelineStages[newStage]?.probability || 50;
             opportunity.updatedAt = new Date();
 
-            // Keep filteredOpportunities in sync
-            this.filteredOpportunities = [...this.opportunities];
+            // Keep filteredOpportunities in sync by reapplying filter logic
+            // This preserves any active filters without triggering a re-render
+            this.refreshFilteredOpportunities();
 
             console.log(`📝 Updated ${opportunity.customerName}: ${oldStage} → ${newStage} (${opportunity.probability}%)`);
             window.showNotification(`Moved "${opportunity.customerName}" to ${this.pipelineStages[newStage]?.label}`, 'success');
         }
+    }
+
+    refreshFilteredOpportunities() {
+        // Extract and reapply current filter logic without triggering view updates
+        const partnerFilter = document.getElementById('partner-filter').value;
+        const assigneeFilter = document.getElementById('assignee-filter').value;
+        const valueFilter = document.getElementById('value-filter').value;
+        const dateFilter = document.getElementById('date-filter').value;
+        const searchTerm = document.getElementById('search-input').value.toLowerCase();
+
+        this.filteredOpportunities = this.opportunities.filter(opp => {
+            // Partner filter
+            if (partnerFilter && opp.partnerId !== partnerFilter) return false;
+
+            // Assignee filter
+            if (assigneeFilter && opp.assignedUserId !== assigneeFilter) return false;
+
+            // Value filter
+            if (valueFilter) {
+                const value = opp.dealValue;
+                switch (valueFilter) {
+                    case 'small': if (value >= 50000) return false; break;
+                    case 'medium': if (value < 50000 || value > 200000) return false; break;
+                    case 'large': if (value < 200000 || value > 500000) return false; break;
+                    case 'enterprise': if (value <= 500000) return false; break;
+                }
+            }
+
+            // Date filter
+            if (dateFilter) {
+                const closeDate = new Date(opp.expectedCloseDate);
+                const now = new Date();
+                const diffTime = closeDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                switch (dateFilter) {
+                    case 'overdue': if (diffDays >= 0) return false; break;
+                    case 'thisweek': if (diffDays < 0 || diffDays > 7) return false; break;
+                    case 'thismonth': if (diffDays < 0 || diffDays > 30) return false; break;
+                    case 'nextmonth': if (diffDays < 30 || diffDays > 60) return false; break;
+                    case 'thisquarter': if (diffDays < 0 || diffDays > 90) return false; break;
+                }
+            }
+
+            // Search filter
+            if (searchTerm) {
+                const searchableText = `${opp.customerName} ${opp.customerContact?.company || ''} ${this.getPartnerName(opp.partnerId)}`.toLowerCase();
+                if (!searchableText.includes(searchTerm)) return false;
+            }
+
+            return true;
+        });
+
+        console.log(`🔄 Refreshed filteredOpportunities: ${this.filteredOpportunities.length} opportunities`);
     }
 
     updatePipelineCounts() {
@@ -394,8 +449,8 @@ class OpportunityManager {
             opportunity.probability = this.pipelineStages[originalStage]?.probability || 50;
             opportunity.updatedAt = new Date();
 
-            // Keep filteredOpportunities in sync
-            this.filteredOpportunities = [...this.opportunities];
+            // Keep filteredOpportunities in sync by reapplying filters
+            this.refreshFilteredOpportunities();
 
             // Recompute counts after rollback
             this.updatePipelineCounts();

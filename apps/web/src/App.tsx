@@ -24,6 +24,29 @@ function App() {
           element={isAuthenticated ? <Navigate to="/dashboards/overall" /> : <Login />}
         />
 
+        {/* Admin Routes - Move to top for priority */}
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <AppLayout title="User Management">
+                <UserManagement />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/test"
+          element={
+            <ProtectedRoute>
+              <AppLayout title="Admin Test">
+                <div>Admin Test Route Working!</div>
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+
         {/* Focused Dashboard Routes */}
         <Route
           path="/dashboards/overall"
@@ -88,17 +111,6 @@ function App() {
           }
         />
 
-        {/* Admin Routes */}
-        <Route
-          path="/admin/users"
-          element={
-            <ProtectedRoute>
-              <AppLayout title="User Management">
-                <UserManagement />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
 
         {/* Navigation Test Route (temporary for testing) */}
         <Route

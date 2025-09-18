@@ -91,9 +91,16 @@ const navigationStructure: NavigationItem[] = [
   },
   {
     id: 'admin',
-    label: 'Administration',
+    label: '👨‍💼 User Management',
     icon: <SupervisorAccount />,
     path: '/admin/users',
+    permission: 'system_owner'
+  },
+  {
+    id: 'admin-test',
+    label: '🔧 Admin Test',
+    icon: <SupervisorAccount />,
+    path: '/admin/test',
     permission: 'system_owner'
   }
 ];
@@ -113,8 +120,18 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
   const [expandedItems, setExpandedItems] = useState<string[]>(['dashboards', 'management']);
 
   const handleItemClick = (item: NavigationItem) => {
+    console.log('Navigation item clicked:', item.id, item.path);
+    console.log('Current user:', user);
+    console.log('Has permission:', hasPermission(item.permission));
+
     if (item.path) {
-      navigate(item.path);
+      console.log('Navigating to:', item.path);
+      try {
+        navigate(item.path);
+        console.log('Navigation completed to:', item.path);
+      } catch (error) {
+        console.error('Navigation error:', error);
+      }
       if (isMobile) {
         onToggle();
       }
@@ -134,6 +151,7 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
 
   const hasPermission = (permission?: string) => {
     if (!permission) return true;
+    console.log('Checking permission:', permission, 'User role:', user?.role);
     return user?.role === permission;
   };
 

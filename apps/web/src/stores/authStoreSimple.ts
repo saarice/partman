@@ -9,9 +9,10 @@ interface SimpleAuthState {
   } | null;
   token: string | null;
   isAuthenticated: boolean;
+  logout: () => void;
 }
 
-export const useAuthStore = create<SimpleAuthState>()(() => ({
+export const useAuthStore = create<SimpleAuthState>()((set) => ({
   user: {
     id: 'system-owner-1',
     firstName: 'System',
@@ -19,5 +20,6 @@ export const useAuthStore = create<SimpleAuthState>()(() => ({
     role: 'system_owner'
   },
   token: 'mock-jwt-token-system-owner',
-  isAuthenticated: true
+  isAuthenticated: true,
+  logout: () => set({ user: null, token: null, isAuthenticated: false })
 }));
