@@ -32,10 +32,8 @@
   left: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  z-index: 9999 !important;
+  z-index: 9998 !important;
   display: none;
-  align-items: stretch !important;
-  justify-content: flex-end !important;  /* This overrides the center alignment */
   background: rgba(0, 0, 0, 0.6) !important;
   backdrop-filter: blur(6px) !important;
   -webkit-backdrop-filter: blur(6px) !important;
@@ -48,10 +46,7 @@
   overflow: hidden !important;
 }
 
-/* Explicit override for enterprise.css modal-overlay centering */
-.modal:not(.modal-overlay) {
-  justify-content: flex-end;
-}
+/* Modal backdrop styling */
 
 /* Prevent body scroll when modal is open */
 body.modal-open {
@@ -68,7 +63,9 @@ body.modal-open {
 
 /* Right-Slide Panel */
 .modal__container {
-  position: relative !important;
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
   width: 90vw !important;
   max-width: 600px !important;
   min-width: 400px !important;
@@ -88,6 +85,7 @@ body.modal-open {
   flex-direction: column !important;
   animation: none !important;
   padding: 0 !important;
+  z-index: 9999 !important;
 }
 
 .modal--open .modal__container,
