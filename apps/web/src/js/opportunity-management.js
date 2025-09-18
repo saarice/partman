@@ -278,6 +278,9 @@ class OpportunityManager {
     }
 
     updatePipelineCounts() {
+        console.log('🔧 updatePipelineCounts called');
+        console.log('🔍 filteredOpportunities count:', this.filteredOpportunities.length);
+
         // Currency formatter
         const formatCurrency = (amount) => new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -297,22 +300,35 @@ class OpportunityManager {
         let totalCount = 0;
         let totalValue = 0;
 
+        // Debug: show all opportunities by stage
+        this.filteredOpportunities.forEach(opp => {
+            console.log(`🎯 Opportunity: ${opp.customerName} - Stage: ${opp.stage} - Value: $${opp.dealValue}`);
+        });
+
         // Update each stage by querying text nodes only
         Object.entries(stageMapping).forEach(([stage, { countId, valueId }]) => {
             const stageOpportunities = this.filteredOpportunities.filter(opp => opp.stage === stage);
             const count = stageOpportunities.length;
             const value = stageOpportunities.reduce((sum, opp) => sum + opp.dealValue, 0);
 
+            console.log(`🔍 Stage ${stage} filter result:`, stageOpportunities.map(o => o.customerName));
+
             // Update count text node
             const countEl = document.getElementById(countId);
             if (countEl) {
+                console.log(`📝 Updating ${countId}: ${countEl.textContent} → ${count}`);
                 countEl.textContent = count.toString();
+            } else {
+                console.warn(`❌ Element not found: ${countId}`);
             }
 
             // Update value text node with currency formatting
             const valueEl = document.getElementById(valueId);
             if (valueEl) {
+                console.log(`💰 Updating ${valueId}: ${valueEl.textContent} → ${formatCurrency(value)}`);
                 valueEl.textContent = formatCurrency(value);
+            } else {
+                console.warn(`❌ Element not found: ${valueId}`);
             }
 
             totalCount += count;
