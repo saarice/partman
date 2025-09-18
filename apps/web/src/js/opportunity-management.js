@@ -332,6 +332,13 @@ class OpportunityManager {
     }
 
     updatePipelineCounts() {
+        console.log('🔧 DEBUG: updatePipelineCounts called');
+        console.log('🔧 DEBUG: filteredOpportunities length:', this.filteredOpportunities ? this.filteredOpportunities.length : 'undefined');
+
+        if (this.filteredOpportunities) {
+            console.log('🔧 DEBUG: First few opportunities:', this.filteredOpportunities.slice(0, 3).map(o => ({ name: o.customerName, stage: o.stage, value: o.dealValue })));
+        }
+
         // Currency formatter
         const formatCurrency = (amount) => new Intl.NumberFormat('en-US', {
             style: 'currency',
@@ -357,16 +364,25 @@ class OpportunityManager {
             const count = stageOpportunities.length;
             const value = stageOpportunities.reduce((sum, opp) => sum + (Number(opp.dealValue) || 0), 0);
 
+            console.log(`🔧 DEBUG: Stage ${stage} - count: ${count}, value: ${value}`);
+
             // Update count text node
             const countEl = document.getElementById(countId);
             if (countEl) {
+                console.log(`🔧 DEBUG: Updating ${countId} from '${countEl.textContent}' to '${count}'`);
                 countEl.textContent = count.toString();
+            } else {
+                console.log(`🔧 DEBUG: Element ${countId} not found!`);
             }
 
             // Update value text node with currency formatting
             const valueEl = document.getElementById(valueId);
             if (valueEl) {
-                valueEl.textContent = formatCurrency(value);
+                const formattedValue = formatCurrency(value);
+                console.log(`🔧 DEBUG: Updating ${valueId} from '${valueEl.textContent}' to '${formattedValue}'`);
+                valueEl.textContent = formattedValue;
+            } else {
+                console.log(`🔧 DEBUG: Element ${valueId} not found!`);
             }
 
             totalCount += count;
@@ -383,6 +399,8 @@ class OpportunityManager {
         if (pipelineValueEl) {
             pipelineValueEl.textContent = formatCurrency(totalValue);
         }
+
+        console.log(`🔧 DEBUG: Total pipeline - count: ${totalCount}, value: ${formatCurrency(totalValue)}`);
     }
 
     async persistStageChange(opportunityId, newStage, fromStage) {
@@ -2099,13 +2117,23 @@ class OpportunityManager {
 
 // Initialize the opportunity manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔧 DEBUG: DOM Content Loaded');
     window.opportunityManager = new OpportunityManager();
+    console.log('🔧 DEBUG: OpportunityManager created');
     window.opportunityManager.init();
+    console.log('🔧 DEBUG: OpportunityManager initialized');
 
     // Ensure counts are calculated after all initialization is complete
     setTimeout(() => {
+        console.log('🔧 DEBUG: Timeout executing - checking if manager and method exist');
         if (window.opportunityManager && window.opportunityManager.updatePipelineCounts) {
+            console.log('🔧 DEBUG: Calling updatePipelineCounts from timeout');
             window.opportunityManager.updatePipelineCounts();
+        } else {
+            console.log('🔧 DEBUG: Manager or method not available:', {
+                manager: !!window.opportunityManager,
+                method: !!(window.opportunityManager && window.opportunityManager.updatePipelineCounts)
+            });
         }
     }, 300);
 });
