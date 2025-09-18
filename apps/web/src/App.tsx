@@ -14,6 +14,7 @@ import OpportunitiesPage from './pages/OpportunitiesPage';
 import Opportunities from './pages/Opportunities/Opportunities';
 import UserManagement from './pages/Admin/UserManagement';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import { NavigationTest } from './components/test/NavigationTest';
 
 function App() {
   const { isAuthenticated } = useAuthStore();
@@ -97,6 +98,18 @@ function App() {
             <ProtectedRoute>
               <AppLayout title="User Management">
                 <UserManagement />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Navigation Test Route (temporary for testing) */}
+        <Route
+          path="/test/navigation"
+          element={
+            <ProtectedRoute>
+              <AppLayout title="Navigation Test">
+                <NavigationTest />
               </AppLayout>
             </ProtectedRoute>
           }

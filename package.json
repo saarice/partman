@@ -12,15 +12,45 @@
     "dev:api": "npm run dev --workspace=apps/api",
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces",
-    "lint": "npm run lint --workspaces"
+    "lint": "npm run lint --workspaces",
+    "test:unit": "jest --testPathPattern=\".*\\.test\\.(js|ts)$\"",
+    "test:integration": "jest --testPathPattern=\".*\\.integration\\.test\\.(js|ts)$\"",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "test:all": "npm run test:unit && npm run test:integration",
+    "test:coverage": "jest --coverage",
+    "test:coverage:check": "jest --coverage --coverageThreshold='{\"global\":{\"branches\":90,\"functions\":90,\"lines\":90,\"statements\":90}}'",
+    "qa:commit": "./scripts/qa-gates/master-qa-runner.sh commit",
+    "qa:pr": "./scripts/qa-gates/master-qa-runner.sh pr",
+    "qa:deploy": "./scripts/qa-gates/master-qa-runner.sh deploy",
+    "qa:daily": "./scripts/qa-gates/master-qa-runner.sh daily",
+    "qa:business": "./scripts/qa-gates/master-qa-runner.sh business",
+    "qa:regression": "./scripts/qa-gates/master-qa-runner.sh regression",
+    "qa:full": "./scripts/qa-gates/master-qa-runner.sh full",
+    "test:performance": "echo \"Performance tests not configured\"",
+    "test:performance:dashboard": "curl -w \"%{time_total}\" -o /dev/null -s http://localhost:3000",
+    "test:performance:api": "curl -w \"%{time_total}\" -o /dev/null -s http://localhost:8000/api/v1/health",
+    "test:db:reset": "echo \"Database reset not configured\"",
+    "test:db:ping": "echo \"Database ping not configured\"",
+    "test:security": "npm audit --audit-level=moderate",
+    "type-check": "tsc --noEmit",
+    "check:bundle-size": "echo \"Bundle size check not configured\"",
+    "monitor:start": "./monitoring/start-monitoring.sh",
+    "monitor:stop": "./monitoring/stop-monitoring.sh",
+    "monitor:metrics": "./monitoring/collect-quality-metrics.sh",
+    "monitor:dashboard": "./monitoring/generate-dashboard.sh",
+    "monitor:alerts": "./monitoring/quality-alerts.sh"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.8.0",
+    "concurrently": "^8.2.2",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.3",
     "typescript": "^5.3.0"
   },
   "dependencies": {
-    "uuid": "^13.0.0",
-    "@types/uuid": "^10.0.0"
+    "@types/uuid": "^10.0.0",
+    "uuid": "^13.0.0"
   }
 }

@@ -58,10 +58,20 @@
                     <h1>Partnership Directory</h1>
                     <p>Manage strategic partnerships and track relationship health across your portfolio</p>
                 </div>
-                <button class="btn-primary" id="add-partner-btn">
-                    <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
-                    Add Partner
-                </button>
+                <div class="page-header__actions">
+                    <button class="btn-secondary" id="export-partners-btn">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+                        Export Partners
+                    </button>
+                    <button class="btn-secondary" id="performance-report-btn">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-bar-chart-3"></use></svg>
+                        Performance
+                    </button>
+                    <button class="btn-primary" id="add-partner-btn">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                        Add Partner
+                    </button>
+                </div>
             </div>
 
             <!-- KPI Cards -->
@@ -689,8 +699,8 @@
     </div>
 
     <!-- Add Partner Modal -->
-    <div id="add-partner-modal" class="modal-overlay" style="display: none;">
-        <div class="modal modal--md">
+    <div id="add-partner-modal" class="modal" style="display: none;">
+        <div class="modal__container modal__container--medium">
             <div class="modal__header">
                 <h2 class="modal__title">Add New Partner</h2>
                 <button class="modal__close" id="close-add-partner-modal" aria-label="Close modal">
@@ -789,8 +799,8 @@
     </div>
 
     <!-- Edit Partner Modal -->
-    <div id="edit-partner-modal" class="modal-overlay" style="display: none;">
-        <div class="modal modal--md">
+    <div id="edit-partner-modal" class="modal" style="display: none;">
+        <div class="modal__container modal__container--medium">
             <div class="modal__header">
                 <h2 class="modal__title">Edit Partner</h2>
                 <button class="modal__close" id="close-edit-partner-modal" aria-label="Close edit partner modal">
@@ -880,8 +890,8 @@
     </div>
 
     <!-- View Partner Details Modal -->
-    <div id="view-partner-modal" class="modal-overlay" style="display: none;">
-        <div class="modal modal--lg">
+    <div id="view-partner-modal" class="modal" style="display: none;">
+        <div class="modal__container modal__container--large">
             <div class="modal__header">
                 <h2 class="modal__title">Partner Details</h2>
                 <button class="modal__close" id="close-view-partner-modal" aria-label="Close partner details modal">

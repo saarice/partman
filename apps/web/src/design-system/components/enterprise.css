@@ -600,7 +600,7 @@ body {
 
 .action-menu__dropdown {
   position: fixed;
-  z-index: 1000;
+  z-index: 1050;
   min-width: 160px;
   background-color: var(--color-neutral-0);
   border: 1px solid var(--color-neutral-200);
@@ -784,7 +784,7 @@ body {
 
 .filter-dropdown__menu {
   position: fixed;
-  z-index: 1000;
+  z-index: 1050;
   min-width: 240px;
   background-color: var(--color-neutral-0);
   border: 1px solid var(--color-neutral-200);
@@ -1156,7 +1156,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 1300;
   display: flex;
   align-items: center;
   justify-content: center;
