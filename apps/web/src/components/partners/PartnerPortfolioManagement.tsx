@@ -144,6 +144,7 @@ const PartnerPortfolioManagement = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [partnerDialogOpen, setPartnerDialogOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
   const [selectedForComparison, setSelectedForComparison] = useState<string[]>([]);
   const [filters, setFilters] = useState({
@@ -491,9 +492,20 @@ const PartnerPortfolioManagement = () => {
                   key={partner.id}
                   sx={{
                     backgroundColor: selectedForComparison.includes(partner.id) ? 'primary.50' : 'inherit',
-                    cursor: compareMode ? 'pointer' : 'default'
+                    cursor: 'pointer',
+                    '&:hover': {
+                      backgroundColor: 'action.hover'
+                    }
                   }}
-                  onClick={() => compareMode && handleCompareToggle(partner.id)}
+                  onClick={() => {
+                    if (compareMode) {
+                      handleCompareToggle(partner.id);
+                    } else {
+                      setSelectedPartner(partner);
+                      setIsEditMode(false);
+                      setPartnerDialogOpen(true);
+                    }
+                  }}
                 >
                   <TableCell>
                     <Box display="flex" alignItems="center" gap={2}>
@@ -579,12 +591,21 @@ const PartnerPortfolioManagement = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedPartner(partner);
+                        setIsEditMode(false);
                         setPartnerDialogOpen(true);
                       }}
                     >
                       <Visibility fontSize="small" />
                     </IconButton>
-                    <IconButton size="small">
+                    <IconButton
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedPartner(partner);
+                        setIsEditMode(true);
+                        setPartnerDialogOpen(true);
+                      }}
+                    >
                       <Edit fontSize="small" />
                     </IconButton>
                   </TableCell>
@@ -736,23 +757,33 @@ const PartnerPortfolioManagement = () => {
       {/* Partner Details Dialog */}
       <Dialog
         open={partnerDialogOpen}
-        onClose={() => setPartnerDialogOpen(false)}
+        onClose={() => {
+          setPartnerDialogOpen(false);
+          setIsEditMode(false);
+        }}
         maxWidth="md"
         fullWidth
       >
         {selectedPartner && (
           <>
             <DialogTitle>
-              <Box display="flex" alignItems="center" gap={2}>
-                <Avatar sx={{ bgcolor: CATEGORY_COLORS[selectedPartner.category] }}>
-                  {selectedPartner.name.substring(0, 2)}
-                </Avatar>
-                <Box>
-                  <Typography variant="h6">{selectedPartner.name}</Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {selectedPartner.category} Partner
-                  </Typography>
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Box display="flex" alignItems="center" gap={2}>
+                  <Avatar sx={{ bgcolor: CATEGORY_COLORS[selectedPartner.category] }}>
+                    {selectedPartner.name.substring(0, 2)}
+                  </Avatar>
+                  <Box>
+                    <Typography variant="h6">{selectedPartner.name}</Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {selectedPartner.category} Partner
+                    </Typography>
+                  </Box>
                 </Box>
+                <Chip
+                  label={isEditMode ? "Edit Mode" : "View Mode"}
+                  color={isEditMode ? "primary" : "default"}
+                  size="small"
+                />
               </Box>
             </DialogTitle>
             <DialogContent>
@@ -805,8 +836,25 @@ const PartnerPortfolioManagement = () => {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => setPartnerDialogOpen(false)}>Close</Button>
-              <Button variant="contained">Edit Partner</Button>
+              <Button onClick={() => {
+                setPartnerDialogOpen(false);
+                setIsEditMode(false);
+              }}>
+                Close
+              </Button>
+              {isEditMode ? (
+                <Button variant="contained" color="primary">
+                  Save Changes
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={() => setIsEditMode(true)}
+                  startIcon={<Edit />}
+                >
+                  Edit Partner
+                </Button>
+              )}
             </DialogActions>
           </>
         )}
