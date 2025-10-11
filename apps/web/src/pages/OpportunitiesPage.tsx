@@ -14,7 +14,6 @@ import {
   Divider,
   Toolbar,
   Alert,
-  Snackbar,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -59,6 +58,7 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { opportunitiesApi } from '../services/opportunitiesApi';
+import { notify } from '../utils/notifications';
 import {
   Opportunity,
   OpportunityFilters,
@@ -107,12 +107,6 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
   const [saveViewDialogOpen, setSaveViewDialogOpen] = useState(false);
   const [newViewName, setNewViewName] = useState('');
 
-  const [snackbar, setSnackbar] = useState<{
-    open: boolean;
-    message: string;
-    severity: 'success' | 'error' | 'warning' | 'info';
-  }>({ open: false, message: '', severity: 'info' });
-
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
@@ -130,8 +124,10 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
       setPartners(partnersData);
       setUsers(usersData);
       setError(null);
+      notify.success('Opportunities loaded successfully');
     } catch (err) {
       setError('Failed to load opportunities data');
+      notify.error('Failed to load opportunities');
       console.error('Error loading data:', err);
     } finally {
       setLoading(false);
@@ -395,11 +391,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
     setSaveViewDialogOpen(false);
     setNewViewName('');
 
-    setSnackbar({
-      open: true,
-      message: 'View saved successfully',
-      severity: 'success'
-    });
+    notify.success('View saved successfully');
   };
 
   const handleLoadView = (view: SavedView) => {
@@ -413,11 +405,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
     if (currentViewId === viewId) {
       setCurrentViewId(undefined);
     }
-    setSnackbar({
-      open: true,
-      message: 'View deleted successfully',
-      severity: 'success'
-    });
+    notify.success('View deleted successfully');
   };
 
   const handleOpportunityUpdate = async (opportunityId: string, updates: Partial<Opportunity>) => {
@@ -427,63 +415,31 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
         setOpportunities(prev =>
           prev.map(opp => opp.id === opportunityId ? response.data : opp)
         );
-        setSnackbar({
-          open: true,
-          message: 'Opportunity updated successfully',
-          severity: 'success'
-        });
+        notify.success('Opportunity updated successfully');
       } else {
-        setSnackbar({
-          open: true,
-          message: response.message || 'Failed to update opportunity',
-          severity: 'error'
-        });
+        notify.error(response.message || 'Failed to update opportunity');
       }
     } catch (error) {
-      setSnackbar({
-        open: true,
-        message: 'Failed to update opportunity',
-        severity: 'error'
-      });
+      notify.error('Failed to update opportunity');
     }
   };
 
   const handleOpportunityAction = (opportunity: Opportunity, action: string) => {
     switch (action) {
       case 'edit':
-        setSnackbar({
-          open: true,
-          message: 'Edit opportunity feature coming soon',
-          severity: 'info'
-        });
+        notify.info('Edit opportunity feature coming soon');
         break;
       case 'view':
-        setSnackbar({
-          open: true,
-          message: 'View details feature coming soon',
-          severity: 'info'
-        });
+        notify.info('View details feature coming soon');
         break;
       case 'change-owner':
-        setSnackbar({
-          open: true,
-          message: 'Change owner feature coming soon',
-          severity: 'info'
-        });
+        notify.info('Change owner feature coming soon');
         break;
       case 'update-probability':
-        setSnackbar({
-          open: true,
-          message: 'Update probability feature coming soon',
-          severity: 'info'
-        });
+        notify.info('Update probability feature coming soon');
         break;
       case 'delete':
-        setSnackbar({
-          open: true,
-          message: 'Delete opportunity feature coming soon',
-          severity: 'info'
-        });
+        notify.info('Delete opportunity feature coming soon');
         break;
       default:
         break;
@@ -528,11 +484,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
                 variant="contained"
                 startIcon={<Add />}
                 onClick={() => {
-                  setSnackbar({
-                    open: true,
-                    message: 'Create opportunity feature coming soon',
-                    severity: 'info'
-                  });
+                  notify.info('Create opportunity feature coming soon');
                 }}
               >
                 Create Opportunity
@@ -733,20 +685,6 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
         onViewNameChange={setNewViewName}
         onSave={handleSaveView}
       />
-
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
-      >
-        <Alert
-          onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
-          severity={snackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

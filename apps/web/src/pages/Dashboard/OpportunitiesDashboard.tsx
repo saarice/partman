@@ -5,9 +5,11 @@ import {
   Typography,
   Card,
   CardContent,
-  CardHeader
+  CardHeader,
+  CircularProgress
 } from '@mui/material';
-import { dashboardApi } from '../../services/api';
+import { dashboardApi } from '../../services/dashboardApi';
+import { notify } from '../../utils/notifications';
 import PipelineFunnel from '../../components/dashboard/PipelineFunnel';
 import PipelineHealthMonitoring from '../../components/dashboard/PipelineHealthMonitoring';
 import EnhancedTeamPerformance from '../../components/dashboard/EnhancedTeamPerformance';
@@ -38,8 +40,10 @@ const OpportunitiesDashboard: React.FC = () => {
           funnel: pipelineRes.data,
           trends: pipelineRes.data
         });
+        notify.success('Opportunities analytics loaded successfully');
       } catch (error) {
         console.error('Error fetching opportunity analytics:', error);
+        notify.error('Failed to load opportunities analytics');
       } finally {
         setLoading(false);
       }
@@ -50,7 +54,8 @@ const OpportunitiesDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: 2 }}>
+        <CircularProgress />
         <Typography>Loading opportunities analytics...</Typography>
       </Box>
     );

@@ -1,67 +1,182 @@
-import axios from 'axios';
-import { useAuthStore } from '../stores/authStoreSimple';
+/**
+ * Central API Client
+ * Handles all HTTP requests with authentication, error handling, and retries
+ */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+// API Configuration
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_TIMEOUT = 30000; // 30 seconds
+const MAX_RETRIES = 3;
 
-export const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
+// Types
+export interface ApiResponse<T = any> {
+  status: 'success' | 'error';
+  data?: T;
+  message?: string;
+  error?: string;
+}
+
+export interface ApiError {
+  message: string;
+  status: number;
+  code?: string;
+}
+
+// Error class
+export class ApiClientError extends Error {
+  status: number;
+  code?: string;
+
+  constructor(message: string, status: number, code?: string) {
+    super(message);
+    this.name = 'ApiClientError';
+    this.status = status;
+    this.code = code;
+  }
+}
+
+// Auth token management
+class TokenManager {
+  private static TOKEN_KEY = 'auth_token';
+
+  static getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  static setToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
+
+  static removeToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
+
+  static hasToken(): boolean {
+    return !!this.getToken();
+  }
+}
+
+// Request interceptor
+function getHeaders(includeAuth: boolean = true): HeadersInit {
+  const headers: HeadersInit = {
     'Content-Type': 'application/json',
-  },
-});
+  };
 
-// Request interceptor to add auth token
-api.interceptors.request.use(
-  (config) => {
-    const token = useAuthStore.getState().token;
+  if (includeAuth) {
+    const token = TokenManager.getToken();
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      headers['Authorization'] = `Bearer ${token}`;
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
   }
-);
 
-// Response interceptor for error handling
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
-      window.location.href = '/login';
+  return headers;
+}
+
+// Response handler
+async function handleResponse<T>(response: Response): Promise<T> {
+  const clonedResponse = response.clone();
+
+  let data: any;
+  try {
+    data = await response.json();
+  } catch (e) {
+    const text = await clonedResponse.text();
+    data = { message: text };
+  }
+
+  if (!response.ok) {
+    const errorMessage = data?.message || data?.error || `HTTP ${response.status}: ${response.statusText}`;
+    throw new ApiClientError(errorMessage, response.status, data?.code);
+  }
+
+  return data.data !== undefined ? data.data : data;
+}
+
+// Retry logic
+async function fetchWithRetry<T>(
+  url: string,
+  options: RequestInit,
+  retries: number = MAX_RETRIES
+): Promise<T> {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT);
+
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+    return await handleResponse<T>(response);
+  } catch (error: any) {
+    if (error instanceof ApiClientError && error.status >= 400 && error.status < 500) {
+      throw error;
     }
-    return Promise.reject(error);
-  }
-);
 
-export const authApi = {
-  login: async (email: string, password: string) => {
-    const response = await api.post('/auth/login', { email, password });
-    return response.data;
+    if (retries > 0) {
+      const delay = Math.pow(2, MAX_RETRIES - retries) * 1000;
+      await new Promise((resolve) => setTimeout(resolve, delay));
+      return fetchWithRetry<T>(url, options, retries - 1);
+    }
+
+    if (error.name === 'AbortError') {
+      throw new ApiClientError('Request timeout', 408);
+    }
+
+    throw error;
+  }
+}
+
+// Core HTTP methods
+export const api = {
+  async get<T = any>(endpoint: string, includeAuth: boolean = true): Promise<T> {
+    const url = `${API_BASE_URL}${endpoint}`;
+    return fetchWithRetry<T>(url, {
+      method: 'GET',
+      headers: getHeaders(includeAuth),
+    });
   },
-  logout: async () => {
-    const response = await api.post('/auth/logout');
-    return response.data;
+
+  async post<T = any>(endpoint: string, data?: any, includeAuth: boolean = true): Promise<T> {
+    const url = `${API_BASE_URL}${endpoint}`;
+    return fetchWithRetry<T>(url, {
+      method: 'POST',
+      headers: getHeaders(includeAuth),
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  },
+
+  async put<T = any>(endpoint: string, data?: any, includeAuth: boolean = true): Promise<T> {
+    const url = `${API_BASE_URL}${endpoint}`;
+    return fetchWithRetry<T>(url, {
+      method: 'PUT',
+      headers: getHeaders(includeAuth),
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  },
+
+  async patch<T = any>(endpoint: string, data?: any, includeAuth: boolean = true): Promise<T> {
+    const url = `${API_BASE_URL}${endpoint}`;
+    return fetchWithRetry<T>(url, {
+      method: 'PATCH',
+      headers: getHeaders(includeAuth),
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  },
+
+  async delete<T = any>(endpoint: string, includeAuth: boolean = true): Promise<T> {
+    const url = `${API_BASE_URL}${endpoint}`;
+    return fetchWithRetry<T>(url, {
+      method: 'DELETE',
+      headers: getHeaders(includeAuth),
+    });
+  },
+
+  async healthCheck(): Promise<{ status: string; timestamp: string }> {
+    return this.get('/health', false);
   },
 };
 
-export const dashboardApi = {
-  getKPIs: async () => {
-    const response = await api.get('/dashboard/kpis');
-    return response.data;
-  },
-  getRevenueProgress: async () => {
-    const response = await api.get('/dashboard/revenue');
-    return response.data;
-  },
-  getPipelineFunnel: async () => {
-    const response = await api.get('/dashboard/pipeline');
-    return response.data;
-  },
-  getTeamPerformance: async () => {
-    const response = await api.get('/dashboard/team');
-    return response.data;
-  },
-};
+export { TokenManager };
+export type { ApiResponse, ApiError };

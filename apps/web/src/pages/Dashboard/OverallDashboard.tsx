@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Grid,
-  Typography
+  Typography,
+  CircularProgress
 } from '@mui/material';
-import { dashboardApi } from '../../services/api';
+import { dashboardApi } from '../../services/dashboardApi';
+import { notify } from '../../utils/notifications';
 import RevenueCard from '../../components/dashboard/RevenueCard';
 import PartnerHealth from '../../components/dashboard/PartnerHealth';
 import EnhancedAlertCenter from '../../components/dashboard/EnhancedAlertCenter';
@@ -25,8 +27,10 @@ const OverallDashboard: React.FC = () => {
         setLoading(true);
         const response = await dashboardApi.getKPIs();
         setDashboardData(response.data);
+        notify.success('Dashboard data loaded successfully');
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
+        notify.error('Failed to load dashboard data');
       } finally {
         setLoading(false);
       }
@@ -37,7 +41,8 @@ const OverallDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: 2 }}>
+        <CircularProgress />
         <Typography>Loading dashboard...</Typography>
       </Box>
     );

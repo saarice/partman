@@ -56,9 +56,9 @@ export interface DashboardKPIs {
 }
 
 export class DashboardService {
-  async getKPIs(userId: string): Promise<DashboardKPIs> {
+  async getKPIs(userId: string, organizationId: string): Promise<DashboardKPIs> {
     try {
-      logger.info(`Fetching dashboard KPIs for user ${userId}`);
+      logger.info(`Fetching dashboard KPIs for user ${userId}, org ${organizationId}`);
 
       const [
         revenueData,
@@ -67,11 +67,11 @@ export class DashboardService {
         partnerData,
         alertData
       ] = await Promise.all([
-        this.getRevenueKPIs(),
-        this.getPipelineKPIs(),
-        this.getTeamKPIs(),
-        this.getPartnerKPIs(),
-        this.getAlertSummary(userId)
+        this.getRevenueKPIs(organizationId),
+        this.getPipelineKPIs(organizationId),
+        this.getTeamKPIs(organizationId),
+        this.getPartnerKPIs(organizationId),
+        this.getAlertSummary(userId, organizationId)
       ]);
 
       return {
@@ -87,22 +87,56 @@ export class DashboardService {
     }
   }
 
-  private async getRevenueKPIs() {
+  private async getRevenueKPIs(organizationId: string) {
     const currentQuarter = Math.floor(new Date().getMonth() / 3) + 1;
     const currentYear = new Date().getFullYear();
 
-    // Mock data for now - replace with actual queries
+    // Get quarterly goals and actual revenue
+    const revenueQuery = `
+      SELECT
+        qg.target_value as quarter_target,
+        qg.current_value as quarter_actual,
+        COALESCE(SUM(o.value) FILTER (WHERE o.stage = 'won' AND EXTRACT(YEAR FROM o.updated_at) = $2), 0) as ytd_actual
+      FROM quarterly_goals qg
+      LEFT JOIN opportunities o ON o.organization_id = qg.organization_id
+      WHERE qg.organization_id = $1
+        AND qg.quarter = $3
+        AND qg.year = $2
+        AND qg.goal_type = 'revenue'
+      GROUP BY qg.target_value, qg.current_value
+      LIMIT 1
+    `;
+
+    const result = await query(revenueQuery, [organizationId, currentYear, currentQuarter]);
+
+    if (result.rows.length === 0) {
+      // Return default values if no goals set
+      return {
+        currentQuarterTarget: 250000,
+        currentQuarterActual: 0,
+        currentQuarterProgress: 0,
+        previousQuarterActual: 0,
+        yearToDateActual: 0,
+        forecastedQuarterEnd: 0
+      };
+    }
+
+    const row = result.rows[0];
+    const target = parseFloat(row.quarter_target) || 250000;
+    const actual = parseFloat(row.quarter_actual) || 0;
+    const progress = target > 0 ? Math.round((actual / target) * 100) : 0;
+
     return {
-      currentQuarterTarget: 250000,
-      currentQuarterActual: 187500,
-      currentQuarterProgress: 75,
-      previousQuarterActual: 220000,
-      yearToDateActual: 675000,
-      forecastedQuarterEnd: 245000
+      currentQuarterTarget: target,
+      currentQuarterActual: actual,
+      currentQuarterProgress: progress,
+      previousQuarterActual: 220000, // TODO: Calculate from previous quarter
+      yearToDateActual: parseFloat(row.ytd_actual) || 0,
+      forecastedQuarterEnd: actual * 1.3 // Simple forecast: current + 30%
     };
   }
 
-  private async getPipelineKPIs() {
+  private async getPipelineKPIs(organizationId: string) {
     const pipelineQuery = `
       SELECT
         stage,
@@ -110,11 +144,11 @@ export class DashboardService {
         SUM(value) as total_value,
         SUM(value * probability / 100) as weighted_value
       FROM opportunities
-      WHERE stage NOT IN ('closed_won', 'closed_lost')
+      WHERE organization_id = $1 AND status = 'active'
       GROUP BY stage
     `;
 
-    const result = await query(pipelineQuery);
+    const result = await query(pipelineQuery, [organizationId]);
 
     const stageDistribution: Record<string, { count: number; value: number }> = {};
     let totalWeightedValue = 0;
@@ -146,21 +180,20 @@ export class DashboardService {
     };
   }
 
-  private async getTeamKPIs() {
+  private async getTeamKPIs(organizationId: string) {
     const teamQuery = `
       SELECT
         u.id,
         u.first_name || ' ' || u.last_name as name,
-        COUNT(DISTINCT o.id) as active_opportunities,
-        COALESCE(SUM(o.value), 0) as revenue
+        COUNT(DISTINCT o.id) FILTER (WHERE o.status = 'active') as active_opportunities,
+        COALESCE(SUM(o.value) FILTER (WHERE o.stage = 'won'), 0) as revenue
       FROM users u
-      LEFT JOIN opportunities o ON u.id = o.assigned_user_id
-        AND o.stage NOT IN ('closed_won', 'closed_lost')
-      WHERE u.role != 'vp'
+      LEFT JOIN opportunities o ON u.id = o.assigned_user_id AND o.organization_id = u.organization_id
+      WHERE u.organization_id = $1 AND u.is_active = true
       GROUP BY u.id, u.first_name, u.last_name
     `;
 
-    const result = await query(teamQuery);
+    const result = await query(teamQuery, [organizationId]);
 
     const teamPerformance = result.rows.map(row => ({
       userId: row.id,
@@ -181,22 +214,38 @@ export class DashboardService {
     };
   }
 
-  private async getPartnerKPIs() {
+  private async getPartnerKPIs(organizationId: string) {
     const partnerQuery = `
       SELECT
         p.id,
         p.name,
         p.relationship_health_score,
-        COUNT(o.id) as opportunity_count,
-        COALESCE(SUM(CASE WHEN o.stage = 'closed_won' THEN o.value ELSE 0 END), 0) as revenue
+        COUNT(o.id) FILTER (WHERE o.status = 'active') as opportunity_count,
+        COALESCE(SUM(o.value) FILTER (WHERE o.stage = 'won'), 0) as revenue
       FROM partners p
-      LEFT JOIN opportunities o ON p.id = o.partner_id
+      LEFT JOIN opportunities o ON p.id = o.partner_id AND o.organization_id = p.organization_id
+      WHERE p.organization_id = $1 AND p.is_active = true
       GROUP BY p.id, p.name, p.relationship_health_score
       ORDER BY revenue DESC
       LIMIT 5
     `;
 
-    const result = await query(partnerQuery);
+    const result = await query(partnerQuery, [organizationId]);
+
+    // Get total partner count and health distribution
+    const countQuery = `
+      SELECT
+        COUNT(*) as total,
+        COUNT(*) FILTER (WHERE is_active = true) as active,
+        COUNT(*) FILTER (WHERE relationship_health_score >= 80) as excellent,
+        COUNT(*) FILTER (WHERE relationship_health_score >= 60 AND relationship_health_score < 80) as healthy,
+        COUNT(*) FILTER (WHERE relationship_health_score >= 40 AND relationship_health_score < 60) as needs_attention,
+        COUNT(*) FILTER (WHERE relationship_health_score < 40) as at_risk
+      FROM partners
+      WHERE organization_id = $1
+    `;
+
+    const countResult = await query(countQuery, [organizationId]);
 
     const topPerformingPartners = result.rows.map(row => ({
       partnerId: row.id,
@@ -204,27 +253,27 @@ export class DashboardService {
       revenue: parseFloat(row.revenue),
       opportunityCount: parseInt(row.opportunity_count),
       healthScore: parseInt(row.relationship_health_score),
-      lastInteraction: new Date() // mock data
+      lastInteraction: new Date() // TODO: Track actual interactions
     }));
 
-    // Health distribution mock data
+    const counts = countResult.rows[0];
     const healthDistribution = {
-      excellent: 5,
-      healthy: 12,
-      needs_attention: 6,
-      at_risk: 2
+      excellent: parseInt(counts.excellent) || 0,
+      healthy: parseInt(counts.healthy) || 0,
+      needs_attention: parseInt(counts.needs_attention) || 0,
+      at_risk: parseInt(counts.at_risk) || 0
     };
 
     return {
-      totalPartners: 25,
-      activePartners: 23,
+      totalPartners: parseInt(counts.total) || 0,
+      activePartners: parseInt(counts.active) || 0,
       healthDistribution,
       topPerformingPartners,
-      relationshipMaintenanceAlerts: 3
+      relationshipMaintenanceAlerts: parseInt(counts.needs_attention) + parseInt(counts.at_risk)
     };
   }
 
-  private async getAlertSummary(userId: string) {
+  private async getAlertSummary(userId: string, organizationId: string) {
     const alertQuery = `
       SELECT
         type,
@@ -232,12 +281,13 @@ export class DashboardService {
         COUNT(*) as count,
         MAX(created_at) as most_recent_date
       FROM alerts
-      WHERE user_id = $1 AND is_acknowledged = false
+      WHERE organization_id = $1 AND is_acknowledged = false
+        AND (user_id = $2 OR user_id IS NULL)
       GROUP BY type, priority
       ORDER BY priority DESC, count DESC
     `;
 
-    const result = await query(alertQuery, [userId]);
+    const result = await query(alertQuery, [organizationId, userId]);
 
     return result.rows.map(row => ({
       type: row.type,

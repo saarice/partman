@@ -12,12 +12,14 @@ import OpportunitiesPage from './pages/OpportunitiesPage';
 import UserManagement from './pages/Admin/UserManagement';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import { NavigationTest } from './components/test/NavigationTest';
+import { NotificationContainer } from './components/common/NotificationContainer';
 
 function App() {
   const { isAuthenticated } = useAuthStore();
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+      <NotificationContainer />
       <Routes>
         <Route
           path="/login"

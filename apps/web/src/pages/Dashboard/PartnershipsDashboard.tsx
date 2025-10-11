@@ -5,9 +5,11 @@ import {
   Typography,
   Card,
   CardContent,
-  CardHeader
+  CardHeader,
+  CircularProgress
 } from '@mui/material';
-import { dashboardApi } from '../../services/api';
+import { dashboardApi } from '../../services/dashboardApi';
+import { notify } from '../../utils/notifications';
 import PartnerHealth from '../../components/dashboard/PartnerHealth';
 
 interface PartnershipAnalytics {
@@ -24,14 +26,16 @@ const PartnershipsDashboard: React.FC = () => {
     const fetchPartnershipAnalytics = async () => {
       try {
         setLoading(true);
-        const response = await dashboardApi.getKPIs();
+        const response = await dashboardApi.getPartnerAnalytics();
         setAnalyticsData({
-          partners: response.data.partners,
-          relationships: response.data.partners,
-          performance: response.data.partners
+          partners: response.data,
+          relationships: response.data,
+          performance: response.data
         });
+        notify.success('Partnership analytics loaded successfully');
       } catch (error) {
         console.error('Error fetching partnership analytics:', error);
+        notify.error('Failed to load partnership analytics');
       } finally {
         setLoading(false);
       }
@@ -42,7 +46,8 @@ const PartnershipsDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: 2 }}>
+        <CircularProgress />
         <Typography>Loading partnerships analytics...</Typography>
       </Box>
     );

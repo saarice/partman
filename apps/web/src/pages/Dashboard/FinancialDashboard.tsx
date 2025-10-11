@@ -5,9 +5,11 @@ import {
   Typography,
   Card,
   CardContent,
-  CardHeader
+  CardHeader,
+  CircularProgress
 } from '@mui/material';
-import { dashboardApi } from '../../services/api';
+import { dashboardApi } from '../../services/dashboardApi';
+import { notify } from '../../utils/notifications';
 import RevenueCard from '../../components/dashboard/RevenueCard';
 
 interface FinancialAnalytics {
@@ -24,14 +26,16 @@ const FinancialDashboard: React.FC = () => {
     const fetchFinancialAnalytics = async () => {
       try {
         setLoading(true);
-        const revenueRes = await dashboardApi.getRevenueProgress();
+        const financeRes = await dashboardApi.getFinancialMetrics();
         setAnalyticsData({
-          revenue: revenueRes.data,
-          commissions: revenueRes.data,
-          forecasting: revenueRes.data
+          revenue: financeRes.data,
+          commissions: financeRes.data.commissions,
+          forecasting: financeRes.data.forecast
         });
+        notify.success('Financial analytics loaded successfully');
       } catch (error) {
         console.error('Error fetching financial analytics:', error);
+        notify.error('Failed to load financial analytics');
       } finally {
         setLoading(false);
       }
@@ -42,7 +46,8 @@ const FinancialDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: 2 }}>
+        <CircularProgress />
         <Typography>Loading financial analytics...</Typography>
       </Box>
     );

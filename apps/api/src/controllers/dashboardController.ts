@@ -6,15 +6,16 @@ import { logger } from '../utils/logger.js';
 const dashboardService = new DashboardService();
 
 export const getKPIs = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
+  const userId = req.user?.userId || req.user?.id;
+  const organizationId = req.user?.organizationId;
 
-  if (!userId) {
+  if (!userId || !organizationId) {
     throw createError('User not authenticated', 401);
   }
 
   logger.info(`Dashboard KPIs requested by user ${userId}`);
 
-  const kpis = await dashboardService.getKPIs(userId);
+  const kpis = await dashboardService.getKPIs(userId, organizationId);
 
   res.json({
     status: 'success',
