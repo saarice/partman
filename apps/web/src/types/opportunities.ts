@@ -40,6 +40,7 @@ export interface Opportunity {
   health: 'healthy' | 'at-risk' | 'critical';
 }
 
+// Opportunity filtering interface
 export interface OpportunityFilters {
   stages?: OpportunityStage[];
   owners?: string[];
@@ -136,7 +137,7 @@ export interface OpportunityDetails extends Opportunity {
   customFields?: Record<string, any>;
 }
 
-// API Response types
+// API Response types - Force recompile
 export interface ApiResponse<T> {
   data: T;
   success: boolean;

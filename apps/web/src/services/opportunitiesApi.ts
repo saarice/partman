@@ -1,15 +1,124 @@
-import {
-  Opportunity,
-  OpportunityListParams,
-  OpportunityListResponse,
-  Partner,
-  User,
-  OpportunityStage,
-  OpportunityActivity,
-  OpportunityDetails,
-  ApiResponse,
-  BulkAction
-} from '../types/opportunities';
+// Temporary inline ALL types to workaround Vite caching issue
+export interface Partner {
+  id: string;
+  name: string;
+  type: 'Enterprise' | 'Premium' | 'Standard' | 'Startup';
+  tier: 'Tier 1' | 'Tier 2' | 'Tier 3';
+  logoUrl?: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: string;
+}
+
+export type OpportunityStage = 'qualified' | 'proposal' | 'negotiation' | 'closing' | 'won' | 'lost';
+
+export interface Opportunity {
+  id: string;
+  name: string;
+  description?: string;
+  partner: Partner;
+  amount: number;
+  currency: 'USD' | 'EUR' | 'GBP';
+  stage: OpportunityStage;
+  probability: number;
+  expectedCloseDate: Date;
+  actualCloseDate?: Date;
+  owner: User;
+  createdAt: Date;
+  updatedAt: Date;
+  lastActivityAt: Date;
+  daysInStage: number;
+  weightedValue: number;
+  isOverdue: boolean;
+  agingStatus: 'fresh' | 'warning' | 'overdue';
+  health: 'healthy' | 'at-risk' | 'critical';
+}
+
+export interface OpportunityFilters {
+  stages?: OpportunityStage[];
+  owners?: string[];
+  partners?: string[];
+  amountMin?: number;
+  amountMax?: number;
+  closeDateFrom?: Date;
+  closeDateTo?: Date;
+  probabilityMin?: number;
+  probabilityMax?: number;
+  text?: string;
+  health?: ('healthy' | 'at-risk' | 'critical')[];
+}
+
+export interface OpportunitySort {
+  field: keyof Opportunity;
+  direction: 'asc' | 'desc';
+}
+
+export interface OpportunityListParams {
+  filters?: OpportunityFilters;
+  sort?: OpportunitySort[];
+  page?: number;
+  pageSize?: number;
+  search?: string;
+}
+
+export interface OpportunityListResponse {
+  opportunities: Opportunity[];
+  totalCount: number;
+  totalValue: number;
+  weightedTotalValue: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface SavedView {
+  id: string;
+  name: string;
+  filters: OpportunityFilters;
+  sort: OpportunitySort[];
+  columns: string[];
+  isDefault?: boolean;
+  createdAt: Date;
+}
+
+export interface OpportunityActivity {
+  id: string;
+  opportunityId: string;
+  type: 'stage_change' | 'owner_change' | 'amount_change' | 'note' | 'email' | 'call' | 'meeting';
+  description: string;
+  userId: string;
+  user: User;
+  createdAt: Date;
+  metadata?: Record<string, any>;
+}
+
+export interface OpportunityDetails extends Opportunity {
+  activities: OpportunityActivity[];
+  notes: string;
+  tags: string[];
+  customFields?: Record<string, any>;
+}
+
+interface ApiResponse<T> {
+  data: T;
+  success: boolean;
+  message?: string;
+  errors?: string[];
+}
+
+interface BulkAction {
+  type: 'move-stage' | 'assign-owner' | 'delete' | 'export';
+  opportunityIds: string[];
+  params?: {
+    newStage?: OpportunityStage;
+    newOwnerId?: string;
+    exportFormat?: 'csv' | 'xlsx';
+  };
+}
 
 const mockPartners: Partner[] = [
   { id: '1', name: 'TechCorp', type: 'Enterprise', tier: 'Tier 1', logoUrl: '/logos/techcorp.png' },

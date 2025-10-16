@@ -178,5 +178,66 @@ export const api = {
   },
 };
 
+// Authentication API
+export const authApi = {
+  async login(email: string, password: string) {
+    const response = await api.post<{
+      user: {
+        id: string;
+        email: string;
+        first_name: string;
+        last_name: string;
+        role: string;
+        is_active: boolean;
+      };
+      accessToken: string;
+      refreshToken: string;
+      expiresIn: string;
+    }>('/api/auth/login', { email, password }, false);
+
+    if (response.accessToken) {
+      TokenManager.setToken(response.accessToken);
+    }
+
+    return {
+      data: {
+        token: response.accessToken,
+        refreshToken: response.refreshToken,
+        user: {
+          id: response.user.id,
+          email: response.user.email,
+          firstName: response.user.first_name,
+          lastName: response.user.last_name,
+          role: response.user.role,
+        }
+      }
+    };
+  },
+
+  async logout() {
+    try {
+      await api.post('/api/auth/logout', {}, true);
+    } finally {
+      TokenManager.removeToken();
+    }
+  },
+
+  async refreshToken(refreshToken: string) {
+    const response = await api.post<{ accessToken: string; refreshToken: string; expiresIn: string }>(
+      '/api/auth/refresh',
+      { refreshToken },
+      false
+    );
+    if (response.accessToken) {
+      TokenManager.setToken(response.accessToken);
+    }
+    return response;
+  },
+
+  async getCurrentUser() {
+    return api.get('/api/auth/me', true);
+  },
+};
+
 export { TokenManager };
 export type { ApiResponse, ApiError };

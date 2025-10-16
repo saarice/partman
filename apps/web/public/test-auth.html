@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auth State Tester</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+        .section {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+        }
+        button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #cc0000;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .warning { color: #ffaa00; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Authentication State Debugger</h1>
+
+    <div class="section">
+        <h2>LocalStorage Contents:</h2>
+        <pre id="localStorage-content"></pre>
+    </div>
+
+    <div class="section">
+        <h2>SessionStorage Contents:</h2>
+        <pre id="sessionStorage-content"></pre>
+    </div>
+
+    <div class="section">
+        <h2>Cookies:</h2>
+        <pre id="cookies-content"></pre>
+    </div>
+
+    <div class="section">
+        <h2>Actions:</h2>
+        <button onclick="clearAll()">CLEAR ALL & RELOAD</button>
+        <button onclick="goToLogin()">GO TO LOGIN</button>
+        <button onclick="goToDashboard()">GO TO DASHBOARD</button>
+    </div>
+
+    <div class="section">
+        <h2>Console Log:</h2>
+        <pre id="log"></pre>
+    </div>
+
+    <script>
+        function log(msg, type = 'info') {
+            const logEl = document.getElementById('log');
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'warning';
+            logEl.innerHTML += `<span class="${className}">[${new Date().toLocaleTimeString()}] ${msg}</span>\n`;
+            console.log(msg);
+        }
+
+        function displayStorageContents() {
+            // LocalStorage
+            const lsContent = document.getElementById('localStorage-content');
+            if (localStorage.length === 0) {
+                lsContent.innerHTML = '<span class="warning">EMPTY</span>';
+            } else {
+                let lsHTML = '';
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    lsHTML += `${key}: ${value}\n`;
+                }
+                lsContent.innerHTML = lsHTML;
+            }
+
+            // SessionStorage
+            const ssContent = document.getElementById('sessionStorage-content');
+            if (sessionStorage.length === 0) {
+                ssContent.innerHTML = '<span class="warning">EMPTY</span>';
+            } else {
+                let ssHTML = '';
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    const value = sessionStorage.getItem(key);
+                    ssHTML += `${key}: ${value}\n`;
+                }
+                ssContent.innerHTML = ssHTML;
+            }
+
+            // Cookies
+            const cookiesContent = document.getElementById('cookies-content');
+            if (document.cookie === '') {
+                cookiesContent.innerHTML = '<span class="warning">EMPTY</span>';
+            } else {
+                cookiesContent.innerHTML = document.cookie.split(';').join('\n');
+            }
+        }
+
+        function clearAll() {
+            log('Clearing localStorage...', 'warning');
+            localStorage.clear();
+
+            log('Clearing sessionStorage...', 'warning');
+            sessionStorage.clear();
+
+            log('Clearing cookies...', 'warning');
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+
+            log('✅ ALL CLEARED! Reloading in 1 second...', 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+
+        function goToLogin() {
+            log('Navigating to /login...', 'info');
+            window.location.href = '/login';
+        }
+
+        function goToDashboard() {
+            log('Navigating to /dashboards/overall...', 'info');
+            window.location.href = '/dashboards/overall';
+        }
+
+        // Initial display
+        displayStorageContents();
+        log('Auth State Debugger loaded', 'success');
+
+        // Check for auth-storage specifically
+        const authStorage = localStorage.getItem('auth-storage');
+        if (authStorage) {
+            try {
+                const parsed = JSON.parse(authStorage);
+                log('Found auth-storage: ' + JSON.stringify(parsed, null, 2), 'warning');
+                if (parsed.state && parsed.state.isAuthenticated) {
+                    log('⚠️ WARNING: isAuthenticated is TRUE in localStorage!', 'error');
+                }
+            } catch (e) {
+                log('Error parsing auth-storage: ' + e.message, 'error');
+            }
+        } else {
+            log('No auth-storage found in localStorage', 'success');
+        }
+    </script>
+</body>
+</html>

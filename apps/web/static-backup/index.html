@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Partnership Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/design-system/components/enterprise.css">
+    <link rel="stylesheet" href="/src/design-system/components/charts.css">
+</head>
+<body>
+    <!-- Include Lucide Icons -->
+    <div id="lucide-icons" style="display: none;"></div>
+
+    <!-- App Shell -->
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="app-header" role="banner">
+            <div class="app-header__brand">
+                <button id="sidebar-toggle" class="action-menu__trigger" aria-label="Toggle sidebar" aria-expanded="true">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+                </button>
+                <h1 class="app-header__title">Partnership Management Platform</h1>
+            </div>
+            <div class="app-header__actions">
+                <button id="user-menu-btn" class="action-menu__trigger" aria-label="User menu">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-users"></use></svg>
+                </button>
+                <!-- User Menu Dropdown -->
+                <div id="user-menu" class="user-menu" style="display: none;">
+                    <div class="user-menu__header">
+                        <div class="user-menu__name" id="user-name">User</div>
+                        <div class="user-menu__email" id="user-email">user@example.com</div>
+                    </div>
+                    <div class="user-menu__divider"></div>
+                    <button id="logout-btn" class="user-menu__item">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-x"></use></svg>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar - Will be replaced by shared navigation -->
+        <nav class="app-sidebar" role="navigation" aria-label="Main navigation">
+            <div class="app-sidebar__nav">
+                <div class="nav-section">
+                    <h2 class="nav-section__title">Loading...</h2>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main" role="main">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Overall Dashboard</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header__content">
+                    <h1>Overall Dashboard</h1>
+                    <p>Executive KPIs and cross-functional metrics overview</p>
+                </div>
+                <button class="btn-primary" id="generate-report-btn">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-bar-chart-3"></use></svg>
+                    Generate Report
+                </button>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid" role="region" aria-label="Key partnership metrics">
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Total Partners</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-primary-500);" aria-hidden="true">
+                            <use href="#icon-users"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">247</div>
+                        <div class="kpi-card__change kpi-card__change--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            +12.3% from last month
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <a href="/partnership-manager-enterprise.html" class="kpi-card__link">View partners</a>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Quarterly Revenue</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-success-500);" aria-hidden="true">
+                            <use href="#icon-dollar-sign"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">$2.4M</div>
+                        <div class="kpi-card__change kpi-card__change--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            +18.7% from Q2
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <a href="#" class="kpi-card__link">View report</a>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Active Opportunities</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-warning-500);" aria-hidden="true">
+                            <use href="#icon-briefcase"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">89</div>
+                        <div class="kpi-card__change kpi-card__change--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            +5.2% from last week
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <a href="#" class="kpi-card__link">View opportunities</a>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">At-Risk Partners</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-error-500);" aria-hidden="true">
+                            <use href="#icon-alert-circle"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">12</div>
+                        <div class="kpi-card__change kpi-card__change--negative">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-trending-up"></use></svg>
+                            +2 from last month
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <a href="#" class="kpi-card__link">View details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="content-grid">
+                <!-- Revenue Distribution Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h2 class="chart-title">Revenue Distribution by Category</h2>
+                            <p class="chart-subtitle">Quarterly breakdown across business segments</p>
+                        </div>
+                        <div class="chart-actions">
+                            <button class="btn-secondary btn-secondary--sm">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-external-link"></use></svg>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: var(--color-primary-500);"></span>
+                            <span class="legend-label">FinOps</span>
+                            <span class="legend-value">$890K</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: var(--color-warning-500);"></span>
+                            <span class="legend-label">Security</span>
+                            <span class="legend-value">$640K</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #06b6d4;"></span>
+                            <span class="legend-label">DevOps</span>
+                            <span class="legend-value">$520K</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: var(--color-success-500);"></span>
+                            <span class="legend-label">Data Analytics</span>
+                            <span class="legend-value">$380K</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #8b5cf6;"></span>
+                            <span class="legend-label">Observability</span>
+                            <span class="legend-value">$290K</span>
+                        </div>
+                    </div>
+
+                    <div class="stacked-bar-chart">
+                        <div class="bar-group">
+                            <div class="bar-row">
+                                <div class="bar-label">Q3 2024</div>
+                                <div class="bar-container">
+                                    <span class="bar-segment bar-segment--finops" style="width: 33%;"></span>
+                                    <span class="bar-segment bar-segment--security" style="width: 24%;"></span>
+                                    <span class="bar-segment bar-segment--devops" style="width: 19%;"></span>
+                                    <span class="bar-segment bar-segment--data" style="width: 14%;"></span>
+                                    <span class="bar-segment bar-segment--observability" style="width: 10%;"></span>
+                                </div>
+                                <div class="bar-value">$2.72M</div>
+                            </div>
+                            <div class="bar-row">
+                                <div class="bar-label">Q2 2024</div>
+                                <div class="bar-container">
+                                    <span class="bar-segment bar-segment--finops" style="width: 31%;"></span>
+                                    <span class="bar-segment bar-segment--security" style="width: 26%;"></span>
+                                    <span class="bar-segment bar-segment--devops" style="width: 20%;"></span>
+                                    <span class="bar-segment bar-segment--data" style="width: 13%;"></span>
+                                    <span class="bar-segment bar-segment--observability" style="width: 10%;"></span>
+                                </div>
+                                <div class="bar-value">$2.31M</div>
+                            </div>
+                            <div class="bar-row">
+                                <div class="bar-label">Q1 2024</div>
+                                <div class="bar-container">
+                                    <span class="bar-segment bar-segment--finops" style="width: 29%;"></span>
+                                    <span class="bar-segment bar-segment--security" style="width: 28%;"></span>
+                                    <span class="bar-segment bar-segment--devops" style="width: 22%;"></span>
+                                    <span class="bar-segment bar-segment--data" style="width: 12%;"></span>
+                                    <span class="bar-segment bar-segment--observability" style="width: 9%;"></span>
+                                </div>
+                                <div class="bar-value">$1.97M</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Trends -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h2 class="chart-title">Partnership Performance Trends</h2>
+                            <p class="chart-subtitle">Monthly growth and health metrics</p>
+                        </div>
+                    </div>
+
+                    <div class="chart-metrics">
+                        <div class="chart-metric">
+                            <div class="chart-metric__value">24.7%</div>
+                            <div class="chart-metric__label">Growth Rate</div>
+                            <div class="chart-metric__change chart-metric__change--positive">+4.2%</div>
+                        </div>
+                        <div class="chart-metric">
+                            <div class="chart-metric__value">94.2%</div>
+                            <div class="chart-metric__label">Health Score</div>
+                            <div class="chart-metric__change chart-metric__change--positive">+2.1%</div>
+                        </div>
+                        <div class="chart-metric">
+                            <div class="chart-metric__value">87.5%</div>
+                            <div class="chart-metric__label">Retention</div>
+                            <div class="chart-metric__change chart-metric__change--positive">+1.8%</div>
+                        </div>
+                        <div class="chart-metric">
+                            <div class="chart-metric__value">$42K</div>
+                            <div class="chart-metric__label">Avg Deal Size</div>
+                            <div class="chart-metric__change chart-metric__change--positive">+12%</div>
+                        </div>
+                    </div>
+
+                    <div class="line-chart">
+                        <svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Grid lines -->
+                            <g class="chart-grid">
+                                <line x1="50" y1="20" x2="380" y2="20" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                                <line x1="50" y1="50" x2="380" y2="50" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                                <line x1="50" y1="80" x2="380" y2="80" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                                <line x1="50" y1="110" x2="380" y2="110" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                            </g>
+
+                            <!-- Area fill -->
+                            <path d="M 60 100 L 120 85 L 180 70 L 240 60 L 300 45 L 360 35 L 360 120 L 60 120 Z"
+                                  fill="var(--color-primary-100)" opacity="0.3"/>
+
+                            <!-- Line -->
+                            <path d="M 60 100 L 120 85 L 180 70 L 240 60 L 300 45 L 360 35"
+                                  stroke="var(--color-primary-500)" stroke-width="3" fill="none"/>
+
+                            <!-- Data points -->
+                            <circle cx="60" cy="100" r="4" fill="var(--color-primary-600)"/>
+                            <circle cx="120" cy="85" r="4" fill="var(--color-primary-600)"/>
+                            <circle cx="180" cy="70" r="4" fill="var(--color-primary-600)"/>
+                            <circle cx="240" cy="60" r="4" fill="var(--color-primary-600)"/>
+                            <circle cx="300" cy="45" r="4" fill="var(--color-primary-600)"/>
+                            <circle cx="360" cy="35" r="4" fill="var(--color-primary-600)"/>
+
+                            <!-- Labels -->
+                            <text x="60" y="140" text-anchor="middle" class="chart-axis-label">Jan</text>
+                            <text x="120" y="140" text-anchor="middle" class="chart-axis-label">Feb</text>
+                            <text x="180" y="140" text-anchor="middle" class="chart-axis-label">Mar</text>
+                            <text x="240" y="140" text-anchor="middle" class="chart-axis-label">Apr</text>
+                            <text x="300" y="140" text-anchor="middle" class="chart-axis-label">May</text>
+                            <text x="360" y="140" text-anchor="middle" class="chart-axis-label">Jun</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Table -->
+            <div class="data-table-container">
+                <div class="data-table-header">
+                    <div class="data-table-title">
+                        <h2>Recent Partnership Activity</h2>
+                        <p>Latest updates and changes across your partnership portfolio</p>
+                    </div>
+                    <div class="data-table-actions">
+                        <button class="btn-secondary btn-secondary--sm">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-filter"></use></svg>
+                            Filter
+                        </button>
+                        <a href="/partnership-manager-enterprise.html" class="btn-primary btn-primary--sm">
+                            View All Partners
+                        </a>
+                    </div>
+                </div>
+
+                <table class="data-table" role="table">
+                    <thead class="data-table__header">
+                        <tr role="row">
+                            <th role="columnheader">Partner</th>
+                            <th role="columnheader">Activity</th>
+                            <th role="columnheader">Date</th>
+                            <th role="columnheader">Impact</th>
+                            <th role="columnheader">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-table__body">
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>CloudTech Solutions</strong>
+                                    <span class="partner-tier">Enterprise</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">Contract renewal completed</td>
+                            <td class="data-table__cell">2 hours ago</td>
+                            <td class="data-table__cell">
+                                <span class="impact-indicator impact-indicator--high">+$250K</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--success">Active</span>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>SecureData Inc</strong>
+                                    <span class="partner-tier">Premium</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">New opportunity created</td>
+                            <td class="data-table__cell">5 hours ago</td>
+                            <td class="data-table__cell">
+                                <span class="impact-indicator impact-indicator--medium">+$75K</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--warning">In Progress</span>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>DevOps Pro</strong>
+                                    <span class="partner-tier">Standard</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">Health score updated</td>
+                            <td class="data-table__cell">1 day ago</td>
+                            <td class="data-table__cell">
+                                <span class="impact-indicator impact-indicator--neutral">Monitor</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--info">Review</span>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>Analytics Plus</strong>
+                                    <span class="partner-tier">Premium</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">Commission payment processed</td>
+                            <td class="data-table__cell">2 days ago</td>
+                            <td class="data-table__cell">
+                                <span class="impact-indicator impact-indicator--high">$45K</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--success">Completed</span>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>Monitor Masters</strong>
+                                    <span class="partner-tier">Enterprise</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">Risk assessment flagged</td>
+                            <td class="data-table__cell">3 days ago</td>
+                            <td class="data-table__cell">
+                                <span class="impact-indicator impact-indicator--risk">At Risk</span>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="status-pill status-pill--error">Action Required</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container" aria-live="polite"></div>
+
+    <!-- Load Shared Navigation -->
+    <script src="/src/shared/navigation.js"></script>
+
+    <script>
+        // Load icons first
+        fetch('/src/design-system/icons/lucide-icons.svg')
+            .then(response => response.text())
+            .then(svgContent => {
+                document.getElementById('lucide-icons').innerHTML = svgContent;
+            })
+            .catch(error => {
+                console.warn('Could not load icons:', error);
+            });
+
+        // Sidebar toggle is now handled by shared navigation
+
+        // Navigation handling
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const text = item.textContent.trim();
+            if (['Commissions', 'Analytics', 'Settings'].includes(text)) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showNotification(`${text} page - Coming soon!`);
+                });
+            }
+        });
+
+        // Generate Report button
+        document.getElementById('generate-report-btn').addEventListener('click', function() {
+            showNotification('Generating comprehensive partnership report...');
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+
+            notification.className = `notification notification--${type}`;
+            notification.innerHTML = `
+                <div class="notification__content">
+                    <svg class="notification__icon" aria-hidden="true">
+                        <use href="#icon-check-circle-2"></use>
+                    </svg>
+                    <span class="notification__message">${message}</span>
+                </div>
+                <button class="notification__close" aria-label="Close notification">
+                    <svg class="icon icon--sm" aria-hidden="true">
+                        <use href="#icon-x"></use>
+                    </svg>
+                </button>
+            `;
+
+            container.appendChild(notification);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+
+            // Close button functionality
+            notification.querySelector('.notification__close').addEventListener('click', function() {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            });
+        }
+
+        // User menu functionality
+        const userMenuBtn = document.getElementById('user-menu-btn');
+        const userMenu = document.getElementById('user-menu');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Toggle user menu
+        userMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isVisible = userMenu.style.display === 'block';
+            userMenu.style.display = isVisible ? 'none' : 'block';
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!userMenu.contains(e.target) && e.target !== userMenuBtn) {
+                userMenu.style.display = 'none';
+            }
+        });
+
+        // Handle logout
+        logoutBtn.addEventListener('click', async function() {
+            try {
+                // Call logout API
+                const response = await fetch('http://localhost:3001/api/auth/logout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
+                    }
+                });
+
+                // Clear auth storage
+                localStorage.removeItem('auth-storage');
+                localStorage.removeItem('auth_token');
+                sessionStorage.clear();
+
+                // Redirect to login
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Still clear local storage and redirect even if API fails
+                localStorage.removeItem('auth-storage');
+                localStorage.removeItem('auth_token');
+                sessionStorage.clear();
+                window.location.href = '/login';
+            }
+        });
+
+        // Add styles for dashboard-specific elements
+        const style = document.createElement('style');
+        style.textContent = `
+            /* User Menu Styles */
+            .app-header__actions {
+                position: relative;
+            }
+
+            #user-menu-btn {
+                background-color: var(--color-primary-500);
+                color: white;
+                padding: 0.625rem;
+                border-radius: var(--radius-lg);
+                transition: all 0.2s;
+            }
+
+            #user-menu-btn:hover {
+                background-color: var(--color-primary-600);
+                transform: scale(1.05);
+            }
+
+            #user-menu-btn .icon {
+                width: 24px;
+                height: 24px;
+                stroke-width: 2.5;
+            }
+
+            .user-menu {
+                position: absolute;
+                top: 100%;
+                right: 0;
+                margin-top: 0.5rem;
+                background: white;
+                border: 1px solid var(--color-neutral-200);
+                border-radius: var(--radius-lg);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                min-width: 240px;
+                z-index: 1000;
+            }
+
+            .user-menu__header {
+                padding: 1rem;
+                border-bottom: 1px solid var(--color-neutral-200);
+            }
+
+            .user-menu__name {
+                font-weight: var(--font-weight-semibold);
+                font-size: var(--font-size-sm);
+                color: var(--color-neutral-900);
+                margin-bottom: 0.25rem;
+            }
+
+            .user-menu__email {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+            }
+
+            .user-menu__divider {
+                height: 1px;
+                background: var(--color-neutral-200);
+            }
+
+            .user-menu__item {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: var(--font-size-sm);
+                color: var(--color-neutral-700);
+                transition: background-color 0.2s;
+            }
+
+            .user-menu__item:hover {
+                background-color: var(--color-neutral-100);
+            }
+
+            .user-menu__item svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            .partner-info {
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .partner-tier {
+                font-size: var(--font-size-xs);
+                color: var(--color-neutral-600);
+                font-weight: var(--font-weight-medium);
+            }
+
+            .impact-indicator {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.25rem 0.5rem;
+                border-radius: var(--radius-base);
+                font-size: var(--font-size-xs);
+                font-weight: var(--font-weight-semibold);
+            }
+
+            .impact-indicator--high {
+                background-color: var(--color-success-100);
+                color: var(--color-success-700);
+            }
+
+            .impact-indicator--medium {
+                background-color: var(--color-warning-100);
+                color: var(--color-warning-700);
+            }
+
+            .impact-indicator--neutral {
+                background-color: var(--color-neutral-100);
+                color: var(--color-neutral-700);
+            }
+
+            .impact-indicator--risk {
+                background-color: var(--color-error-100);
+                color: var(--color-error-700);
+            }
+
+            .content-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: var(--spacing-6);
+                margin-bottom: var(--spacing-8);
+            }
+
+            @media (max-width: 1024px) {
+                .content-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+        `;
+        document.head.appendChild(style);
+
+        console.log('🏠 Enterprise Dashboard loaded with AA compliance');
+    </script>
+</body>
+</html>

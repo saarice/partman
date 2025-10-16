@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface SimpleAuthState {
   user: {
@@ -6,20 +7,41 @@ interface SimpleAuthState {
     firstName: string;
     lastName: string;
     role: string;
+    email?: string;
   } | null;
   token: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
+  login: (token: string, refreshToken: string, user: { id: string; firstName: string; lastName: string; role: string; email?: string }) => void;
   logout: () => void;
 }
 
-export const useAuthStore = create<SimpleAuthState>()((set) => ({
-  user: {
-    id: 'system-owner-1',
-    firstName: 'System',
-    lastName: 'Owner',
-    role: 'system_owner'
-  },
-  token: 'mock-jwt-token-system-owner',
-  isAuthenticated: true,
-  logout: () => set({ user: null, token: null, isAuthenticated: false })
-}));
+export const useAuthStore = create<SimpleAuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      token: null,
+      refreshToken: null,
+      isAuthenticated: false,
+      login: (token: string, refreshToken: string, user) => {
+        set({
+          token,
+          refreshToken,
+          user,
+          isAuthenticated: true,
+        });
+      },
+      logout: () => {
+        set({
+          user: null,
+          token: null,
+          refreshToken: null,
+          isAuthenticated: false
+        });
+      }
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);

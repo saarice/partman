@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Partnership Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/design-system/components/enterprise.css">
+</head>
+<body>
+    <div id="lucide-icons" style="display: none;"></div>
+
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--color-neutral-50);">
+        <div style="background: white; border-radius: var(--radius-xl); box-shadow: 0 20px 60px rgba(0,0,0,0.1); padding: 3rem; max-width: 420px; width: 100%; margin: 1rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <svg class="icon" style="width: 64px; height: 64px; color: var(--color-primary-500); margin: 0 auto 1rem;" aria-hidden="true">
+                    <use href="#icon-users"></use>
+                </svg>
+                <h1 style="font-size: 2rem; font-weight: 700; color: var(--color-neutral-900); margin: 0 0 0.5rem 0;">Welcome Back</h1>
+                <p style="color: var(--color-neutral-600); font-size: 1rem;">Sign in to Partnership Management Platform</p>
+            </div>
+
+            <div id="error-message" style="display: none; padding: 1rem; background-color: var(--color-error-100); color: var(--color-error-700); border-radius: var(--radius-lg); margin-bottom: 1.5rem; font-size: 0.875rem;"></div>
+
+            <form id="login-form">
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: var(--font-weight-semibold); color: var(--color-neutral-700); font-size: 0.875rem;">Email Address</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        autocomplete="email"
+                        value="test@test.com"
+                        style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-neutral-300); border-radius: var(--radius-lg); font-size: 1rem; transition: all 0.2s;"
+                        onfocus="this.style.borderColor='var(--color-primary-500)'; this.style.boxShadow='0 0 0 3px var(--color-primary-100)'"
+                        onblur="this.style.borderColor='var(--color-neutral-300)'; this.style.boxShadow='none'"
+                    />
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label for="password" style="display: block; margin-bottom: 0.5rem; font-weight: var(--font-weight-semibold); color: var(--color-neutral-700); font-size: 0.875rem;">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                        value="Test1234"
+                        style="width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--color-neutral-300); border-radius: var(--radius-lg); font-size: 1rem; transition: all 0.2s;"
+                        onfocus="this.style.borderColor='var(--color-primary-500)'; this.style.boxShadow='0 0 0 3px var(--color-primary-100)'"
+                        onblur="this.style.borderColor='var(--color-neutral-300)'; this.style.boxShadow='none'"
+                    />
+                </div>
+
+                <button
+                    type="submit"
+                    id="login-btn"
+                    style="width: 100%; padding: 0.875rem; background-color: var(--color-primary-500); color: white; border: none; border-radius: var(--radius-lg); font-size: 1rem; font-weight: var(--font-weight-semibold); cursor: pointer; transition: all 0.2s;"
+                    onmouseover="this.style.backgroundColor='var(--color-primary-600)'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(67, 56, 202, 0.3)'"
+                    onmouseout="this.style.backgroundColor='var(--color-primary-500)'; this.style.transform='none'; this.style.boxShadow='none'"
+                >
+                    Sign In
+                </button>
+            </form>
+
+            <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-neutral-200); text-align: center;">
+                <p style="color: var(--color-neutral-600); font-size: 0.875rem; margin: 0;">
+                    Demo credentials: test@test.com / Test1234
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load icons
+        fetch('/src/design-system/icons/lucide-icons.svg')
+            .then(response => response.text())
+            .then(svgContent => {
+                document.getElementById('lucide-icons').innerHTML = svgContent;
+            })
+            .catch(error => {
+                console.warn('Could not load icons:', error);
+            });
+
+        // Handle login form
+        const loginForm = document.getElementById('login-form');
+        const loginBtn = document.getElementById('login-btn');
+        const errorMessage = document.getElementById('error-message');
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Disable button and show loading
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Signing in...';
+            errorMessage.style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:3001/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Login failed');
+                }
+
+                // Store auth token
+                localStorage.setItem('auth_token', data.accessToken);
+                localStorage.setItem('auth-storage', JSON.stringify({
+                    state: {
+                        user: data.user,
+                        token: data.accessToken,
+                        refreshToken: data.refreshToken,
+                        isAuthenticated: true
+                    },
+                    version: 0
+                }));
+
+                // Redirect to dashboard
+                window.location.href = '/';
+
+            } catch (error) {
+                console.error('Login error:', error);
+                errorMessage.textContent = error.message || 'Invalid email or password. Please try again.';
+                errorMessage.style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Sign In';
+            }
+        });
+    </script>
+</body>
+</html>

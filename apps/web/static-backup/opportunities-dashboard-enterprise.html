@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunities Dashboard - Partnership Management Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/design-system/components/enterprise.css">
+    <link rel="stylesheet" href="/src/design-system/components/charts.css">
+    <link rel="stylesheet" href="/src/styles/opportunities-enterprise.css">
+</head>
+<body>
+    <!-- Include Lucide Icons -->
+    <div id="lucide-icons" style="display: none;"></div>
+
+    <!-- App Shell -->
+    <div class="app-shell">
+        <!-- Header -->
+        <header class="app-header" role="banner">
+            <div class="app-header__brand">
+                <button id="sidebar-toggle" class="action-menu__trigger" aria-label="Toggle sidebar" aria-expanded="true">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-menu"></use></svg>
+                </button>
+                <h1 class="app-header__title">Partnership Management Platform</h1>
+            </div>
+            <div class="app-header__actions">
+                <button class="action-menu__trigger" aria-label="User menu">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-user"></use></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Sidebar - Will be replaced by shared navigation -->
+        <nav class="app-sidebar" role="navigation" aria-label="Main navigation">
+            <div class="app-sidebar__nav">
+                <div class="nav-section">
+                    <h2 class="nav-section__title">Loading...</h2>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main" role="main">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                <span class="breadcrumb__item">Opportunities</span>
+                <span class="breadcrumb__separator" aria-hidden="true">
+                    <svg class="icon icon--sm"><use href="#icon-chevron-right"></use></svg>
+                </span>
+                <span class="breadcrumb__item breadcrumb__item--active" aria-current="page">Dashboard</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header__content">
+                    <h1>Opportunities Dashboard</h1>
+                    <p>Monitor pipeline performance and track deal progression across all partnership opportunities</p>
+                </div>
+                <div class="page-header__actions">
+                    <button class="btn-secondary" id="export-report-btn">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg>
+                        Export Report
+                    </button>
+                    <a href="/opportunities-enterprise.html" class="btn-primary">
+                        <svg class="icon" aria-hidden="true"><use href="#icon-plus"></use></svg>
+                        Add Opportunity
+                    </a>
+                </div>
+            </div>
+
+            <!-- KPI Overview -->
+            <div class="kpi-grid" role="region" aria-label="Pipeline performance metrics">
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Total Pipeline Value</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-primary-500);" aria-hidden="true">
+                            <use href="#icon-trending-up"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">$8.2M</div>
+                        <div class="kpi-card__change kpi-card__change--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
+                            +23.5% from last quarter
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <a href="/opportunities-enterprise.html" class="kpi-card__link">View pipeline</a>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Active Opportunities</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-warning-500);" aria-hidden="true">
+                            <use href="#icon-briefcase"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">89</div>
+                        <div class="kpi-card__change kpi-card__change--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
+                            +12 new this month
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <span class="kpi-card__detail">Across 47 partners</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Conversion Rate</h2>
+                        <svg class="icon icon--lg" style="color: var(--color-success-500);" aria-hidden="true">
+                            <use href="#icon-target"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">68.2%</div>
+                        <div class="kpi-card__change kpi-card__change--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
+                            +5.3% improvement
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <span class="kpi-card__detail">31 deals closed this quarter</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-card__header">
+                        <h2 class="kpi-card__title">Avg. Deal Size</h2>
+                        <svg class="icon icon--lg" style="color: #8b5cf6;" aria-hidden="true">
+                            <use href="#icon-dollar-sign"></use>
+                        </svg>
+                    </div>
+                    <div class="kpi-card__content">
+                        <div class="kpi-card__value">$92K</div>
+                        <div class="kpi-card__change kpi-card__change--positive">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-arrow-up"></use></svg>
+                            +18% larger deals
+                        </div>
+                    </div>
+                    <div class="kpi-card__footer">
+                        <span class="kpi-card__detail">Enterprise focus strategy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="content-grid">
+                <!-- Pipeline Funnel Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h2 class="chart-title">Pipeline Funnel Analysis</h2>
+                            <p class="chart-subtitle">Opportunity progression through sales stages</p>
+                        </div>
+                        <div class="chart-actions">
+                            <button class="btn-secondary btn-secondary--sm">
+                                <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-external-link"></use></svg>
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="funnel-chart">
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__label">Qualified Leads</div>
+                            <div class="funnel-stage__bar">
+                                <div class="funnel-stage__fill" style="width: 100%; background: var(--color-primary-500);">
+                                    <span class="funnel-stage__value">156</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__amount">$6.8M</div>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__label">Proposal Sent</div>
+                            <div class="funnel-stage__bar">
+                                <div class="funnel-stage__fill" style="width: 75%; background: var(--color-warning-500);">
+                                    <span class="funnel-stage__value">117</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__amount">$5.1M</div>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__label">In Negotiation</div>
+                            <div class="funnel-stage__bar">
+                                <div class="funnel-stage__fill" style="width: 57%; background: #8b5cf6;">
+                                    <span class="funnel-stage__value">89</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__amount">$3.9M</div>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__label">Ready to Close</div>
+                            <div class="funnel-stage__bar">
+                                <div class="funnel-stage__fill" style="width: 42%; background: var(--color-success-500);">
+                                    <span class="funnel-stage__value">65</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__amount">$2.8M</div>
+                        </div>
+
+                        <div class="funnel-stage">
+                            <div class="funnel-stage__label">Closed Won</div>
+                            <div class="funnel-stage__bar">
+                                <div class="funnel-stage__fill" style="width: 28%; background: var(--color-success-600);">
+                                    <span class="funnel-stage__value">44</span>
+                                </div>
+                            </div>
+                            <div class="funnel-stage__amount">$1.9M</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Trends -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <div>
+                            <h2 class="chart-title">Monthly Performance</h2>
+                            <p class="chart-subtitle">Deal closure and revenue trends</p>
+                        </div>
+                    </div>
+
+                    <div class="performance-metrics">
+                        <div class="metric-card">
+                            <div class="metric-label">This Month</div>
+                            <div class="metric-value">$1.2M</div>
+                            <div class="metric-change metric-change--positive">+15%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Deals Closed</div>
+                            <div class="metric-value">8</div>
+                            <div class="metric-change metric-change--positive">+3</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Pipeline Health</div>
+                            <div class="metric-value">94%</div>
+                            <div class="metric-change metric-change--positive">+2%</div>
+                        </div>
+                    </div>
+
+                    <div class="trend-chart">
+                        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Grid lines -->
+                            <g class="chart-grid">
+                                <line x1="40" y1="20" x2="280" y2="20" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                                <line x1="40" y1="40" x2="280" y2="40" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                                <line x1="40" y1="60" x2="280" y2="60" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                                <line x1="40" y1="80" x2="280" y2="80" stroke="var(--color-neutral-200)" stroke-width="1"/>
+                            </g>
+
+                            <!-- Revenue Line -->
+                            <path d="M 50 70 L 90 65 L 130 60 L 170 55 L 210 45 L 250 35"
+                                  stroke="var(--color-primary-500)" stroke-width="3" fill="none"/>
+
+                            <!-- Deal Count Line -->
+                            <path d="M 50 75 L 90 73 L 130 68 L 170 65 L 210 60 L 250 50"
+                                  stroke="var(--color-success-500)" stroke-width="3" fill="none"/>
+
+                            <!-- Data points -->
+                            <circle cx="50" cy="70" r="3" fill="var(--color-primary-600)"/>
+                            <circle cx="90" cy="65" r="3" fill="var(--color-primary-600)"/>
+                            <circle cx="130" cy="60" r="3" fill="var(--color-primary-600)"/>
+                            <circle cx="170" cy="55" r="3" fill="var(--color-primary-600)"/>
+                            <circle cx="210" cy="45" r="3" fill="var(--color-primary-600)"/>
+                            <circle cx="250" cy="35" r="3" fill="var(--color-primary-600)"/>
+
+                            <!-- Labels -->
+                            <text x="50" y="105" text-anchor="middle" class="chart-axis-label">Q1</text>
+                            <text x="90" y="105" text-anchor="middle" class="chart-axis-label">Q2</text>
+                            <text x="130" y="105" text-anchor="middle" class="chart-axis-label">Q3</text>
+                            <text x="170" y="105" text-anchor="middle" class="chart-axis-label">Q4</text>
+                            <text x="210" y="105" text-anchor="middle" class="chart-axis-label">Q1</text>
+                            <text x="250" y="105" text-anchor="middle" class="chart-axis-label">Q2</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Performing Opportunities -->
+            <div class="data-table-container">
+                <div class="data-table-header">
+                    <div class="data-table-title">
+                        <h2>Top Performing Opportunities</h2>
+                        <p>Highest value deals currently in progress</p>
+                    </div>
+                    <div class="data-table-actions">
+                        <button class="btn-secondary btn-secondary--sm">
+                            <svg class="icon icon--sm" aria-hidden="true"><use href="#icon-filter"></use></svg>
+                            Filter
+                        </button>
+                        <a href="/opportunities-enterprise.html" class="btn-primary btn-primary--sm">
+                            View All Opportunities
+                        </a>
+                    </div>
+                </div>
+
+                <table class="data-table" role="table">
+                    <thead class="data-table__header">
+                        <tr role="row">
+                            <th role="columnheader">Opportunity</th>
+                            <th role="columnheader">Partner</th>
+                            <th role="columnheader">Value</th>
+                            <th role="columnheader">Stage</th>
+                            <th role="columnheader">Close Date</th>
+                            <th role="columnheader">Probability</th>
+                            <th role="columnheader">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data-table__body">
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>Enterprise Security Suite</strong>
+                                    <span class="opportunity-id">#OPP-2024-128</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>CloudTech Solutions</strong>
+                                    <span class="partner-tier">Enterprise</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$485,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--closing">Closing</span>
+                            </td>
+                            <td class="data-table__cell">Dec 15, 2024</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 90%;"></div>
+                                    </div>
+                                    <span class="probability-text">90%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>FinOps Management Platform</strong>
+                                    <span class="opportunity-id">#OPP-2024-156</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>DataFlow Systems</strong>
+                                    <span class="partner-tier">Premium</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$320,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--negotiation">Negotiation</span>
+                            </td>
+                            <td class="data-table__cell">Jan 30, 2025</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 75%;"></div>
+                                    </div>
+                                    <span class="probability-text">75%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>DevOps Automation Suite</strong>
+                                    <span class="opportunity-id">#OPP-2024-143</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>TechFlow Partners</strong>
+                                    <span class="partner-tier">Enterprise</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$275,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--proposal">Proposal</span>
+                            </td>
+                            <td class="data-table__cell">Feb 15, 2025</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 65%;"></div>
+                                    </div>
+                                    <span class="probability-text">65%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr role="row" class="data-table__row">
+                            <td class="data-table__cell">
+                                <div class="opportunity-info">
+                                    <strong>Analytics & Monitoring</strong>
+                                    <span class="opportunity-id">#OPP-2024-167</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="partner-info">
+                                    <strong>Monitor Masters</strong>
+                                    <span class="partner-tier">Premium</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <strong class="deal-value">$180,000</strong>
+                            </td>
+                            <td class="data-table__cell">
+                                <span class="stage-pill stage-pill--qualified">Qualified</span>
+                            </td>
+                            <td class="data-table__cell">Mar 10, 2025</td>
+                            <td class="data-table__cell">
+                                <div class="probability-indicator">
+                                    <div class="probability-bar">
+                                        <div class="probability-fill" style="width: 45%;"></div>
+                                    </div>
+                                    <span class="probability-text">45%</span>
+                                </div>
+                            </td>
+                            <td class="data-table__cell">
+                                <div class="action-menu">
+                                    <button class="action-menu__trigger" aria-label="More actions">
+                                        <svg class="icon" aria-hidden="true"><use href="#icon-more-horizontal"></use></svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container" class="notification-container" aria-live="polite"></div>
+
+    <!-- Load Shared Navigation -->
+    <script src="/src/shared/navigation.js"></script>
+
+    <script>
+        // Load icons first
+        fetch('/src/design-system/icons/lucide-icons.svg')
+            .then(response => response.text())
+            .then(svgContent => {
+                document.getElementById('lucide-icons').innerHTML = svgContent;
+            })
+            .catch(error => {
+                console.warn('Could not load icons:', error);
+            });
+
+        // Export Report button
+        document.getElementById('export-report-btn').addEventListener('click', function() {
+            showNotification('Generating opportunities dashboard report...');
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+
+            notification.className = `notification notification--${type}`;
+            notification.innerHTML = `
+                <div class="notification__content">
+                    <svg class="notification__icon" aria-hidden="true">
+                        <use href="#icon-check-circle-2"></use>
+                    </svg>
+                    <span class="notification__message">${message}</span>
+                </div>
+                <button class="notification__close" aria-label="Close notification">
+                    <svg class="icon icon--sm" aria-hidden="true">
+                        <use href="#icon-x"></use>
+                    </svg>
+                </button>
+            `;
+
+            container.appendChild(notification);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+
+            // Close button handler
+            notification.querySelector('.notification__close').addEventListener('click', function() {
+                notification.parentNode.removeChild(notification);
+            });
+        }
+    </script>
+</body>
+</html>

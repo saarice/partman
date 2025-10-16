@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Force Logout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 400px;
+        }
+        h1 { color: #333; margin-bottom: 20px; }
+        button {
+            background: #d32f2f;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #b71c1c;
+        }
+        .success {
+            color: #4caf50;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .info {
+            color: #666;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚪 Force Logout</h1>
+        <p>Click the button below to clear all authentication data and redirect to login.</p>
+
+        <button onclick="forceLogout()">FORCE LOGOUT NOW</button>
+
+        <div id="message"></div>
+
+        <div class="info">
+            This will clear:<br>
+            • All localStorage data<br>
+            • All sessionStorage data<br>
+            • All cookies<br>
+            • Reload the page
+        </div>
+    </div>
+
+    <script>
+        function forceLogout() {
+            // Clear all storage
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // Clear cookies
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+
+            // Show success message
+            document.getElementById('message').innerHTML = '<div class="success">✅ Storage Cleared!</div>';
+
+            // Redirect to login after 1 second
+            setTimeout(function() {
+                window.location.href = '/login';
+            }, 1000);
+        }
+
+        // Show current auth state
+        window.addEventListener('load', function() {
+            const authStorage = localStorage.getItem('auth-storage');
+            if (authStorage) {
+                console.log('Current auth storage:', authStorage);
+            }
+        });
+    </script>
+</body>
+</html>
