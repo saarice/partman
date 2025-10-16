@@ -75,7 +75,7 @@ const PartnerHealth: React.FC<PartnerHealthProps> = ({ data }) => {
           <Typography variant="body2" color="text.secondary" gutterBottom>
             Health Distribution
           </Typography>
-          {Object.entries(data.healthDistribution).map(([status, count]) => (
+          {data.healthDistribution && Object.entries(data.healthDistribution).map(([status, count]) => (
             <Box key={status} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
               <Chip
                 label={getHealthLabel(status)}

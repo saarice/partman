@@ -40,8 +40,8 @@ import {
   Save,
   Close
 } from '@mui/icons-material';
-import { FilterSidebar } from '../components/opportunities/FilterSidebar';
-import { KanbanView } from '../components/opportunities/KanbanView';
+// import { FilterSidebar } from '../components/opportunities/FilterSidebar';
+// import { KanbanView } from '../components/opportunities/KanbanView';
 import '../styles/opportunities-enterprise.css';
 import {
   useReactTable,
@@ -49,25 +49,25 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  ColumnDef,
   flexRender,
-  SortingState,
-  ColumnFiltersState,
-  VisibilityState,
-  RowSelectionState
+  type ColumnDef,
+  type SortingState,
+  type ColumnFiltersState,
+  type VisibilityState,
+  type RowSelectionState
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { opportunitiesApi } from '../services/opportunitiesApi';
-import { notify } from '../utils/notifications';
 import {
-  Opportunity,
-  OpportunityFilters,
-  OpportunitySort,
-  OpportunityStage,
-  Partner,
-  User,
-  SavedView
-} from '../types/opportunities';
+  opportunitiesApi,
+  type Opportunity,
+  type OpportunityFilters,
+  type OpportunitySort,
+  type OpportunityStage,
+  type Partner,
+  type User,
+  type SavedView
+} from '../services/opportunitiesApi';
+import { notify } from '../utils/notifications';
 
 const STAGES_CONFIG = {
   qualified: { label: 'Qualified', color: '#2196F3' },
@@ -369,11 +369,6 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
 
   const virtualItems = virtualizer.getVirtualItems();
 
-  const handleFilterChange = (newFilters: OpportunityFilters) => {
-    setFilters(newFilters);
-    setCurrentViewId(undefined);
-  };
-
   const handleSaveView = () => {
     if (!newViewName.trim()) return;
 
@@ -394,63 +389,12 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
     notify.success('View saved successfully');
   };
 
-  const handleLoadView = (view: SavedView) => {
-    setFilters(view.filters);
-    setSorting(view.sort.map(s => ({ id: s.field as string, desc: s.direction === 'desc' })));
-    setCurrentViewId(view.id);
-  };
-
-  const handleDeleteView = (viewId: string) => {
-    setSavedViews(prev => prev.filter(v => v.id !== viewId));
-    if (currentViewId === viewId) {
-      setCurrentViewId(undefined);
-    }
-    notify.success('View deleted successfully');
-  };
-
-  const handleOpportunityUpdate = async (opportunityId: string, updates: Partial<Opportunity>) => {
-    try {
-      const response = await opportunitiesApi.updateOpportunity(opportunityId, updates);
-      if (response.success) {
-        setOpportunities(prev =>
-          prev.map(opp => opp.id === opportunityId ? response.data : opp)
-        );
-        notify.success('Opportunity updated successfully');
-      } else {
-        notify.error(response.message || 'Failed to update opportunity');
-      }
-    } catch (error) {
-      notify.error('Failed to update opportunity');
-    }
-  };
-
-  const handleOpportunityAction = (opportunity: Opportunity, action: string) => {
-    switch (action) {
-      case 'edit':
-        notify.info('Edit opportunity feature coming soon');
-        break;
-      case 'view':
-        notify.info('View details feature coming soon');
-        break;
-      case 'change-owner':
-        notify.info('Change owner feature coming soon');
-        break;
-      case 'update-probability':
-        notify.info('Update probability feature coming soon');
-        break;
-      case 'delete':
-        notify.info('Delete opportunity feature coming soon');
-        break;
-      default:
-        break;
-    }
-  };
-
   const selectedRowCount = Object.keys(rowSelection).length;
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {filterSidebarOpen && (
+      {/* Temporarily disabled FilterSidebar */}
+      {/* {filterSidebarOpen && (
         <FilterSidebar
           filters={filters}
           onFiltersChange={handleFilterChange}
@@ -463,7 +407,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
           onSaveCurrentView={() => setSaveViewDialogOpen(true)}
           className="filter-sidebar"
         />
-      )}
+      )} */}
 
       <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <Container maxWidth={false} sx={{ py: 3, flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -668,11 +612,14 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
           </Box>
         </Paper>
       ) : (
-          <KanbanView
-            opportunities={opportunities}
-            onOpportunityUpdate={handleOpportunityUpdate}
-            onOpportunityAction={handleOpportunityAction}
-          />
+          <Paper sx={{ p: 4, textAlign: 'center' }}>
+            <Typography variant="h6" color="text.secondary">
+              Kanban view temporarily unavailable
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Please use the table view for now
+            </Typography>
+          </Paper>
         )}
 
         </Container>
@@ -694,7 +641,7 @@ interface OpportunityActionsProps {
   onUpdate: () => void;
 }
 
-const OpportunityActions: React.FC<OpportunityActionsProps> = ({ opportunity, onUpdate }) => {
+const OpportunityActions: React.FC<OpportunityActionsProps> = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

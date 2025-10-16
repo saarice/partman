@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Alert, AlertTitle, IconButton, Slide } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { subscribeToNotifications, notify, Notification } from '../../utils/notifications';
+import { subscribeToNotifications, notify, type Notification } from '../../utils/notifications';
 
 export function NotificationContainer() {
   const [notifications, setNotifications] = useState<Notification[]>([]);

@@ -7,6 +7,9 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
+    "migrate": "tsx scripts/run-migrations.ts",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "db:setup": "npm run db:reset && npm run migrate",
     "test": "jest",
     "lint": "eslint src --ext .ts"
   },
