@@ -15,7 +15,6 @@ import { pipelineRoutes } from './routes/pipeline.js';
 import userRoutes from './routes/users.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './utils/logger.js';
-import { insertSampleData } from './utils/sampleData.js';
 
 dotenv.config();
 
@@ -39,7 +38,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // Health check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
@@ -74,14 +73,10 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 
-server.listen(PORT, async () => {
+server.listen(PORT, () => {
   logger.info(`🚀 Server running on port ${PORT}`);
   logger.info(`📊 Dashboard API available at http://localhost:${PORT}/api/dashboard`);
+  logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
-  // Insert sample data on startup
-  try {
-    await insertSampleData();
-  } catch (error) {
-    logger.error('Failed to insert sample data:', error);
-  }
+  // Sample data now loaded via separate seed command: npm run seed:dev
 });

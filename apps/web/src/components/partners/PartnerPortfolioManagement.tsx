@@ -367,7 +367,7 @@ const PartnerPortfolioManagement = () => {
       {/* Filters and Controls */}
       <Paper sx={{ p: 2, mb: 3 }}>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <TextField
               fullWidth
               size="small"
@@ -379,10 +379,12 @@ const PartnerPortfolioManagement = () => {
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={6} sm={4} md={2} lg={2}>
             <FormControl fullWidth size="small">
-              <InputLabel>Category</InputLabel>
+              <InputLabel id="category-label">Category</InputLabel>
               <Select
+                labelId="category-label"
+                label="Category"
                 value={filters.category}
                 onChange={(e) => setFilters({...filters, category: e.target.value})}
               >
@@ -395,10 +397,12 @@ const PartnerPortfolioManagement = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={6} sm={4} md={2} lg={2}>
             <FormControl fullWidth size="small">
-              <InputLabel>Health</InputLabel>
+              <InputLabel id="health-label">Health</InputLabel>
               <Select
+                labelId="health-label"
+                label="Health"
                 value={filters.health}
                 onChange={(e) => setFilters({...filters, health: e.target.value})}
               >
@@ -410,10 +414,12 @@ const PartnerPortfolioManagement = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} md={2}>
+          <Grid item xs={6} sm={4} md={2} lg={1.5}>
             <FormControl fullWidth size="small">
-              <InputLabel>Tier</InputLabel>
+              <InputLabel id="tier-label">Tier</InputLabel>
               <Select
+                labelId="tier-label"
+                label="Tier"
                 value={filters.tier}
                 onChange={(e) => setFilters({...filters, tier: e.target.value})}
               >
@@ -424,21 +430,25 @@ const PartnerPortfolioManagement = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={4} md={2} lg={1.5}>
+            <Button
+              fullWidth
+              startIcon={<Compare />}
+              onClick={() => setCompareMode(!compareMode)}
+              variant={compareMode ? 'contained' : 'outlined'}
+              size="small"
+            >
+              Compare ({selectedForComparison.length})
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={4} md={2} lg={2}>
             <Box display="flex" gap={1}>
-              <Button
-                startIcon={<Compare />}
-                onClick={() => setCompareMode(!compareMode)}
-                variant={compareMode ? 'contained' : 'outlined'}
-                size="small"
-              >
-                Compare ({selectedForComparison.length})
-              </Button>
               <Button
                 startIcon={<FilterList />}
                 onClick={() => setFilters({ category: 'all', health: 'all', tier: 'all', search: '' })}
                 size="small"
                 variant="outlined"
+                fullWidth
               >
                 Clear Filters
               </Button>

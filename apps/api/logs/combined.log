@@ -506,3 +506,14 @@
 {"level":"info","message":"::ffff:172.18.0.1 - - [17/Oct/2025:22:37:09 +0000] \"POST /api/auth/login HTTP/1.1\" 200 802 \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\"","service":"partnership-api","timestamp":"2025-10-17T22:37:09.528Z"}
 {"level":"info","message":"User logged in: admin@partman.com","service":"partnership-api","timestamp":"2025-10-17T22:41:41.678Z"}
 {"level":"info","message":"::ffff:172.18.0.1 - - [17/Oct/2025:22:41:41 +0000] \"POST /api/auth/login HTTP/1.1\" 200 802 \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\"","service":"partnership-api","timestamp":"2025-10-17T22:41:41.681Z"}
+{"level":"info","message":"🚀 Server running on port 3001","service":"partnership-api","timestamp":"2025-10-17T22:44:15.947Z"}
+{"level":"info","message":"📊 Dashboard API available at http://localhost:3001/api/dashboard","service":"partnership-api","timestamp":"2025-10-17T22:44:15.948Z"}
+{"level":"info","message":"Environment: development","service":"partnership-api","timestamp":"2025-10-17T22:44:15.948Z"}
+{"level":"info","message":"🚀 Server running on port 3001","service":"partnership-api","timestamp":"2025-10-17T22:44:25.289Z"}
+{"level":"info","message":"📊 Dashboard API available at http://localhost:3001/api/dashboard","service":"partnership-api","timestamp":"2025-10-17T22:44:25.290Z"}
+{"level":"info","message":"Environment: development","service":"partnership-api","timestamp":"2025-10-17T22:44:25.291Z"}
+{"level":"info","message":"🚀 Server running on port 3001","service":"partnership-api","timestamp":"2025-10-17T22:44:26.501Z"}
+{"level":"info","message":"📊 Dashboard API available at http://localhost:3001/api/dashboard","service":"partnership-api","timestamp":"2025-10-17T22:44:26.502Z"}
+{"level":"info","message":"Environment: development","service":"partnership-api","timestamp":"2025-10-17T22:44:26.502Z"}
+{"level":"info","message":"User logged in: admin@partman.com","service":"partnership-api","timestamp":"2025-10-17T22:45:07.614Z"}
+{"level":"info","message":"::ffff:172.18.0.1 - - [17/Oct/2025:22:45:07 +0000] \"POST /api/auth/login HTTP/1.1\" 200 802 \"http://localhost:3000/\" \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\"","service":"partnership-api","timestamp":"2025-10-17T22:45:07.621Z"}
