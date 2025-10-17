@@ -1,0 +1,485 @@
+# GitHub Actions Quality Gates Workflow
+# Location: .github/workflows/quality-gates.yml
+#
+# This workflow enforces quality standards on every pull request:
+# - Backend unit tests with 80% coverage requirement
+# - Frontend unit tests with coverage tracking
+# - Integration tests for critical paths
+# - E2E tests for user journeys
+# - TypeScript type checking
+# - Linting
+# - Security scanning
+
+name: Quality Gates
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+  push:
+    branches: [main, master, develop]
+
+# Cancel in-progress runs for the same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '18'
+  DATABASE_URL: 'postgresql://test:test@localhost:5432/partman_test'
+
+jobs:
+  # ============================================
+  # Job 1: Code Quality Checks
+  # ============================================
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript type checking
+        run: npm run type-check
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Check formatting (Prettier)
+        run: npx prettier --check "apps/**/*.{ts,tsx,js,jsx}"
+
+      - name: Security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true # Don't fail build, but report
+
+  # ============================================
+  # Job 2: Backend Unit Tests
+  # ============================================
+  backend-tests:
+    name: Backend Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: partman_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run backend migrations
+        run: cd apps/api && npm run migrate:test
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Run backend unit tests
+        run: cd apps/api && npm test -- --coverage --testPathIgnorePatterns=integration
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Check coverage thresholds
+        run: |
+          cd apps/api && npm test -- --coverage --coverageThreshold='{
+            "global": {
+              "branches": 80,
+              "functions": 80,
+              "lines": 80,
+              "statements": 80
+            }
+          }'
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Upload backend coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: apps/api/coverage/coverage-final.json
+          flags: backend
+          name: backend-coverage
+
+      - name: Comment coverage on PR
+        uses: romeovs/lcov-reporter-action@v0.3.1
+        if: github.event_name == 'pull_request'
+        with:
+          lcov-file: apps/api/coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Backend Test Coverage'
+
+  # ============================================
+  # Job 3: Frontend Unit Tests
+  # ============================================
+  frontend-tests:
+    name: Frontend Unit Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run frontend unit tests
+        run: cd apps/web && npm test -- --coverage --testPathIgnorePatterns=e2e
+
+      - name: Check calculation logic coverage (90% requirement)
+        run: |
+          cd apps/web && npm test -- --coverage --coverageThreshold='{
+            "src/utils/opportunityCalculations.ts": {
+              "branches": 90,
+              "functions": 90,
+              "lines": 90,
+              "statements": 90
+            },
+            "src/utils/partnerCalculations.ts": {
+              "branches": 90,
+              "functions": 90,
+              "lines": 90,
+              "statements": 90
+            }
+          }'
+
+      - name: Upload frontend coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: apps/web/coverage/coverage-final.json
+          flags: frontend
+          name: frontend-coverage
+
+      - name: Comment coverage on PR
+        uses: romeovs/lcov-reporter-action@v0.3.1
+        if: github.event_name == 'pull_request'
+        with:
+          lcov-file: apps/web/coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Frontend Test Coverage'
+
+  # ============================================
+  # Job 4: Integration Tests
+  # ============================================
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: partman_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run database migrations
+        run: cd apps/api && npm run migrate:test
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Seed test data
+        run: cd apps/api && npm run seed:test
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+          REDIS_URL: redis://localhost:6379
+
+      - name: Upload integration test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: integration-test-results
+          path: apps/api/test-results/
+
+  # ============================================
+  # Job 5: E2E Tests (Playwright)
+  # ============================================
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: partman_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Build frontend
+        run: cd apps/web && npm run build
+
+      - name: Run database migrations
+        run: cd apps/api && npm run migrate:test
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Start backend server
+        run: cd apps/api && npm run dev &
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+          NODE_ENV: test
+
+      - name: Wait for backend to be ready
+        run: npx wait-on http://localhost:8000/health --timeout 60000
+
+      - name: Start frontend server
+        run: cd apps/web && npm run preview -- --port 3000 &
+
+      - name: Wait for frontend to be ready
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run E2E tests
+        run: npx playwright test
+        env:
+          CI: true
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload Playwright screenshots
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: playwright-screenshots
+          path: tests/visual-regression/report/
+          retention-days: 30
+
+  # ============================================
+  # Job 6: Build Verification
+  # ============================================
+  build:
+    name: Build Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build backend
+        run: cd apps/api && npm run build
+
+      - name: Build frontend
+        run: cd apps/web && npm run build
+
+      - name: Check bundle size
+        run: |
+          cd apps/web && npm run build
+          SIZE=$(du -sb dist | awk '{print $1}')
+          MAX_SIZE=5242880  # 5MB
+          if [ $SIZE -gt $MAX_SIZE ]; then
+            echo "Bundle size $SIZE exceeds maximum $MAX_SIZE"
+            exit 1
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            apps/web/dist/
+            apps/api/dist/
+
+  # ============================================
+  # Job 7: Quality Gate Summary
+  # ============================================
+  quality-gate-summary:
+    name: Quality Gate Summary
+    runs-on: ubuntu-latest
+    needs: [code-quality, backend-tests, frontend-tests, integration-tests, e2e-tests, build]
+    if: always()
+
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [[ "${{ needs.code-quality.result }}" != "success" ]] || \
+             [[ "${{ needs.backend-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.frontend-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.integration-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.e2e-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.build.result }}" != "success" ]]; then
+            echo "❌ Quality gates FAILED"
+            echo "Code Quality: ${{ needs.code-quality.result }}"
+            echo "Backend Tests: ${{ needs.backend-tests.result }}"
+            echo "Frontend Tests: ${{ needs.frontend-tests.result }}"
+            echo "Integration Tests: ${{ needs.integration-tests.result }}"
+            echo "E2E Tests: ${{ needs.e2e-tests.result }}"
+            echo "Build: ${{ needs.build.result }}"
+            exit 1
+          else
+            echo "✅ All quality gates PASSED"
+          fi
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const body = `## ✅ Quality Gates Passed
+
+            All automated quality checks have passed:
+
+            - ✅ Code Quality (TypeScript, Linting, Security)
+            - ✅ Backend Unit Tests (80%+ coverage)
+            - ✅ Frontend Unit Tests (Calculation logic 90%+ coverage)
+            - ✅ Integration Tests (Auth flow, API contracts)
+            - ✅ E2E Tests (Critical user journeys)
+            - ✅ Build Verification (Bundle size check)
+
+            **This PR is ready for manual review.**`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+# ============================================
+# Branch Protection Rules (Configure in GitHub)
+# ============================================
+#
+# Settings > Branches > Branch protection rules > Add rule
+#
+# Pattern: main (or master)
+#
+# Required status checks:
+#   - Code Quality
+#   - Backend Unit Tests
+#   - Frontend Unit Tests
+#   - Integration Tests
+#   - E2E Tests
+#   - Build Verification
+#
+# Additional settings:
+#   ✅ Require status checks to pass before merging
+#   ✅ Require branches to be up to date before merging
+#   ✅ Require conversation resolution before merging
+#   ✅ Do not allow bypassing the above settings
+#
+# ============================================
+
+# ============================================
+# Pre-Commit Hook (Optional but Recommended)
+# ============================================
+#
+# Install husky:
+#   npm install --save-dev husky
+#   npx husky install
+#
+# Create .husky/pre-commit:
+#   #!/bin/sh
+#   npm run type-check
+#   npm run lint
+#   npm run test:unit -- --onlyChanged --passWithNoTests
+#
+# ============================================

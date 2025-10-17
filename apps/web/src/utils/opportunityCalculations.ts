@@ -5,7 +5,7 @@
  * These functions are pure and testable.
  */
 
-import {
+import type {
   Opportunity,
   OpportunityMetrics,
   OpportunityStage,
