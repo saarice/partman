@@ -1,0 +1,191 @@
+{
+  "config": {
+    "configFile": "/Users/saar/Partman/playwright.config.ts",
+    "rootDir": "/Users/saar/Partman/tests/visual-regression",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "tests/visual-regression/report"
+        }
+      ],
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "tests/visual-regression/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/saar/Partman/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-desktop",
+        "name": "chromium-desktop",
+        "testDir": "/Users/saar/Partman/tests/visual-regression",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      },
+      {
+        "outputDir": "/Users/saar/Partman/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-tablet",
+        "name": "chromium-tablet",
+        "testDir": "/Users/saar/Partman/tests/visual-regression",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      },
+      {
+        "outputDir": "/Users/saar/Partman/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium-mobile",
+        "name": "chromium-mobile",
+        "testDir": "/Users/saar/Partman/tests/visual-regression",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "changed",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 4,
+    "webServer": {
+      "command": "cd infrastructure/docker && docker-compose up web",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "baseline-capture.spec.ts",
+      "file": "baseline-capture.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "BASELINE CAPTURE - Static HTML Pages",
+          "file": "baseline-capture.spec.ts",
+          "line": 10,
+          "column": 6,
+          "specs": [
+            {
+              "title": "4. Financial Dashboard",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium-desktop",
+                  "projectName": "chromium-desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 60102,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        },
+                        {
+                          "location": {
+                            "file": "/Users/saar/Partman/tests/visual-regression/baseline-capture.spec.ts",
+                            "column": 16,
+                            "line": 73
+                          },
+                          "message": "Error: page.waitForSelector: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.app-sidebar') to be visible\u001b[22m\n\n\n  71 |\n  72 |     // Wait for page-specific elements\n> 73 |     await page.waitForSelector('.app-sidebar', { state: 'visible' });\n     |                ^\n  74 |     await page.waitForSelector('.kpi-card', { state: 'visible' });\n  75 |\n  76 |     // Capture full page screenshot\n    at /Users/saar/Partman/tests/visual-regression/baseline-capture.spec.ts:73:16"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-10-17T13:03:23.541Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/saar/Partman/test-results/baseline-capture-BASELINE--47171-Pages-4-Financial-Dashboard-chromium-desktop/test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/saar/Partman/test-results/baseline-capture-BASELINE--47171-Pages-4-Financial-Dashboard-chromium-desktop/error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "227f6084080445f319cc-164d76b7655321eb1071",
+              "file": "baseline-capture.spec.ts",
+              "line": 69,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-10-17T13:03:23.026Z",
+    "duration": 60917.156,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

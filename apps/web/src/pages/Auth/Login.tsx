@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -18,6 +19,7 @@ const Login: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,7 +29,8 @@ const Login: React.FC = () => {
 
     try {
       const response = await authApi.login(email, password);
-      login(response.data.token, response.data.user);
+      login(response.data.token, response.data.refreshToken, response.data.user);
+      navigate('/dashboards/overall');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     } finally {

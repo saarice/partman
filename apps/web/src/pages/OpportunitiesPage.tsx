@@ -114,7 +114,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
         opportunitiesApi.getOpportunities({
           filters,
           search: searchQuery,
-          sort: sorting.map(s => ({ field: s.id as keyof Opportunity, direction: s.desc ? 'desc' : 'asc' }))
+          // Removed sort from API call - sorting is now client-side only
         }),
         opportunitiesApi.getPartners(),
         opportunitiesApi.getUsers()
@@ -132,7 +132,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
     } finally {
       setLoading(false);
     }
-  }, [filters, searchQuery, sorting]);
+  }, [filters, searchQuery]); // Removed 'sorting' from dependencies
 
   useEffect(() => {
     loadData();

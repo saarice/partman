@@ -2,16 +2,15 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useAuthStore } from './stores/authStoreSimple';
 import AppLayout from './components/layout/AppLayout';
-import OverallDashboard from './pages/Dashboard/OverallDashboard';
-import OpportunitiesDashboard from './pages/Dashboard/OpportunitiesDashboard';
-import PartnershipsDashboard from './pages/Dashboard/PartnershipsDashboard';
-import FinancialDashboard from './pages/Dashboard/FinancialDashboard';
+import Dashboard from './pages/Dashboard';
+import OpportunitiesDashboard from './pages/OpportunitiesDashboard';
+import PartnershipsDashboard from './pages/PartnershipsDashboard';
+import FinancialDashboard from './pages/FinancialDashboard';
 import Login from './pages/Auth/Login';
 import Partners from './pages/Partners/Partners';
 import OpportunitiesPage from './pages/OpportunitiesPage';
 import UserManagement from './pages/Admin/UserManagement';
 import ProtectedRoute from './components/common/ProtectedRoute';
-import { NavigationTest } from './components/test/NavigationTest';
 import { NotificationContainer } from './components/common/NotificationContainer';
 
 function App() {
@@ -55,7 +54,7 @@ function App() {
           element={
             <ProtectedRoute>
               <AppLayout title="Overall Dashboard">
-                <OverallDashboard />
+                <Dashboard />
               </AppLayout>
             </ProtectedRoute>
           }
@@ -113,18 +112,6 @@ function App() {
           }
         />
 
-
-        {/* Navigation Test Route (temporary for testing) */}
-        <Route
-          path="/test/navigation"
-          element={
-            <ProtectedRoute>
-              <AppLayout title="Navigation Test">
-                <NavigationTest />
-              </AppLayout>
-            </ProtectedRoute>
-          }
-        />
 
         {/* Legacy Route Redirects (will be enhanced in Story 9.4) */}
         <Route

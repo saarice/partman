@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test Dashboard Interactions</title>
+  <style>
+    body { font-family: monospace; padding: 20px; }
+    .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+    .pass { background: #d4edda; }
+    .fail { background: #f8d7da; }
+    button { margin: 5px; padding: 10px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Dashboard Interaction Tests</h1>
+  <div id="results"></div>
+
+  <script>
+    const results = document.getElementById('results');
+
+    function addResult(test, status, details) {
+      const div = document.createElement('div');
+      div.className = `test ${status}`;
+      div.innerHTML = `<strong>${test}</strong>: ${status.toUpperCase()}<br>${details}`;
+      results.appendChild(div);
+    }
+
+    // Test 1: Check if Dashboard.tsx has sorting
+    fetch('http://localhost:3000/dashboards/overall')
+      .then(r => r.text())
+      .then(html => {
+        addResult('Dev Server', 'pass', 'Server is running and responding');
+      })
+      .catch(e => {
+        addResult('Dev Server', 'fail', e.message);
+      });
+
+    // Instructions
+    addResult('Manual Test Instructions', 'info', `
+      <ol>
+        <li>Open http://localhost:3000/dashboards/overall in your browser</li>
+        <li>Open Developer Console (F12)</li>
+        <li>Click each table column header (Partner, Activity, Date, Impact, Status)</li>
+        <li>Verify table rows reorder WITHOUT page reload</li>
+        <li>Verify arrow indicators show sort direction</li>
+        <li>Click "View opportunities" link - should navigate WITHOUT page reload</li>
+        <li>Click "Generate Report" button - should see console.log message</li>
+        <li>Check Network tab - should see NO HTML document requests for interactions</li>
+      </ol>
+    `);
+  </script>
+</body>
+</html>

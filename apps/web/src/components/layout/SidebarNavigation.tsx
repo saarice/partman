@@ -16,11 +16,11 @@ import {
 } from '@mui/material';
 import {
   Dashboard as DashboardIcon,
-  Timeline,
-  Business,
+  TrendingUp,
+  Handshake,
   AttachMoney,
-  BarChart,
-  ManageAccounts,
+  Work,
+  Business,
   ExpandLess,
   ExpandMore,
   Menu as MenuIcon,
@@ -53,13 +53,13 @@ const navigationStructure: NavigationItem[] = [
       {
         id: 'opportunities-dashboard',
         label: 'Opportunities Dashboard',
-        icon: <Timeline />,
+        icon: <TrendingUp />,
         path: '/dashboards/opportunities'
       },
       {
         id: 'partnerships-dashboard',
         label: 'Partnerships Dashboard',
-        icon: <Business />,
+        icon: <Handshake />,
         path: '/dashboards/partnerships'
       },
       {
@@ -73,12 +73,12 @@ const navigationStructure: NavigationItem[] = [
   {
     id: 'management',
     label: '⚙️ Management',
-    icon: <ManageAccounts />,
+    icon: <Work />,
     children: [
       {
         id: 'opportunity-management',
         label: 'Opportunity Management',
-        icon: <BarChart />,
+        icon: <Work />,
         path: '/management/opportunities'
       },
       {
@@ -278,16 +278,13 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
       anchor="left"
       open={open}
       sx={{
-        width: open ? drawerWidth : 0,
+        width: drawerWidth,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
-          position: 'relative',
-          transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
+          border: 'none',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         },
       }}
     >

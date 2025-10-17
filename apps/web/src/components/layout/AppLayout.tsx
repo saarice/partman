@@ -63,7 +63,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title = 'Partman' }) =>
             zIndex: theme.zIndex.drawer + 1,
             backgroundColor: 'background.paper',
             color: 'text.primary',
-            borderBottom: `1px solid ${theme.palette.divider}`
+            borderBottom: `1px solid ${theme.palette.divider}`,
+            ml: sidebarOpen ? '280px' : 0,
+            width: sidebarOpen ? 'calc(100% - 280px)' : '100%',
+            transition: theme.transitions.create(['margin', 'width'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
           }}
         >
           <Toolbar>
@@ -72,7 +78,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title = 'Partman' }) =>
               aria-label="toggle drawer"
               edge="start"
               onClick={handleSidebarToggle}
-              sx={{ mr: 2 }}
+              sx={{
+                mr: 2,
+                ...(sidebarOpen && { display: 'none' })
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -126,7 +135,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title = 'Partman' }) =>
             flexGrow: 1,
             p: 3,
             backgroundColor: 'background.default',
-            transition: theme.transitions.create(['margin'], {
+            ml: sidebarOpen ? '280px' : 0,
+            width: sidebarOpen ? 'calc(100% - 280px)' : '100%',
+            transition: theme.transitions.create(['margin', 'width'], {
               easing: theme.transitions.easing.sharp,
               duration: theme.transitions.duration.leavingScreen,
             }),
