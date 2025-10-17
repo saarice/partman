@@ -461,9 +461,9 @@ const PartnerPortfolioManagement = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Partner</TableCell>
-                <TableCell>Health</TableCell>
-                <TableCell>
+                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Partner</TableCell>
+                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Health</TableCell>
+                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>
                   <TableSortLabel
                     active={sortBy === 'quarterlyRevenue'}
                     direction={sortOrder}
@@ -472,7 +472,7 @@ const PartnerPortfolioManagement = () => {
                     Q Revenue
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>
                   <TableSortLabel
                     active={sortBy === 'activeOpportunities'}
                     direction={sortOrder}
@@ -481,9 +481,9 @@ const PartnerPortfolioManagement = () => {
                     Active Opps
                   </TableSortLabel>
                 </TableCell>
-                <TableCell>Contact</TableCell>
-                <TableCell>Next Action</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Contact</TableCell>
+                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Next Action</TableCell>
+                <TableCell align="right" sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -507,7 +507,7 @@ const PartnerPortfolioManagement = () => {
                     }
                   }}
                 >
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'middle' }}>
                     <Box display="flex" alignItems="center" gap={2}>
                       <Badge
                         color="primary"
@@ -541,7 +541,7 @@ const PartnerPortfolioManagement = () => {
                       </Box>
                     </Box>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'middle' }}>
                     <Box display="flex" alignItems="center" gap={1}>
                       {getHealthIcon(partner.relationshipHealth.status)}
                       <Box>
@@ -554,7 +554,7 @@ const PartnerPortfolioManagement = () => {
                       </Box>
                     </Box>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'middle' }}>
                     <Box display="flex" alignItems="center" gap={0.5}>
                       <Typography variant="body2" fontWeight="bold">
                         ${(partner.performance.quarterlyRevenue / 1000000).toFixed(1)}M
@@ -562,12 +562,12 @@ const PartnerPortfolioManagement = () => {
                       {getTrendIcon(partner.performance.trend)}
                     </Box>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'middle' }}>
                     <Typography variant="body2" fontWeight="bold">
                       {partner.performance.activeOpportunities}
                     </Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'middle' }}>
                     <Box>
                       <Typography variant="body2" fontWeight="medium">
                         {partner.contacts.find(c => c.isPrimary)?.name}
@@ -577,7 +577,7 @@ const PartnerPortfolioManagement = () => {
                       </Typography>
                     </Box>
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{ verticalAlign: 'middle' }}>
                     <Chip
                       size="small"
                       label={new Date(partner.relationshipHealth.nextContactDue) < new Date() ? 'Overdue' : 'Due Soon'}
@@ -585,7 +585,7 @@ const PartnerPortfolioManagement = () => {
                       variant="outlined"
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" sx={{ verticalAlign: 'middle' }}>
                     <IconButton
                       size="small"
                       onClick={(e) => {
