@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Typography, Grid, Paper, CircularProgress } from '@mui/material';
-import { TrendingUp, TrendingDown, Briefcase, DollarSign, Target, AlertCircle } from 'lucide-react';
+import { Briefcase, DollarSign, Target, AlertCircle } from 'lucide-react';
 import { getMockOpportunities, getPreviousPeriodMetrics, getMockOpportunityHistory } from '../services/mockOpportunityData';
 import {
   calculateOpportunityMetrics,

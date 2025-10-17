@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Box, Typography, Grid, Paper, CircularProgress } from '@mui/material';
 import { Users, TrendingUp, AlertTriangle, DollarSign } from 'lucide-react';
-import { getMockPartners, getPreviousQuarterMetrics } from '../services/mockPartnerData';
-import { calculatePartnerMetrics, getAtRiskPartners, formatHealthScore, getHealthColor } from '../utils/partnerCalculations';
+import { getMockPartners } from '../services/mockPartnerData';
+import { calculatePartnerMetrics, formatHealthScore, getHealthColor } from '../utils/partnerCalculations';
 import { formatLargeNumber } from '../utils/opportunityCalculations';
 import type { Partner, PartnerMetrics } from '../types/partner';
 import KPICard from '../components/dashboard/KPICard';
@@ -24,7 +24,7 @@ const PartnershipsDashboard: React.FC = () => {
   }, []);
 
   const metrics: PartnerMetrics = useMemo(() =>
-    calculatePartnerMetrics(partners, getPreviousQuarterMetrics()),
+    calculatePartnerMetrics(partners),
     [partners]
   );
 

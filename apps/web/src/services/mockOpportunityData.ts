@@ -10,13 +10,7 @@
  * };
  */
 
-import { Opportunity, Partner, OpportunityOwner } from '../types/opportunity';
-
-// Helper to calculate days between dates
-const daysBetween = (date1: Date, date2: Date): number => {
-  const diff = Math.abs(date2.getTime() - date1.getTime());
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
-};
+import type { Opportunity, Partner, OpportunityOwner } from '../types/opportunity';
 
 // Mock partners
 const mockPartners: Partner[] = [
@@ -72,8 +66,6 @@ const mockOwners: OpportunityOwner[] = [
  * Replace with: fetch('/api/opportunities')
  */
 export const getMockOpportunities = (): Opportunity[] => {
-  const now = new Date();
-
   return [
     {
       id: 'opp-001',

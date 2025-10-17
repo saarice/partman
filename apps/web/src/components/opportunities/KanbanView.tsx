@@ -38,7 +38,7 @@ import {
   useSortable
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Opportunity, OpportunityStage } from '../../types/opportunities';
+import type { Opportunity, OpportunityStage } from '../../types/opportunities';
 
 const STAGES_CONFIG = {
   qualified: { label: 'Qualified', color: '#2196F3' },

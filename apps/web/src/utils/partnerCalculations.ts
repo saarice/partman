@@ -50,8 +50,7 @@ export const calculateRevenueTrend = (current: number, previous: number): number
  * Calculate comprehensive partner metrics
  */
 export const calculatePartnerMetrics = (
-  partners: Partner[],
-  previousMetrics?: { totalPartners: number; totalRevenue: number; averageHealth: number }
+  partners: Partner[]
 ): PartnerMetrics => {
   const totalPartners = partners.length;
   const totalRevenue = partners.reduce((sum, p) => sum + p.quarterlyRevenue, 0);
@@ -95,7 +94,7 @@ export const calculatePartnerMetrics = (
     });
   });
 
-  const categoryDistribution = Array.from(categoryMap.entries()).map(([category, data]: [string, any]) => ({
+  const categoryDistribution = Array.from(categoryMap.entries()).map(([category, data]: [string, { count: number; revenue: number }]) => ({
     category,
     count: data.count,
     revenue: data.revenue
