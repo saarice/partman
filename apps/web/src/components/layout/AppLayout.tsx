@@ -10,8 +10,8 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import {
-  Menu as MenuIcon,
   AccountCircle,
   ExitToApp
 } from '@mui/icons-material';
@@ -57,33 +57,26 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title = 'Partman' }) =>
       <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         {/* Top App Bar */}
         <AppBar
-          position="static"
+          position="fixed"
           elevation={1}
           sx={{
             zIndex: theme.zIndex.drawer + 1,
             backgroundColor: 'background.paper',
             color: 'text.primary',
             borderBottom: `1px solid ${theme.palette.divider}`,
-            ml: sidebarOpen ? '280px' : 0,
-            width: sidebarOpen ? 'calc(100% - 280px)' : '100%',
-            transition: theme.transitions.create(['margin', 'width'], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
+            width: '100%',
+            height: 64,
           }}
         >
-          <Toolbar>
+          <Toolbar sx={{ height: 64 }}>
             <IconButton
               color="inherit"
               aria-label="toggle drawer"
               edge="start"
               onClick={handleSidebarToggle}
-              sx={{
-                mr: 2,
-                ...(sidebarOpen && { display: 'none' })
-              }}
+              sx={{ mr: 2 }}
             >
-              <MenuIcon />
+              <MenuOutlinedIcon />
             </IconButton>
 
             <Typography
@@ -135,12 +128,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title = 'Partman' }) =>
             flexGrow: 1,
             p: 3,
             backgroundColor: 'background.default',
-            ml: sidebarOpen ? '280px' : 0,
-            width: sidebarOpen ? 'calc(100% - 280px)' : '100%',
-            transition: theme.transitions.create(['margin', 'width'], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
+            marginLeft: sidebarOpen ? '280px' : '0px',
+            marginTop: '64px',
+            transition: 'margin 0.3s ease',
+            minHeight: 'calc(100vh - 64px)',
           }}
         >
           {children}

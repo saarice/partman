@@ -14,17 +14,18 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import TrendingUpOutlinedIcon from '@mui/icons-material/TrendingUpOutlined';
+import HandshakeOutlinedIcon from '@mui/icons-material/HandshakeOutlined';
+import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
+import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
+import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import {
-  Dashboard as DashboardIcon,
-  TrendingUp,
-  Handshake,
-  AttachMoney,
-  Work,
-  Business,
   ExpandLess,
   ExpandMore,
-  Menu as MenuIcon,
-  SupervisorAccount
+  Menu as MenuIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStoreSimple';
@@ -41,65 +42,65 @@ interface NavigationItem {
 const navigationStructure: NavigationItem[] = [
   {
     id: 'dashboards',
-    label: '📊 Dashboards',
-    icon: <DashboardIcon />,
+    label: 'Dashboards',
+    icon: <BarChartOutlinedIcon />,
     children: [
       {
         id: 'overall-dashboard',
         label: 'Overall Dashboard',
-        icon: <DashboardIcon />,
+        icon: <DashboardOutlinedIcon />,
         path: '/dashboards/overall'
       },
       {
         id: 'opportunities-dashboard',
         label: 'Opportunities Dashboard',
-        icon: <TrendingUp />,
+        icon: <TrendingUpOutlinedIcon />,
         path: '/dashboards/opportunities'
       },
       {
         id: 'partnerships-dashboard',
         label: 'Partnerships Dashboard',
-        icon: <Handshake />,
+        icon: <HandshakeOutlinedIcon />,
         path: '/dashboards/partnerships'
       },
       {
         id: 'financial-dashboard',
         label: 'Financial Dashboard',
-        icon: <AttachMoney />,
+        icon: <AttachMoneyOutlinedIcon />,
         path: '/dashboards/financial'
       }
     ]
   },
   {
     id: 'management',
-    label: '⚙️ Management',
-    icon: <Work />,
+    label: 'Management',
+    icon: <WorkOutlineIcon />,
     children: [
       {
         id: 'opportunity-management',
         label: 'Opportunity Management',
-        icon: <Work />,
+        icon: <WorkOutlineIcon />,
         path: '/management/opportunities'
       },
       {
         id: 'partnership-management',
         label: 'Partnership Management',
-        icon: <Business />,
+        icon: <BusinessOutlinedIcon />,
         path: '/management/partnerships'
       }
     ]
   },
   {
     id: 'admin',
-    label: '👨‍💼 User Management',
-    icon: <SupervisorAccount />,
+    label: 'User Management',
+    icon: <SupervisorAccountOutlinedIcon />,
     path: '/admin/users',
     permission: 'system_owner'
   },
   {
     id: 'admin-test',
-    label: '🔧 Admin Test',
-    icon: <SupervisorAccount />,
+    label: 'Admin Test',
+    icon: <SupervisorAccountOutlinedIcon />,
     path: '/admin/test',
     permission: 'system_owner'
   }
@@ -168,28 +169,29 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
             onClick={() => handleItemClick(item)}
             selected={active}
             sx={{
-              pl: 2 + level * 2,
-              borderRadius: 1,
-              mx: 1,
-              mb: 0.5,
-              backgroundColor: active ? theme.palette.primary.main : 'transparent',
-              color: active ? theme.palette.primary.contrastText : 'inherit',
+              pl: level === 0 ? 2 : 4,
+              pr: 2,
+              py: 1.5,
+              mx: level === 0 ? 0 : 1,
+              my: level === 0 ? 0 : 0.25,
+              borderLeft: active && level > 0 ? '4px solid #667eea' : 'none',
+              borderRadius: level > 0 ? 1 : 0,
+              backgroundColor: active ? 'rgba(102, 126, 234, 0.1)' : 'transparent',
+              color: active ? '#667eea' : level === 0 ? '#374151' : '#6b7280',
               '&:hover': {
-                backgroundColor: active
-                  ? theme.palette.primary.dark
-                  : theme.palette.action.hover,
+                backgroundColor: active ? 'rgba(102, 126, 234, 0.15)' : 'rgba(0,0,0,0.04)',
               },
               '&.Mui-selected': {
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
                 '&:hover': {
-                  backgroundColor: theme.palette.primary.dark,
+                  backgroundColor: 'rgba(102, 126, 234, 0.15)',
                 }
               }
             }}
           >
             <ListItemIcon
               sx={{
-                color: active ? theme.palette.primary.contrastText : 'inherit',
+                color: active ? '#667eea' : '#6b7280',
                 minWidth: 36
               }}
             >
@@ -198,8 +200,9 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
             <ListItemText
               primary={item.label}
               primaryTypographyProps={{
-                fontSize: level === 0 ? '0.875rem' : '0.8rem',
-                fontWeight: level === 0 ? 600 : 500
+                fontSize: level === 0 ? '0.875rem' : '0.875rem',
+                fontWeight: level === 0 ? 600 : 500,
+                color: 'inherit'
               }}
             />
             {item.children && (
@@ -221,30 +224,33 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
   const drawerWidth = 280;
 
   const drawerContent = (
-    <Box sx={{ width: drawerWidth, height: '100%', bgcolor: 'background.paper' }}>
-      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+    <Box sx={{ width: drawerWidth, height: '100%', bgcolor: 'background.paper', display: 'flex', flexDirection: 'column' }}>
+      {/* Logo/Brand Area */}
+      <Box sx={{ py: 3, px: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
         {isMobile && (
           <IconButton onClick={onToggle} edge="start">
             <MenuIcon />
           </IconButton>
         )}
-        <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
+        <Typography variant="h6" component="div" sx={{ fontWeight: 600, color: '#111827' }}>
           Partman
         </Typography>
       </Box>
 
       <Divider />
 
-      <Box sx={{ flex: 1, overflowY: 'auto', pt: 1 }}>
-        <List component="nav">
+      {/* Navigation Menu */}
+      <Box sx={{ flex: 1, overflowY: 'auto', py: 2 }}>
+        <List component="nav" sx={{ px: 0 }}>
           {navigationStructure.map(item => renderNavigationItem(item))}
         </List>
       </Box>
 
       <Divider />
 
-      <Box sx={{ p: 2 }}>
-        <Typography variant="caption" color="text.secondary">
+      {/* User Info Area */}
+      <Box sx={{ py: 2, px: 2 }}>
+        <Typography variant="caption" sx={{ color: '#6b7280', fontSize: '0.75rem' }}>
           Welcome, {user?.firstName} {user?.lastName}
         </Typography>
       </Box>
@@ -285,6 +291,8 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
           boxSizing: 'border-box',
           border: 'none',
           boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          top: 64, // Position below header
+          height: 'calc(100vh - 64px)',
         },
       }}
     >
