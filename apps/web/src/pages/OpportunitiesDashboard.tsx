@@ -1,142 +1,135 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Box, Typography, Grid, Paper } from '@mui/material';
-import {
-  TrendingUp as TrendingUpIcon,
-  Business as BusinessIcon,
-  AttachMoney as MoneyIcon,
-  ShowChart as ChartIcon,
-} from '@mui/icons-material';
-import KPICard from '../components/dashboard/KPICard';
-import { Opportunity, OpportunityMetrics } from '../types/opportunity';
-import {
-  getMockOpportunities,
-  getPreviousPeriodMetrics,
-  getMockOpportunityHistory
-} from '../services/mockOpportunityData';
-import {
-  calculateOpportunityMetrics,
-  formatCurrency,
-  formatLargeNumber,
-  formatGrowthRate,
-  getRevenueDistribution,
-  calculatePerformanceTrends
-} from '../utils/opportunityCalculations';
+import { Box, Typography, Grid, Paper, CircularProgress } from '@mui/material';
+import { TrendingUp, TrendingDown, Briefcase, DollarSign, Target, AlertCircle } from 'lucide-react';
+import { opportunitiesApi, type Opportunity } from '../services/opportunitiesApi';
+
+interface OpportunityMetrics {
+  totalOpportunities: number;
+  totalValue: number;
+  weightedValue: number;
+  averageDealSize: number;
+  winRate: number;
+  activeOpportunities: number;
+  atRiskOpportunities: number;
+}
+
+interface StageDistribution {
+  stage: string;
+  count: number;
+  value: number;
+  percentage: number;
+}
 
 /**
  * Opportunities Dashboard
  *
- * Data-driven dashboard that:
- * - Loads data from mock service (will be replaced with API)
- * - Calculates all metrics from data
- * - Passes data to reusable components
- * - NO hardcoded values in UI
+ * Displays pipeline health, revenue forecasting, and opportunity metrics
+ * Uses real opportunity data from opportunitiesApi service
  */
 const OpportunitiesDashboard: React.FC = () => {
-  // State management
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load data on mount
+  // Load opportunities data
   useEffect(() => {
-    loadDashboardData();
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const response = await opportunitiesApi.getOpportunities({
+          pageSize: 1000 // Get all opportunities for metrics
+        });
+        setOpportunities(response.opportunities);
+        setError(null);
+      } catch (err) {
+        console.error('Error loading opportunities:', err);
+        setError('Failed to load opportunities data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
-  /**
-   * Load dashboard data
-   * TODO: Replace with real API call
-   * const response = await fetch('/api/opportunities');
-   */
-  const loadDashboardData = async () => {
-    try {
-      setLoading(true);
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      // In production: const data = await fetchOpportunitiesFromAPI();
-      const data = getMockOpportunities();
-      setOpportunities(data);
-      setError(null);
-    } catch (err) {
-      setError('Failed to load opportunity data');
-      console.error('Error loading opportunities:', err);
-    } finally {
-      setLoading(false);
+  // Calculate metrics from opportunities data
+  const metrics = useMemo((): OpportunityMetrics => {
+    if (opportunities.length === 0) {
+      return {
+        totalOpportunities: 0,
+        totalValue: 0,
+        weightedValue: 0,
+        averageDealSize: 0,
+        winRate: 0,
+        activeOpportunities: 0,
+        atRiskOpportunities: 0
+      };
     }
+
+    const activeOpps = opportunities.filter(opp => !['won', 'lost'].includes(opp.stage));
+    const wonOpps = opportunities.filter(opp => opp.stage === 'won');
+    const closedOpps = opportunities.filter(opp => ['won', 'lost'].includes(opp.stage));
+    const atRiskOpps = opportunities.filter(opp => opp.health === 'at-risk' || opp.health === 'critical');
+
+    const totalValue = activeOpps.reduce((sum, opp) => sum + opp.amount, 0);
+    const weightedValue = activeOpps.reduce((sum, opp) => sum + opp.weightedValue, 0);
+
+    return {
+      totalOpportunities: opportunities.length,
+      totalValue,
+      weightedValue,
+      averageDealSize: activeOpps.length > 0 ? totalValue / activeOpps.length : 0,
+      winRate: closedOpps.length > 0 ? (wonOpps.length / closedOpps.length) * 100 : 0,
+      activeOpportunities: activeOpps.length,
+      atRiskOpportunities: atRiskOpps.length
+    };
+  }, [opportunities]);
+
+  // Calculate stage distribution
+  const stageDistribution = useMemo((): StageDistribution[] => {
+    const stages = ['qualified', 'proposal', 'negotiation', 'closing'];
+    const activeOpps = opportunities.filter(opp => !['won', 'lost'].includes(opp.stage));
+    const totalValue = activeOpps.reduce((sum, opp) => sum + opp.amount, 0);
+
+    return stages.map(stage => {
+      const stageOpps = activeOpps.filter(opp => opp.stage === stage);
+      const stageValue = stageOpps.reduce((sum, opp) => sum + opp.amount, 0);
+
+      return {
+        stage: stage.charAt(0).toUpperCase() + stage.slice(1),
+        count: stageOpps.length,
+        value: stageValue,
+        percentage: totalValue > 0 ? (stageValue / totalValue) * 100 : 0
+      };
+    });
+  }, [opportunities]);
+
+  // Format currency
+  const formatCurrency = (value: number): string => {
+    if (value >= 1000000) {
+      return `$${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `$${(value / 1000).toFixed(0)}K`;
+    }
+    return `$${value.toFixed(0)}`;
   };
 
-  // Calculate metrics from data
-  const metrics: OpportunityMetrics = useMemo(() => {
-    const previousMetrics = getPreviousPeriodMetrics();
-    return calculateOpportunityMetrics(opportunities, previousMetrics);
-  }, [opportunities]);
-
-  // Calculate revenue distribution for charts
-  const revenueDistribution = useMemo(() => {
-    return getRevenueDistribution(opportunities);
-  }, [opportunities]);
-
-  // Calculate performance trends
-  const performanceTrends = useMemo(() => {
-    const historyData = getMockOpportunityHistory();
-    return calculatePerformanceTrends(historyData);
-  }, []);
-
-  // KPI data calculated from metrics
-  const kpiData = [
-    {
-      title: 'Active Opportunities',
-      value: metrics.totalOpportunities,
-      change: formatGrowthRate(metrics.growthRate),
-      changeType: metrics.growthRate >= 0 ? ('positive' as const) : ('negative' as const),
-      link: '/management/opportunities',
-      linkText: 'View all opportunities',
-      icon: <BusinessIcon />,
-      iconColor: '#667eea',
-    },
-    {
-      title: 'Pipeline Value',
-      value: formatLargeNumber(metrics.totalValue, 'USD'),
-      change: `Avg: ${formatLargeNumber(metrics.averageDealSize, 'USD')}`,
-      changeType: 'neutral' as const,
-      link: '/management/opportunities',
-      linkText: 'View pipeline',
-      icon: <MoneyIcon />,
-      iconColor: '#22c55e',
-    },
-    {
-      title: 'Weighted Value',
-      value: formatLargeNumber(metrics.totalWeightedValue, 'USD'),
-      change: `Avg probability: ${metrics.averageProbability.toFixed(0)}%`,
-      changeType: 'neutral' as const,
-      link: '/management/opportunities',
-      linkText: 'View forecast',
-      icon: <ChartIcon />,
-      iconColor: '#f59e0b',
-    },
-    {
-      title: 'Conversion Rate',
-      value: `${metrics.conversionRate.toFixed(1)}%`,
-      change: `From ${metrics.totalOpportunities} opportunities`,
-      changeType: metrics.conversionRate >= 20 ? ('positive' as const) : ('neutral' as const),
-      link: '/management/opportunities',
-      linkText: 'View details',
-      icon: <TrendingUpIcon />,
-      iconColor: '#06b6d4',
-    },
-  ];
+  // Format percentage
+  const formatPercentage = (value: number): string => {
+    return `${value.toFixed(1)}%`;
+  };
 
   if (loading) {
     return (
-      <Box sx={{ flex: 1, padding: '32px', backgroundColor: 'background.default' }}>
-        <Typography>Loading opportunities dashboard...</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
+        <CircularProgress />
       </Box>
     );
   }
 
   if (error) {
     return (
-      <Box sx={{ flex: 1, padding: '32px', backgroundColor: 'background.default' }}>
+      <Box sx={{ padding: '32px' }}>
         <Typography color="error">{error}</Typography>
       </Box>
     );
@@ -162,185 +155,204 @@ const OpportunitiesDashboard: React.FC = () => {
       </Box>
 
       {/* Page Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
-        <Box>
-          <Typography
-            variant="h1"
-            sx={{
-              fontSize: '30px',
-              fontWeight: 700,
-              color: 'text.primary',
-              margin: '0 0 8px 0',
-            }}
-          >
-            Opportunities Dashboard
-          </Typography>
-          <Typography sx={{ fontSize: '16px', color: 'text.secondary', margin: 0 }}>
-            Pipeline health, revenue forecasting, and opportunity metrics
-          </Typography>
-        </Box>
+      <Box sx={{ marginBottom: '32px' }}>
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: '30px',
+            fontWeight: 700,
+            color: 'text.primary',
+            margin: '0 0 8px 0',
+          }}
+        >
+          Opportunities Dashboard
+        </Typography>
+        <Typography sx={{ fontSize: '16px', color: 'text.secondary', margin: 0 }}>
+          Pipeline health, revenue forecasting, and opportunity metrics
+        </Typography>
       </Box>
 
-      {/* KPI Cards Grid - Data from calculations */}
+      {/* KPI Cards Grid */}
       <Grid container spacing={3} sx={{ marginBottom: '32px' }}>
-        {kpiData.map((kpi, index) => (
-          <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
-            <KPICard {...kpi} />
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Charts Section */}
-      <Grid container spacing={3} sx={{ marginBottom: '32px' }}>
-        {/* Revenue Distribution by Partner Type */}
-        <Grid item xs={12} md={6}>
+        {/* Total Pipeline Value */}
+        <Grid item xs={12} sm={6} md={3}>
           <Paper
             sx={{
+              padding: '24px',
               backgroundColor: 'background.paper',
               border: '1px solid',
               borderColor: 'divider',
-              borderRadius: '16px',
-              padding: '24px',
+              borderRadius: '12px',
               boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
             }}
           >
-            <Typography sx={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>
-              Revenue Distribution by Partner Type
-            </Typography>
-            <Typography sx={{ fontSize: '14px', color: 'text.secondary', marginBottom: '24px' }}>
-              Weighted value across partner categories
-            </Typography>
-
-            {/* Legend calculated from data */}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '24px', fontSize: '12px' }}>
-              {revenueDistribution.map((item, index) => (
-                <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Box sx={{ width: '12px', height: '12px', backgroundColor: item.color, borderRadius: '2px' }} />
-                  <span>
-                    {item.category} <strong>{formatLargeNumber(item.value, 'USD')}</strong>
-                  </span>
-                </Box>
-              ))}
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: 600, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Pipeline Value
+              </Typography>
+              <DollarSign size={20} color="#10b981" />
             </Box>
-
-            {/* Bar chart calculated from data */}
-            <Box sx={{ height: '180px' }}>
-              {revenueDistribution.map((item, idx) => {
-                const maxValue = Math.max(...revenueDistribution.map(d => d.value));
-                const widthPercent = (item.value / maxValue) * 100;
-
-                return (
-                  <Box key={idx} sx={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                    <Typography sx={{ width: '120px', fontSize: '14px', color: 'text.secondary' }}>
-                      {item.category.substring(0, 12)}
-                    </Typography>
-                    <Box sx={{ flex: 1, height: '32px', display: 'flex', borderRadius: '4px', overflow: 'hidden' }}>
-                      <Box sx={{ width: `${widthPercent}%`, backgroundColor: item.color, height: '100%' }} />
-                    </Box>
-                    <Typography sx={{ width: '80px', textAlign: 'right', fontSize: '14px', fontWeight: 600 }}>
-                      {formatLargeNumber(item.value, 'USD')}
-                    </Typography>
-                  </Box>
-                );
-              })}
+            <Typography sx={{ fontSize: '32px', fontWeight: 700, color: 'text.primary', marginBottom: '8px' }}>
+              {formatCurrency(metrics.totalValue)}
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <TrendingUp size={16} color="#10b981" />
+              <Typography sx={{ fontSize: '14px', color: '#10b981', fontWeight: 500 }}>
+                {metrics.activeOpportunities} active opportunities
+              </Typography>
             </Box>
           </Paper>
         </Grid>
 
-        {/* Pipeline Performance Trends */}
-        <Grid item xs={12} md={6}>
+        {/* Weighted Value */}
+        <Grid item xs={12} sm={6} md={3}>
           <Paper
             sx={{
+              padding: '24px',
               backgroundColor: 'background.paper',
               border: '1px solid',
               borderColor: 'divider',
-              borderRadius: '16px',
-              padding: '24px',
+              borderRadius: '12px',
               boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
             }}
           >
-            <Typography sx={{ fontSize: '18px', fontWeight: 600, marginBottom: '4px' }}>
-              Pipeline Performance Trends
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: 600, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Weighted Value
+              </Typography>
+              <Target size={20} color="#3b82f6" />
+            </Box>
+            <Typography sx={{ fontSize: '32px', fontWeight: 700, color: 'text.primary', marginBottom: '8px' }}>
+              {formatCurrency(metrics.weightedValue)}
             </Typography>
-            <Typography sx={{ fontSize: '14px', color: 'text.secondary', marginBottom: '24px' }}>
-              Monthly growth and conversion metrics
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Typography sx={{ fontSize: '14px', color: 'text.secondary', fontWeight: 500 }}>
+                Expected revenue forecast
+              </Typography>
+            </Box>
+          </Paper>
+        </Grid>
+
+        {/* Average Deal Size */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper
+            sx={{
+              padding: '24px',
+              backgroundColor: 'background.paper',
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: '12px',
+              boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: 600, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Avg Deal Size
+              </Typography>
+              <Briefcase size={20} color="#f59e0b" />
+            </Box>
+            <Typography sx={{ fontSize: '32px', fontWeight: 700, color: 'text.primary', marginBottom: '8px' }}>
+              {formatCurrency(metrics.averageDealSize)}
             </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Typography sx={{ fontSize: '14px', color: 'text.secondary', fontWeight: 500 }}>
+                Win rate: {formatPercentage(metrics.winRate)}
+              </Typography>
+            </Box>
+          </Paper>
+        </Grid>
 
-            {/* Metric cards calculated from data */}
-            <Grid container spacing={2} sx={{ marginBottom: '24px' }}>
-              {[
-                { label: 'Avg Deal Size', value: formatLargeNumber(metrics.averageDealSize, 'USD') },
-                { label: 'Avg Probability', value: `${metrics.averageProbability.toFixed(1)}%` },
-                { label: 'Conversion', value: `${metrics.conversionRate.toFixed(1)}%` },
-                {
-                  label: 'At Risk',
-                  value: metrics.healthDistribution.find(h => h.health === 'at-risk')?.count || 0,
-                },
-              ].map((metric, idx) => (
-                <Grid item xs={3} key={idx}>
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Typography sx={{ fontSize: '20px', fontWeight: 700, color: 'text.primary' }}>
-                      {metric.value}
-                    </Typography>
-                    <Typography sx={{ fontSize: '10px', color: 'text.secondary', textTransform: 'uppercase', marginTop: '4px' }}>
-                      {metric.label}
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-
-            {/* Line chart from performance trends */}
-            <Box sx={{ height: '140px', position: 'relative' }}>
-              <svg width="100%" height="100%" viewBox="0 0 400 120" preserveAspectRatio="none">
-                <polyline
-                  points={performanceTrends
-                    .map((trend, idx) => {
-                      const x = (idx / (performanceTrends.length - 1)) * 400;
-                      const maxValue = Math.max(...performanceTrends.map(t => t.value));
-                      const y = 100 - (trend.value / maxValue) * 100;
-                      return `${x},${y}`;
-                    })
-                    .join(' ')}
-                  fill="none"
-                  stroke="#667eea"
-                  strokeWidth="2"
-                />
-                {performanceTrends.map((trend, idx) => {
-                  const x = (idx / (performanceTrends.length - 1)) * 400;
-                  const maxValue = Math.max(...performanceTrends.map(t => t.value));
-                  const y = 100 - (trend.value / maxValue) * 100;
-                  return <circle key={idx} cx={x} cy={y} r="3" fill="#667eea" />;
-                })}
-              </svg>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '11px', color: 'text.secondary' }}>
-                {performanceTrends.map((trend, idx) => (
-                  <span key={idx}>{trend.period}</span>
-                ))}
-              </Box>
+        {/* At Risk Opportunities */}
+        <Grid item xs={12} sm={6} md={3}>
+          <Paper
+            sx={{
+              padding: '24px',
+              backgroundColor: 'background.paper',
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: '12px',
+              boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: 600, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                At Risk
+              </Typography>
+              <AlertCircle size={20} color="#ef4444" />
+            </Box>
+            <Typography sx={{ fontSize: '32px', fontWeight: 700, color: 'text.primary', marginBottom: '8px' }}>
+              {metrics.atRiskOpportunities}
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {metrics.atRiskOpportunities > 0 ? (
+                <>
+                  <TrendingDown size={16} color="#ef4444" />
+                  <Typography sx={{ fontSize: '14px', color: '#ef4444', fontWeight: 500 }}>
+                    Needs attention
+                  </Typography>
+                </>
+              ) : (
+                <Typography sx={{ fontSize: '14px', color: '#10b981', fontWeight: 500 }}>
+                  All opportunities healthy
+                </Typography>
+              )}
             </Box>
           </Paper>
         </Grid>
       </Grid>
 
-      {/* Coming Soon Section */}
+      {/* Pipeline Distribution */}
       <Paper
         sx={{
+          padding: '32px',
           backgroundColor: 'background.paper',
           border: '1px solid',
           borderColor: 'divider',
-          borderRadius: '16px',
-          padding: '48px',
-          textAlign: 'center',
+          borderRadius: '12px',
           boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
         }}
       >
-        <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: '8px' }}>
-          More Analytics Coming Soon
+        <Typography sx={{ fontSize: '20px', fontWeight: 700, color: 'text.primary', marginBottom: '24px' }}>
+          Pipeline Distribution by Stage
         </Typography>
-        <Typography color="text.secondary">
-          Stage progression analysis, win/loss trends, and detailed forecast accuracy metrics
-        </Typography>
+
+        <Grid container spacing={3}>
+          {stageDistribution.map((stage, index) => (
+            <Grid item xs={12} sm={6} md={3} key={stage.stage}>
+              <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <Typography sx={{ fontSize: '14px', fontWeight: 600, color: 'text.primary' }}>
+                    {stage.stage}
+                  </Typography>
+                  <Typography sx={{ fontSize: '14px', fontWeight: 600, color: 'text.secondary' }}>
+                    {stage.count}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    height: '8px',
+                    backgroundColor: 'action.hover',
+                    borderRadius: '4px',
+                    overflow: 'hidden',
+                    marginBottom: '8px',
+                  }}
+                >
+                  <Box
+                    sx={{
+                      height: '100%',
+                      width: `${stage.percentage}%`,
+                      backgroundColor: index === 0 ? '#3b82f6' : index === 1 ? '#10b981' : index === 2 ? '#f59e0b' : '#8b5cf6',
+                      transition: 'width 0.3s ease',
+                    }}
+                  />
+                </Box>
+                <Typography sx={{ fontSize: '12px', color: 'text.secondary' }}>
+                  {formatCurrency(stage.value)} ({formatPercentage(stage.percentage)})
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
       </Paper>
     </Box>
   );
