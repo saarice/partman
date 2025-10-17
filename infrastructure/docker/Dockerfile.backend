@@ -1,5 +1,8 @@
 FROM node:20-alpine
 
+# Install netcat for connection testing
+RUN apk add --no-cache netcat-openbsd
+
 WORKDIR /app
 
 # Copy package files
@@ -21,9 +24,12 @@ RUN npm run build --workspace=packages/shared
 # Create logs directory
 RUN mkdir -p /app/apps/api/logs
 
+# Make startup script executable
+RUN chmod +x /app/apps/api/scripts/docker-startup.sh
+
 WORKDIR /app/apps/api
 
 EXPOSE 3001
 
-# Use npm run dev from the API directory
-CMD ["npm", "run", "dev"]
+# Use startup script that runs migrations then starts server
+CMD ["sh", "scripts/docker-startup.sh"]

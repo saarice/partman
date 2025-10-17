@@ -441,21 +441,26 @@ const PartnerPortfolioManagement = () => {
               Compare ({selectedForComparison.length})
             </Button>
           </Grid>
-          <Grid item xs={12} sm={4} md={2} lg={2}>
-            <Box display="flex" gap={1}>
-              <Button
-                startIcon={<FilterList />}
-                onClick={() => setFilters({ category: 'all', health: 'all', tier: 'all', search: '' })}
-                size="small"
-                variant="outlined"
-                fullWidth
-              >
-                Clear Filters
-              </Button>
-              <Button startIcon={<Add />} size="small" variant="contained">
-                Add Partner
-              </Button>
-            </Box>
+          <Grid item xs={6} sm={4} md={2} lg={1.5}>
+            <Button
+              startIcon={<FilterList />}
+              onClick={() => setFilters({ category: 'all', health: 'all', tier: 'all', search: '' })}
+              size="small"
+              variant="outlined"
+              fullWidth
+            >
+              Clear Filters
+            </Button>
+          </Grid>
+          <Grid item xs={6} sm={4} md={2} lg={1.5}>
+            <Button
+              startIcon={<Add />}
+              size="small"
+              variant="contained"
+              fullWidth
+            >
+              Add Partner
+            </Button>
           </Grid>
         </Grid>
       </Paper>
