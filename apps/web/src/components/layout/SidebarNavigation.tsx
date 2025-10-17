@@ -22,6 +22,7 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
+import FolderOpenOutlinedIcon from '@mui/icons-material/FolderOpenOutlined';
 import {
   ExpandLess,
   ExpandMore,
@@ -79,7 +80,7 @@ const navigationStructure: NavigationItem[] = [
       {
         id: 'opportunity-management',
         label: 'Opportunity Management',
-        icon: <WorkOutlineIcon />,
+        icon: <FolderOpenOutlinedIcon />,
         path: '/management/opportunities'
       },
       {

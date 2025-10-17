@@ -124,7 +124,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = () => {
       setPartners(partnersData);
       setUsers(usersData);
       setError(null);
-      notify.success('Opportunities loaded successfully');
+      // Removed success notification - only show on manual refresh, not initial load
     } catch (err) {
       setError('Failed to load opportunities data');
       notify.error('Failed to load opportunities');
