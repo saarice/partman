@@ -143,7 +143,7 @@ const OpportunitiesDashboard: React.FC = () => {
   }
 
   return (
-    <Box sx={{ padding: 3 }}>
+    <Box sx={{ padding: 3, paddingLeft: 3, paddingRight: 3 }}>
       {/* Breadcrumb */}
       <Box
         component="nav"
@@ -180,7 +180,7 @@ const OpportunitiesDashboard: React.FC = () => {
       </Box>
 
       {/* KPI Cards Grid */}
-      <Grid container spacing={3} sx={{ marginBottom: 4 }}>
+      <Grid container spacing={3} sx={{ marginBottom: 4, justifyContent: 'flex-start' }}>
         {kpiData.map((kpi, index) => (
           <Grid item xs={12} sm={6} md={3} key={index}>
             <KPICard {...kpi} />
@@ -189,7 +189,7 @@ const OpportunitiesDashboard: React.FC = () => {
       </Grid>
 
       {/* Charts Section */}
-      <Grid container spacing={3} sx={{ marginBottom: 4 }}>
+      <Grid container spacing={3} sx={{ marginBottom: 4, justifyContent: 'flex-start' }}>
         {/* Revenue Distribution Chart */}
         <Grid item xs={12} md={6}>
           <Paper
@@ -302,7 +302,7 @@ const OpportunitiesDashboard: React.FC = () => {
       </Grid>
 
       {/* Performance Trends */}
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ justifyContent: 'flex-start' }}>
         <Grid item xs={12}>
           <Paper
             sx={{
@@ -318,7 +318,7 @@ const OpportunitiesDashboard: React.FC = () => {
               Performance Trends (Last 6 Months)
             </Typography>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ justifyContent: 'flex-start' }}>
               {performanceTrends.map((trend) => (
                 <Grid item xs={6} sm={4} md={2} key={trend.period}>
                   <Box sx={{ textAlign: 'center' }}>

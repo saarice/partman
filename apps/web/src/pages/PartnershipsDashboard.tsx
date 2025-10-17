@@ -44,11 +44,11 @@ const PartnershipsDashboard: React.FC = () => {
         <Typography sx={{ fontSize: '16px', color: 'text.secondary' }}>Partner portfolio health and relationship analytics</Typography>
       </Box>
 
-      <Grid container spacing={3} sx={{ marginBottom: 4 }}>
+      <Grid container spacing={3} sx={{ marginBottom: 4, justifyContent: 'flex-start' }}>
         {kpiData.map((kpi, i) => <Grid item xs={12} sm={6} md={3} key={i}><KPICard {...kpi} /></Grid>)}
       </Grid>
 
-      <Grid container spacing={3} sx={{ marginBottom: 4 }}>
+      <Grid container spacing={3} sx={{ marginBottom: 4, justifyContent: 'flex-start' }}>
         <Grid item xs={12} md={6}>
           <Paper sx={{ padding: 3, borderRadius: '12px' }}>
             <Typography sx={{ fontSize: '18px', fontWeight: 700, marginBottom: 3 }}>Partner Health Distribution</Typography>
@@ -89,11 +89,11 @@ const PartnershipsDashboard: React.FC = () => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ justifyContent: 'flex-start' }}>
         <Grid item xs={12}>
           <Paper sx={{ padding: 3, borderRadius: '12px' }}>
             <Typography sx={{ fontSize: '18px', fontWeight: 700, marginBottom: 3 }}>Top Partners by Quarterly Revenue</Typography>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ justifyContent: 'flex-start' }}>
               {[...partners].sort((a, b) => b.quarterlyRevenue - a.quarterlyRevenue).slice(0, 5).map((p, i) => (
                 <Grid item xs={12} sm={6} md={4} lg={2.4} key={p.id}>
                   <Box sx={{ textAlign: 'center' }}>
