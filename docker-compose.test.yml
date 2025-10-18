@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  postgres-test:
+    image: postgres:15
+    container_name: partman-postgres-test
+    environment:
+      POSTGRES_DB: partnership_mgmt_test
+      POSTGRES_USER: partner_user
+      POSTGRES_PASSWORD: partner_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U partner_user -d partnership_mgmt_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis-test:
+    image: redis:7.2-alpine
+    container_name: partman-redis-test
+    ports:
+      - "6380:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_test_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api-test:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.backend
+    container_name: partman-api-test
+    ports:
+      - "4001:3001"
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://partner_user:partner_pass@postgres-test:5432/partnership_mgmt_test
+      - REDIS_URL=redis://redis-test:6379
+      - JWT_SECRET=dev_jwt_secret_change_in_production
+      - FRONTEND_URL=http://localhost:4000
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+      redis-test:
+        condition: service_healthy
+    volumes:
+      - ./apps/api:/app/apps/api
+      - ./packages:/app/packages
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - api_test_node_modules:/app/node_modules
+      - api_test_apps_node_modules:/app/apps/api/node_modules
+
+  web-test:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile.frontend
+    container_name: partman-web-test
+    ports:
+      - "4000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:4001
+    depends_on:
+      - api-test
+    volumes:
+      - ./apps/web:/app/apps/web
+      - ./packages:/app/packages
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
+      - web_test_node_modules:/app/node_modules
+      - web_test_apps_node_modules:/app/apps/web/node_modules
+
+volumes:
+  postgres_test_data:
+  redis_test_data:
+  api_test_node_modules:
+  api_test_apps_node_modules:
+  web_test_node_modules:
+  web_test_apps_node_modules:
