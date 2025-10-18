@@ -463,25 +463,31 @@ const OpportunityPortfolioManagement = () => {
               Clear
             </Button>
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box display="flex" gap={1} justifyContent="flex-end">
-              <ToggleButtonGroup
-                value={view}
-                exclusive
-                onChange={(_, newView) => newView && setView(newView)}
-                size="small"
-              >
-                <ToggleButton value="table">
-                  <ViewList fontSize="small" />
-                </ToggleButton>
-                <ToggleButton value="kanban">
-                  <ViewKanban fontSize="small" />
-                </ToggleButton>
-              </ToggleButtonGroup>
-              <Button startIcon={<Add />} size="small" variant="contained">
-                Add
-              </Button>
-            </Box>
+          <Grid item xs={6} sm={4} md={2} lg={1.5}>
+            <ToggleButtonGroup
+              value={view}
+              exclusive
+              onChange={(_, newView) => newView && setView(newView)}
+              size="small"
+              fullWidth
+            >
+              <ToggleButton value="table">
+                <ViewList fontSize="small" />
+              </ToggleButton>
+              <ToggleButton value="kanban">
+                <ViewKanban fontSize="small" />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Grid>
+          <Grid item xs={6} sm={4} md={2} lg={1.5}>
+            <Button
+              startIcon={<Add />}
+              size="small"
+              variant="contained"
+              fullWidth
+            >
+              Add Opportunity
+            </Button>
           </Grid>
         </Grid>
       </Paper>
