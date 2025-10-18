@@ -9,6 +9,7 @@ import FinancialDashboard from './pages/FinancialDashboard';
 import Login from './pages/Auth/Login';
 import Partners from './pages/Partners/Partners';
 import OpportunitiesPage from './pages/OpportunitiesPage';
+import OpportunityEdit from './pages/Opportunities/OpportunityEdit';
 import UserManagement from './pages/Admin/UserManagement';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import { NotificationContainer } from './components/common/NotificationContainer';
@@ -97,6 +98,16 @@ function App() {
             <ProtectedRoute>
               <AppLayout title="Opportunity Management">
                 <OpportunitiesPage />
+              </AppLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/management/opportunities/:id/edit"
+          element={
+            <ProtectedRoute>
+              <AppLayout title="Edit Opportunity">
+                <OpportunityEdit />
               </AppLayout>
             </ProtectedRoute>
           }

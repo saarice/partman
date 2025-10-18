@@ -15,8 +15,18 @@ import { pipelineRoutes } from './routes/pipeline.js';
 import userRoutes from './routes/users.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { logger } from './utils/logger.js';
+import { validateEnvironment } from './config/validateEnv.js';
 
+// Load environment variables first
 dotenv.config();
+
+// Validate environment before starting server
+try {
+  validateEnvironment();
+} catch (error) {
+  console.error(error instanceof Error ? error.message : 'Environment validation failed');
+  process.exit(1);
+}
 
 const app = express();
 const server = createServer(app);

@@ -135,19 +135,29 @@ export const dashboardApi = {
    */
   async getKPIs(): Promise<{ success: boolean; data: DashboardKPIs }> {
     try {
-      // TODO: Replace with real API call when backend is ready
-      // const data = await api.get<DashboardKPIs>('/api/dashboard/kpis');
-
-      // Using mock data for now
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+      const response = await api.get<{ success: boolean; data: DashboardKPIs }>('/dashboard/kpis');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching dashboard KPIs from API, using fallback data:', error);
+      // Fallback to mock data if API fails
+      await new Promise(resolve => setTimeout(resolve, 100));
       const data = generateMockKPIs();
-
       return {
         success: true,
         data
       };
+    }
+  },
+
+  /**
+   * Get revenue progress data (fallback removed after testing)
+   */
+  async getRevenueProgress(): Promise<{ success: boolean; data: RevenueData }> {
+    try {
+      const response = await api.get<{ success: boolean; data: RevenueData }>('/dashboard/revenue');
+      return response.data;
     } catch (error) {
-      console.error('Error fetching dashboard KPIs:', error);
+      console.error('Error fetching revenue data from API, using fallback data:', error);
       throw error;
     }
   },
@@ -157,20 +167,16 @@ export const dashboardApi = {
    */
   async getRevenueData(): Promise<{ success: boolean; data: RevenueData }> {
     try {
-      // TODO: Replace with real API call when backend is ready
-      // const data = await api.get<RevenueData>('/api/dashboard/revenue');
-
-      // Using mock data for now
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const response = await api.get<{ success: boolean; data: RevenueData }>('/dashboard/revenue');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching revenue data from API, using fallback data:', error);
+      await new Promise(resolve => setTimeout(resolve, 100));
       const data = generateMockRevenueData();
-
       return {
         success: true,
         data
       };
-    } catch (error) {
-      console.error('Error fetching revenue data:', error);
-      throw error;
     }
   },
 
@@ -179,20 +185,16 @@ export const dashboardApi = {
    */
   async getPartnerHealth(): Promise<{ success: boolean; data: PartnerHealthData }> {
     try {
-      // TODO: Replace with real API call when backend is ready
-      // const data = await api.get<PartnerHealthData>('/api/dashboard/partners');
-
-      // Using mock data for now
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const response = await api.get<{ success: boolean; data: PartnerHealthData }>('/partners/health');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching partner health from API, using fallback data:', error);
+      await new Promise(resolve => setTimeout(resolve, 100));
       const data = generateMockPartnerHealthData();
-
       return {
         success: true,
         data
       };
-    } catch (error) {
-      console.error('Error fetching partner health data:', error);
-      throw error;
     }
   },
 
@@ -201,11 +203,10 @@ export const dashboardApi = {
    */
   async getPipelineMetrics(): Promise<{ success: boolean; data: any }> {
     try {
-      // TODO: Replace with real API call when backend is ready
-      // const data = await api.get('/api/dashboard/pipeline');
-
-      // Using mock data for now
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const response = await api.get<{ success: boolean; data: any }>('/dashboard/pipeline');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching pipeline metrics from API, using fallback data:', error);
       const data = {
         stages: [
           { stage: 'qualified', count: 35, value: 2450000 },
@@ -228,14 +229,10 @@ export const dashboardApi = {
           }
         }
       };
-
       return {
         success: true,
         data
       };
-    } catch (error) {
-      console.error('Error fetching pipeline metrics:', error);
-      throw error;
     }
   },
 
@@ -244,8 +241,10 @@ export const dashboardApi = {
    */
   async getPipelineFunnel(): Promise<{ success: boolean; data: any }> {
     try {
-      // TODO: Replace with real API call when backend is ready
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const response = await api.get<{ success: boolean; data: any }>('/dashboard/pipeline');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching pipeline funnel from API, using fallback data:', error);
       const data = {
         stages: [
           { name: 'Qualified', count: 35, value: 2450000, percentage: 100 },
@@ -258,14 +257,10 @@ export const dashboardApi = {
         totalCount: 101,
         conversionRate: 23
       };
-
       return {
         success: true,
         data
       };
-    } catch (error) {
-      console.error('Error fetching pipeline funnel:', error);
-      throw error;
     }
   },
 
@@ -274,8 +269,10 @@ export const dashboardApi = {
    */
   async getTeamPerformance(): Promise<{ success: boolean; data: any }> {
     try {
-      // TODO: Replace with real API call when backend is ready
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const response = await api.get<{ success: boolean; data: any }>('/dashboard/team');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching team performance from API, using fallback data:', error);
       const data = {
         members: [
           { name: 'Sarah Johnson', opportunities: 15, value: 1050000, winRate: 45, avatar: null },
@@ -291,14 +288,10 @@ export const dashboardApi = {
           topPerformer: 'Emily Rodriguez'
         }
       };
-
       return {
         success: true,
         data
       };
-    } catch (error) {
-      console.error('Error fetching team performance:', error);
-      throw error;
     }
   },
 

@@ -34,19 +34,11 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   }
 
   try {
-    // Handle mock token for development
-    if (token === 'mock-jwt-token-system-owner') {
-      req.user = {
-        id: 'system-owner-1',
-        email: 'admin@partman.com',
-        role: 'system_owner' as UserRole,
-        permissions: ['*'],
-        organizationId: 'default'
-      };
-      return next();
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      throw new Error('JWT_SECRET environment variable is not set');
     }
 
-    const secret = process.env.JWT_SECRET || 'dev_jwt_secret_change_in_production';
     const decoded = jwt.verify(token, secret) as JwtPayload;
 
     req.user = {

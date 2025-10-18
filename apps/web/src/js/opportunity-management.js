@@ -473,8 +473,14 @@ class OpportunityManager {
     }
 
     getAuthToken() {
-        // In a real app, this would get the token from auth store/localStorage
-        return 'mock-jwt-token-system-owner';
+        // Get the token from localStorage (set during login)
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No authentication token found');
+            window.location.href = '/login';
+            return null;
+        }
+        return token;
     }
 
     // Test method to simulate drag operation
