@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import type { UserRole } from '../../../../packages/shared/src/types/user';
 
 interface User {

@@ -179,6 +179,133 @@ router.get('/', async (req: AuthRequest, res: Response, next: NextFunction) => {
 });
 
 /**
+ * PATCH /api/opportunities/bulk
+ * Bulk update opportunities
+ * IMPORTANT: This must come BEFORE /:id routes
+ */
+router.patch('/bulk', async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user!;
+    const { ids, updates } = req.body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'IDs array is required'
+      });
+    }
+
+    if (!updates || Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Updates object is required'
+      });
+    }
+
+    // Build update query
+    const allowedFields = [
+      'stage', 'probability', 'assigned_user_id', 'expected_close_date', 'status'
+    ];
+
+    const updateFields: string[] = [];
+    const params: any[] = [];
+    let paramCount = 0;
+
+    Object.keys(updates).forEach(key => {
+      const snakeKey = key.replace(/([A-Z])/g, '_$1').toLowerCase();
+      if (allowedFields.includes(snakeKey)) {
+        paramCount++;
+        updateFields.push(`${snakeKey} = $${paramCount}`);
+        params.push(updates[key]);
+      }
+    });
+
+    if (updateFields.length === 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'No valid fields to update'
+      });
+    }
+
+    // Create placeholders for IDs
+    const idPlaceholders = ids.map((_, index) => `$${paramCount + index + 1}`).join(', ');
+    params.push(...ids);
+
+    const updateQuery = `
+      UPDATE opportunities
+      SET ${updateFields.join(', ')}
+      WHERE id IN (${idPlaceholders})
+      RETURNING *
+    `;
+
+    const result = await query(updateQuery, params);
+
+    // Log stage changes if stage was updated
+    if (updates.stage) {
+      const historyPromises = result.rows.map((opp: any) =>
+        query(
+          `
+          INSERT INTO opportunity_stage_history (opportunity_id, to_stage, changed_by, notes)
+          VALUES ($1, $2, $3, $4)
+          `,
+          [opp.id, updates.stage, userId, 'Bulk update']
+        )
+      );
+      await Promise.all(historyPromises);
+    }
+
+    logger.info(`Bulk updated ${result.rows.length} opportunities`);
+
+    res.json({
+      status: 'success',
+      data: result.rows,
+      message: `Successfully updated ${result.rows.length} opportunities`
+    });
+  } catch (error) {
+    logger.error('Error bulk updating opportunities:', error);
+    next(error);
+  }
+});
+
+/**
+ * DELETE /api/opportunities/bulk
+ * Bulk delete opportunities
+ * IMPORTANT: This must come BEFORE /:id routes
+ */
+router.delete('/bulk', async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { ids } = req.body;
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'IDs array is required'
+      });
+    }
+
+    const placeholders = ids.map((_, index) => `$${index + 1}`).join(', ');
+    const result = await query(
+      `
+      DELETE FROM opportunities
+      WHERE id IN (${placeholders})
+      RETURNING id
+      `,
+      ids
+    );
+
+    logger.info(`Bulk deleted ${result.rows.length} opportunities`);
+
+    res.json({
+      status: 'success',
+      message: `Successfully deleted ${result.rows.length} opportunities`
+    });
+  } catch (error) {
+    logger.error('Error bulk deleting opportunities:', error);
+    next(error);
+  }
+});
+
+/**
  * GET /api/opportunities/:id
  * Get a single opportunity by ID
  */
@@ -416,6 +543,217 @@ router.delete('/:id', async (req: AuthRequest, res: Response, next: NextFunction
     });
   } catch (error) {
     logger.error('Error deleting opportunity:', error);
+    next(error);
+  }
+});
+
+/**
+ * POST /api/opportunities/:id/clone
+ * Clone an existing opportunity
+ */
+router.post('/:id/clone', async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user!;
+    const { id } = req.params;
+
+    // Get original opportunity
+    const original = await query(
+      'SELECT * FROM opportunities WHERE id = $1',
+      [id]
+    );
+
+    if (original.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Opportunity not found'
+      });
+    }
+
+    const opp = original.rows[0];
+
+    // Clone opportunity with updated title
+    const result = await query(
+      `
+      INSERT INTO opportunities (
+        title,
+        description,
+        value,
+        stage,
+        probability,
+        customer_id,
+        customer_name,
+        partner_id,
+        assigned_user_id,
+        expected_close_date,
+        organization_id,
+        status
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      RETURNING *
+      `,
+      [
+        `${opp.title} (Copy)`,
+        opp.description,
+        opp.value,
+        'lead', // Reset to lead stage
+        10, // Reset probability
+        opp.customer_id,
+        opp.customer_name,
+        opp.partner_id,
+        userId, // Assign to current user
+        null, // Clear expected close date
+        opp.organization_id,
+        'active'
+      ]
+    );
+
+    // Log initial stage history for cloned opportunity
+    await query(
+      `
+      INSERT INTO opportunity_stage_history (opportunity_id, to_stage, changed_by)
+      VALUES ($1, $2, $3)
+      `,
+      [result.rows[0].id, 'lead', userId]
+    );
+
+    logger.info(`Opportunity cloned: ${id} -> ${result.rows[0].id}`);
+
+    res.status(201).json({
+      status: 'success',
+      data: result.rows[0],
+      message: 'Opportunity cloned successfully'
+    });
+  } catch (error) {
+    logger.error('Error cloning opportunity:', error);
+    next(error);
+  }
+});
+
+/**
+ * GET /api/opportunities/:id/history
+ * Get stage change history for an opportunity
+ */
+router.get('/:id/history', async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+
+    const result = await query(
+      `
+      SELECT
+        osh.id,
+        osh.opportunity_id as "opportunityId",
+        osh.from_stage as "fromStage",
+        osh.to_stage as "toStage",
+        osh.changed_by as "changedBy",
+        osh.changed_at as "changedAt",
+        osh.notes,
+        CONCAT(u.first_name, ' ', u.last_name) as "changedByName",
+        u.email as "changedByEmail"
+      FROM opportunity_stage_history osh
+      LEFT JOIN users u ON osh.changed_by = u.id
+      WHERE osh.opportunity_id = $1
+      ORDER BY osh.changed_at DESC
+      `,
+      [id]
+    );
+
+    res.json({
+      status: 'success',
+      data: result.rows
+    });
+  } catch (error) {
+    logger.error('Error fetching opportunity history:', error);
+    next(error);
+  }
+});
+
+/**
+ * PATCH /api/opportunities/:id/stage
+ * Update opportunity stage with validation
+ */
+router.patch('/:id/stage', async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { userId } = req.user!;
+    const { id } = req.params;
+    const { stage, notes } = req.body;
+
+    if (!stage) {
+      return res.status(400).json({
+        status: 'error',
+        message: 'Stage is required'
+      });
+    }
+
+    // Get current opportunity
+    const existing = await query(
+      'SELECT * FROM opportunities WHERE id = $1',
+      [id]
+    );
+
+    if (existing.rows.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Opportunity not found'
+      });
+    }
+
+    const previousStage = existing.rows[0].stage;
+
+    // Update probability based on new stage
+    const stageProbabilities: Record<string, number> = {
+      'lead': 10,
+      'demo': 25,
+      'poc': 50,
+      'proposal': 75,
+      'closed_won': 100,
+      'closed_lost': 0
+    };
+
+    const newProbability = stageProbabilities[stage] || existing.rows[0].probability;
+
+    // Update opportunity
+    const updateData: any = {
+      stage,
+      probability: newProbability
+    };
+
+    // Set actual close date if closing
+    if (stage === 'closed_won' || stage === 'closed_lost') {
+      updateData.actual_close_date = new Date().toISOString().split('T')[0];
+      updateData.status = stage === 'closed_won' ? 'won' : 'lost';
+    }
+
+    const updateFields = Object.keys(updateData).map((key, index) => `${key} = $${index + 1}`).join(', ');
+    const updateValues = Object.values(updateData);
+
+    const result = await query(
+      `
+      UPDATE opportunities
+      SET ${updateFields}
+      WHERE id = $${updateValues.length + 1}
+      RETURNING *
+      `,
+      [...updateValues, id]
+    );
+
+    // Log stage change
+    await query(
+      `
+      INSERT INTO opportunity_stage_history (opportunity_id, from_stage, to_stage, changed_by, notes)
+      VALUES ($1, $2, $3, $4, $5)
+      `,
+      [id, previousStage, stage, userId, notes]
+    );
+
+    logger.info(`Opportunity stage updated: ${id} from ${previousStage} to ${stage}`);
+
+    res.json({
+      status: 'success',
+      data: result.rows[0],
+      message: 'Stage updated successfully'
+    });
+  } catch (error) {
+    logger.error('Error updating opportunity stage:', error);
     next(error);
   }
 });

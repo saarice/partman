@@ -20,6 +20,11 @@ jest.mock('../../utils/logger.js', () => ({
   }
 }));
 
+// Set env vars before importing authService
+process.env.JWT_SECRET = 'test-jwt-secret-key';
+process.env.JWT_EXPIRY = '24h';
+process.env.REFRESH_TOKEN_EXPIRY = '7d';
+
 describe('AuthService', () => {
   let authService: AuthService;
   const mockQuery = database.query as jest.MockedFunction<typeof database.query>;
@@ -27,9 +32,6 @@ describe('AuthService', () => {
   beforeEach(() => {
     authService = new AuthService();
     jest.clearAllMocks();
-    process.env.JWT_SECRET = 'test-secret';
-    process.env.JWT_EXPIRY = '24h';
-    process.env.REFRESH_TOKEN_EXPIRY = '7d';
   });
 
   describe('hashPassword', () => {
@@ -75,8 +77,8 @@ describe('AuthService', () => {
 
       expect(jwt.sign).toHaveBeenCalledWith(
         payload,
-        'test-secret',
-        { expiresIn: '24h' }
+        'test-jwt-secret-key',
+        expect.objectContaining({ expiresIn: '24h' })
       );
       expect(token).toBe(mockToken);
     });
@@ -89,7 +91,7 @@ describe('AuthService', () => {
 
       const result = authService.verifyToken('valid.token');
 
-      expect(jwt.verify).toHaveBeenCalledWith('valid.token', 'test-secret');
+      expect(jwt.verify).toHaveBeenCalledWith('valid.token', 'test-jwt-secret-key');
       expect(result).toEqual(payload);
     });
 
@@ -282,7 +284,8 @@ describe('AuthService', () => {
         rows: [{
           id: 'user-123',
           email: 'test@example.com',
-          role: 'team_member'
+          role: 'team_member',
+          is_active: true
         }],
         rowCount: 1
       } as any);

@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { v4 as uuidv4 } from 'uuid';
+import jwt, { SignOptions } from 'jsonwebtoken';
+import { randomUUID } from 'node:crypto';
 import { query } from '../utils/database.js';
 import { createError } from '../middleware/errorHandler.js';
 import { logger } from '../utils/logger.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev_jwt_secret_change_in_production';
-const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
-const REFRESH_TOKEN_EXPIRY = process.env.REFRESH_TOKEN_EXPIRY || '7d';
+const JWT_SECRET: string = process.env.JWT_SECRET || 'dev_jwt_secret_change_in_production';
+const JWT_EXPIRY: string = process.env.JWT_EXPIRY || '24h';
+const REFRESH_TOKEN_EXPIRY: string = process.env.REFRESH_TOKEN_EXPIRY || '7d';
 const SALT_ROUNDS = 10;
 
 interface User {
@@ -53,14 +53,14 @@ export class AuthService {
    * Generate JWT access token
    */
   generateAccessToken(payload: TokenPayload): string {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRY } as SignOptions);
   }
 
   /**
    * Generate refresh token
    */
   generateRefreshToken(payload: TokenPayload): string {
-    return jwt.sign(payload, JWT_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRY });
+    return jwt.sign(payload, JWT_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRY } as SignOptions);
   }
 
   /**
@@ -226,7 +226,7 @@ export class AuthService {
       `INSERT INTO refresh_tokens (id, user_id, token, expires_at)
        VALUES ($1, $2, $3, $4)
        ON CONFLICT (user_id) DO UPDATE SET token = $3, expires_at = $4, created_at = CURRENT_TIMESTAMP`,
-      [uuidv4(), userId, token, expiresAt]
+      [randomUUID(), userId, token, expiresAt]
     );
   }
 

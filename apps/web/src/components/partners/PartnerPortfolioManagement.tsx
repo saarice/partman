@@ -145,6 +145,7 @@ const PartnerPortfolioManagement = () => {
   const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
   const [partnerDialogOpen, setPartnerDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [addPartnerDialogOpen, setAddPartnerDialogOpen] = useState(false);
   const [compareMode, setCompareMode] = useState(false);
   const [selectedForComparison, setSelectedForComparison] = useState<string[]>([]);
   const [filters, setFilters] = useState({
@@ -458,6 +459,7 @@ const PartnerPortfolioManagement = () => {
               size="small"
               variant="contained"
               fullWidth
+              onClick={() => setAddPartnerDialogOpen(true)}
             >
               Add Partner
             </Button>
@@ -873,6 +875,120 @@ const PartnerPortfolioManagement = () => {
             </DialogActions>
           </>
         )}
+      </Dialog>
+
+      {/* Add Partner Dialog */}
+      <Dialog
+        open={addPartnerDialogOpen}
+        onClose={() => setAddPartnerDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Add New Partner</DialogTitle>
+        <DialogContent>
+          <Box sx={{ pt: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Partner Name"
+                  required
+                  placeholder="Enter partner company name"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <InputLabel>Category</InputLabel>
+                  <Select label="Category" defaultValue="">
+                    <MenuItem value="FinOps">FinOps</MenuItem>
+                    <MenuItem value="Security">Security</MenuItem>
+                    <MenuItem value="Observability">Observability</MenuItem>
+                    <MenuItem value="DevOps">DevOps</MenuItem>
+                    <MenuItem value="Data">Data</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth required>
+                  <InputLabel>Tier</InputLabel>
+                  <Select label="Tier" defaultValue="">
+                    <MenuItem value="strategic">Strategic</MenuItem>
+                    <MenuItem value="tactical">Tactical</MenuItem>
+                    <MenuItem value="emerging">Emerging</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Website"
+                  placeholder="https://example.com"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Contract Status</InputLabel>
+                  <Select label="Contract Status" defaultValue="negotiating">
+                    <MenuItem value="active">Active</MenuItem>
+                    <MenuItem value="negotiating">Negotiating</MenuItem>
+                    <MenuItem value="renewal_due">Renewal Due</MenuItem>
+                    <MenuItem value="expired">Expired</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="subtitle2" gutterBottom>Primary Contact</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Contact Name"
+                  required
+                  placeholder="John Doe"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Role"
+                  required
+                  placeholder="VP Partnerships"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  type="email"
+                  required
+                  placeholder="john@example.com"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Phone"
+                  placeholder="+1 (555) 123-4567"
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setAddPartnerDialogOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              // TODO: Add partner creation logic here
+              setAddPartnerDialogOpen(false);
+            }}
+          >
+            Add Partner
+          </Button>
+        </DialogActions>
       </Dialog>
     </Box>
   );

@@ -544,6 +544,7 @@ export const opportunitiesApi = {
           };
         }
 
+        {
         const newOwner = mockUsers.find(user => user.id === params.newOwnerId);
         if (!newOwner) {
           return {
@@ -564,6 +565,7 @@ export const opportunitiesApi = {
             };
           }
         });
+        }
         break;
 
       case 'delete':
