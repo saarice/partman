@@ -281,12 +281,12 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
 
   return (
     <Drawer
-      variant="persistent"
+      variant="permanent"
       anchor="left"
-      open={open}
       sx={{
-        width: drawerWidth,
+        width: open ? drawerWidth : 0,
         flexShrink: 0,
+        transition: 'width 0.3s ease',
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
@@ -294,6 +294,8 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
           boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           top: 64, // Position below header
           height: 'calc(100vh - 64px)',
+          transform: open ? 'translateX(0)' : 'translateX(-100%)',
+          transition: 'transform 0.3s ease',
         },
       }}
     >

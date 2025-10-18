@@ -127,10 +127,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title = 'Partman' }) =>
           sx={{
             flexGrow: 1,
             backgroundColor: 'background.default',
-            marginLeft: sidebarOpen ? '280px' : '0px',
             marginTop: '64px',
-            transition: 'margin 0.3s ease',
             minHeight: 'calc(100vh - 64px)',
+            width: '100%',
           }}
         >
           {children}
