@@ -7,13 +7,7 @@ import {
   Grid,
   Chip,
   Button,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   IconButton,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -24,21 +18,21 @@ import {
   ToggleButtonGroup,
   ToggleButton,
   Stack,
-  Divider
+  Divider,
+  Paper
 } from '@mui/material';
 import {
   Add,
   Edit,
   Visibility,
-  FilterList,
-  Search,
   TrendingUp,
   TrendingDown,
-  ViewList,
-  ViewKanban,
   AccountCircle
 } from '@mui/icons-material';
 import { OpportunityEditDialog } from './OpportunityEditDialog';
+import { FilterBar } from '../common/FilterBar';
+import type { FilterConfig } from '../common/FilterBar';
+import { designTokens } from '../../theme/tokens';
 
 interface Opportunity {
   id: string;
@@ -301,11 +295,23 @@ const OpportunityPortfolioManagement = () => {
     }));
 
     return (
-      <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 2 }}>
+      <Box sx={{
+        display: 'flex',
+        gap: designTokens.components.kanban.columnGap / 8,
+        pb: 2,
+        minWidth: 'max-content',
+        height: '100%'
+      }}>
         {columns.map((column) => (
           <Paper
             key={column.id}
-            sx={{ minWidth: 320, maxWidth: 320, backgroundColor: '#f5f5f5', p: 2 }}
+            sx={{
+              minWidth: designTokens.components.kanban.columnWidth.min,
+              maxWidth: designTokens.components.kanban.columnWidth.max,
+              backgroundColor: '#fafafa',
+              p: designTokens.components.kanban.cardPadding / 8,
+              boxShadow: designTokens.components.card.shadow.light
+            }}
             onDragOver={handleDragOver}
             onDrop={() => handleDrop(column.id)}
           >
@@ -326,7 +332,7 @@ const OpportunityPortfolioManagement = () => {
             <Divider sx={{ mb: 2 }} />
 
             {/* Opportunity Cards */}
-            <Stack spacing={2}>
+            <Stack spacing={designTokens.components.kanban.cardSpacing / 8}>
               {column.opportunities.map((opportunity) => (
                 <Card
                   key={opportunity.id}
@@ -338,22 +344,32 @@ const OpportunityPortfolioManagement = () => {
                   }}
                   sx={{
                     cursor: 'move',
-                    '&:hover': { boxShadow: 3, transform: 'translateY(-2px)', transition: 'all 0.2s' },
-                    borderLeft: `4px solid ${STAGE_COLORS[opportunity.stage]}`
+                    '&:hover': {
+                      boxShadow: designTokens.components.card.shadow.medium,
+                      transform: 'translateY(-2px)',
+                      transition: `all ${designTokens.transitions.fast} ease`
+                    },
+                    borderLeft: `${designTokens.borders.width.thick}px solid ${STAGE_COLORS[opportunity.stage]}`,
+                    boxShadow: designTokens.components.card.shadow.light
                   }}
                 >
                   <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                    <Typography variant="subtitle1" fontWeight="bold" gutterBottom>{opportunity.name}</Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>{opportunity.partner.name}</Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>{opportunity.name}</Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>{opportunity.partner.name}</Typography>
                     <Box display="flex" justifyContent="space-between" alignItems="center" mb={1.5}>
-                      <Typography variant="h6" fontWeight="bold" color="primary">
+                      <Typography variant="body1" sx={{ fontFamily: 'monospace', fontWeight: 500 }} color="primary">
                         {formatCurrency(opportunity.amount, opportunity.currency)}
                       </Typography>
                       <Chip
                         label={`${(opportunity.commissionRate * 100).toFixed(0)}%`}
                         size="small"
-                        color="primary"
-                        sx={{ fontWeight: 600 }}
+                        sx={{
+                          backgroundColor: 'rgba(25, 118, 210, 0.08)',
+                          color: 'primary.main',
+                          fontWeight: 400,
+                          borderRadius: '6px',
+                          height: '22px'
+                        }}
                       />
                     </Box>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
@@ -369,12 +385,14 @@ const OpportunityPortfolioManagement = () => {
                     </Box>
                     <Box display="flex" alignItems="center" gap={1} mt={1}>
                       <Chip
-                        label={opportunity.health.replace('-', ' ').toUpperCase()}
+                        label={opportunity.health.replace('-', ' ').charAt(0).toUpperCase() + opportunity.health.replace('-', ' ').slice(1)}
                         size="small"
                         sx={{
-                          backgroundColor: HEALTH_COLORS[opportunity.health],
-                          color: 'white',
-                          fontWeight: 500,
+                          backgroundColor: `${HEALTH_COLORS[opportunity.health]}15`,
+                          color: HEALTH_COLORS[opportunity.health],
+                          fontWeight: 400,
+                          borderRadius: '6px',
+                          height: '22px',
                           fontSize: '0.7rem'
                         }}
                       />
@@ -397,105 +415,142 @@ const OpportunityPortfolioManagement = () => {
     );
   };
 
+  // Filter configurations for FilterBar component
+  const filterConfigs: FilterConfig[] = [
+    {
+      id: 'search',
+      type: 'search',
+      placeholder: 'Search opportunities...',
+      value: filters.search,
+      onChange: (value) => setFilters({...filters, search: value}),
+      gridWidth: { xs: 12, sm: 6, md: 3 }
+    },
+    {
+      id: 'stage',
+      type: 'select',
+      label: 'Stage',
+      value: filters.stage,
+      onChange: (value) => setFilters({...filters, stage: value}),
+      options: [
+        { value: 'all', label: 'All Stages' },
+        { value: 'qualified', label: 'Qualified' },
+        { value: 'proposal', label: 'Proposal' },
+        { value: 'negotiation', label: 'Negotiation' },
+        { value: 'closing', label: 'Closing' },
+        { value: 'won', label: 'Won' },
+        { value: 'lost', label: 'Lost' }
+      ],
+      gridWidth: { xs: 12, sm: 6, md: 2 }
+    },
+    {
+      id: 'health',
+      type: 'select',
+      label: 'Health',
+      value: filters.health,
+      onChange: (value) => setFilters({...filters, health: value}),
+      options: [
+        { value: 'all', label: 'All Status' },
+        { value: 'healthy', label: 'Healthy' },
+        { value: 'at-risk', label: 'At Risk' },
+        { value: 'critical', label: 'Critical' }
+      ],
+      gridWidth: { xs: 12, sm: 6, md: 2 }
+    },
+    {
+      id: 'view-toggle',
+      type: 'custom',
+      value: '',
+      onChange: () => {},
+      customComponent: (
+        <ToggleButtonGroup
+          value={view}
+          exclusive
+          onChange={(_, newView) => newView && setView(newView)}
+          size="small"
+          sx={{
+            height: designTokens.components.filter.height.small,
+            width: '100%',
+            '& .MuiToggleButton-root': {
+              height: designTokens.components.filter.height.small,
+              flex: 1
+            }
+          }}
+        >
+          <ToggleButton value="table" aria-label="table view">
+            Table
+          </ToggleButton>
+          <ToggleButton value="kanban" aria-label="kanban view">
+            Kanban
+          </ToggleButton>
+        </ToggleButtonGroup>
+      ),
+      gridWidth: { xs: 6, sm: 4, md: 1.5 }
+    }
+  ];
+
+  const handleClearFilters = () => {
+    setFilters({ stage: 'all', health: 'all', partner: 'all', search: '' });
+  };
+
+  const filterActions = [
+    <Button
+      key="add-opportunity"
+      startIcon={<Add />}
+      size="small"
+      variant="contained"
+      fullWidth
+      onClick={() => {
+        setSelectedOpportunity(null);
+        setEditDialogOpen(true);
+      }}
+      sx={{
+        height: designTokens.components.filter.height.small,
+        minHeight: designTokens.components.filter.height.small
+      }}
+    >
+      Add Opportunity
+    </Button>
+  ];
+
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Opportunity Portfolio Management
-      </Typography>
-      <Typography variant="body1" color="text.secondary" gutterBottom sx={{ mb: 3 }}>
-        Comprehensive opportunity directory with pipeline health and performance analytics
-      </Typography>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', width: '100vw', position: 'relative' }}>
+      {/* Fixed-width content area - constrained to viewport */}
+      <Box sx={{
+        p: 3,
+        width: '100vw',
+        maxWidth: '100vw',
+        boxSizing: 'border-box',
+        flexShrink: 0,
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        backgroundColor: 'background.default'
+      }}>
+        {/* Modern Clean Header */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h5" sx={{ mb: 1, fontWeight: 400 }}>
+            Opportunity Portfolio Management
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Comprehensive opportunity directory with pipeline health and performance analytics
+          </Typography>
+        </Box>
 
-      {/* Filters and Controls */}
-      <Paper sx={{ p: 2, mb: 3, minHeight: 72 }}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={6} md={2.5}>
-            <TextField
-              fullWidth
-              size="small"
-              placeholder="Search opportunities..."
-              value={filters.search}
-              onChange={(e) => setFilters({...filters, search: e.target.value})}
-              InputProps={{
-                startAdornment: <Search color="action" sx={{ mr: 1 }} />
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={2}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Stage</InputLabel>
-              <Select
-                value={filters.stage}
-                onChange={(e) => setFilters({...filters, stage: e.target.value})}
-              >
-                <MenuItem value="all">All Stages</MenuItem>
-                <MenuItem value="qualified">Qualified</MenuItem>
-                <MenuItem value="proposal">Proposal</MenuItem>
-                <MenuItem value="negotiation">Negotiation</MenuItem>
-                <MenuItem value="closing">Closing</MenuItem>
-                <MenuItem value="won">Won</MenuItem>
-                <MenuItem value="lost">Lost</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6} md={2}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Health</InputLabel>
-              <Select
-                value={filters.health}
-                onChange={(e) => setFilters({...filters, health: e.target.value})}
-              >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="healthy">Healthy</MenuItem>
-                <MenuItem value="at-risk">At Risk</MenuItem>
-                <MenuItem value="critical">Critical</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6} md={1.5}>
-            <Button
-              fullWidth
-              startIcon={<FilterList />}
-              onClick={() => setFilters({ stage: 'all', health: 'all', partner: 'all', search: '' })}
-              size="small"
-              variant="outlined"
-            >
-              Clear
-            </Button>
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={1.5}>
-            <ToggleButtonGroup
-              value={view}
-              exclusive
-              onChange={(_, newView) => newView && setView(newView)}
-              size="small"
-              fullWidth
-            >
-              <ToggleButton value="table">
-                <ViewList fontSize="small" />
-              </ToggleButton>
-              <ToggleButton value="kanban">
-                <ViewKanban fontSize="small" />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={1.5}>
-            <Button
-              startIcon={<Add />}
-              size="small"
-              variant="contained"
-              fullWidth
-            >
-              Add Opportunity
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
+        {/* Unified Filter Bar - Fixed width, doesn't expand */}
+        <FilterBar
+          filters={filterConfigs}
+          actions={filterActions}
+          onClearFilters={handleClearFilters}
+          showClearButton={true}
+        />
+      </Box>
 
-      {/* Table View */}
-      {view === 'table' && (
-        <TableContainer component={Paper}>
-        <Table>
+      {/* Content Area - Scrollable container */}
+      <Box sx={{ flexGrow: 1, overflow: 'auto', px: 3, pb: 3 }}>
+        {/* Table View */}
+        {view === 'table' && (
+        <TableContainer component={Paper} sx={{ boxShadow: designTokens.components.card.shadow.light }}>
+        <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
               <TableCell>Opportunity</TableCell>
@@ -544,7 +599,7 @@ const OpportunityPortfolioManagement = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {sortedOpportunities.map((opportunity) => (
+            {sortedOpportunities.map((opportunity, index) => (
               <TableRow
                 key={opportunity.id}
                 onClick={() => {
@@ -553,22 +608,26 @@ const OpportunityPortfolioManagement = () => {
                 }}
                 sx={{
                   cursor: 'pointer',
+                  '&:nth-of-type(odd)': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                  },
                   '&:hover': {
-                    backgroundColor: 'action.hover'
-                  }
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  },
+                  transition: 'background-color 0.15s ease'
                 }}
               >
                 <TableCell>
-                  <Typography variant="subtitle2" fontWeight="bold">
+                  <Typography variant="body2" sx={{ fontWeight: 500 }}>
                     {opportunity.name}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Box>
-                    <Typography variant="body2" fontWeight="medium">
+                    <Typography variant="body2">
                       {opportunity.partner.name}
                     </Typography>
-                    <Typography variant="caption" color="textSecondary">
+                    <Typography variant="caption" color="text.secondary">
                       {opportunity.partner.type} · {opportunity.partner.tier}
                     </Typography>
                   </Box>
@@ -578,46 +637,48 @@ const OpportunityPortfolioManagement = () => {
                     size="small"
                     label={opportunity.stage.charAt(0).toUpperCase() + opportunity.stage.slice(1)}
                     sx={{
-                      backgroundColor: `${STAGE_COLORS[opportunity.stage]}20`,
+                      backgroundColor: `${STAGE_COLORS[opportunity.stage]}15`,
                       color: STAGE_COLORS[opportunity.stage],
-                      fontWeight: 600
+                      fontWeight: 400,
+                      borderRadius: '6px',
+                      height: '24px'
                     }}
                   />
                 </TableCell>
-                <TableCell>
-                  <Typography variant="body2" fontWeight="bold">
+                <TableCell align="right">
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 500 }}>
                     {formatCurrency(opportunity.amount, opportunity.currency)}
                   </Typography>
                 </TableCell>
-                <TableCell>
-                  <Box display="flex" alignItems="center" gap={0.5}>
-                    <Typography variant="body2" fontWeight="medium">
+                <TableCell align="right">
+                  <Box display="flex" alignItems="center" justifyContent="flex-end" gap={0.5}>
+                    <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
                       {opportunity.probability}%
                     </Typography>
                     {opportunity.probability >= 75 ? (
-                      <TrendingUp fontSize="small" color="success" />
+                      <TrendingUp fontSize="small" sx={{ color: HEALTH_COLORS.healthy, fontSize: '1rem' }} />
                     ) : opportunity.probability < 50 ? (
-                      <TrendingDown fontSize="small" color="error" />
+                      <TrendingDown fontSize="small" sx={{ color: HEALTH_COLORS.critical, fontSize: '1rem' }} />
                     ) : null}
                   </Box>
                 </TableCell>
-                <TableCell>
-                  <Typography variant="body2" fontWeight="bold">
+                <TableCell align="right">
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 500 }}>
                     {formatCurrency(opportunity.weightedValue, opportunity.currency)}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {opportunity.owner.name}
                   </Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography variant="body2">
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {formatDate(opportunity.expectedCloseDate)}
                   </Typography>
                 </TableCell>
-                <TableCell>
-                  <Typography variant="body2">
+                <TableCell align="center">
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
                     {opportunity.daysInStage}
                   </Typography>
                 </TableCell>
@@ -626,9 +687,11 @@ const OpportunityPortfolioManagement = () => {
                     size="small"
                     label={opportunity.health.charAt(0).toUpperCase() + opportunity.health.slice(1).replace('-', ' ')}
                     sx={{
-                      backgroundColor: `${HEALTH_COLORS[opportunity.health]}20`,
+                      backgroundColor: `${HEALTH_COLORS[opportunity.health]}15`,
                       color: HEALTH_COLORS[opportunity.health],
-                      fontWeight: 600
+                      fontWeight: 400,
+                      borderRadius: '6px',
+                      height: '24px'
                     }}
                   />
                 </TableCell>
@@ -659,10 +722,15 @@ const OpportunityPortfolioManagement = () => {
           </TableBody>
         </Table>
         </TableContainer>
-      )}
+        )}
 
-      {/* Kanban View */}
-      {view === 'kanban' && renderKanbanView()}
+        {/* Kanban View - Horizontal scroll */}
+        {view === 'kanban' && (
+          <Box sx={{ overflowX: 'auto', overflowY: 'hidden', height: '100%' }}>
+            {renderKanbanView()}
+          </Box>
+        )}
+      </Box>
 
       <OpportunityEditDialog
         open={editDialogOpen}
@@ -673,7 +741,7 @@ const OpportunityPortfolioManagement = () => {
         }}
         onSave={(updatedData) => {
           if (selectedOpportunity) {
-            // Update the opportunity in the local state
+            // Update existing opportunity
             setOpportunities(prevOpportunities =>
               prevOpportunities.map(opp =>
                 opp.id === selectedOpportunity.id
@@ -681,6 +749,12 @@ const OpportunityPortfolioManagement = () => {
                   : opp
               )
             );
+          } else {
+            // Add new opportunity
+            setOpportunities(prevOpportunities => [
+              ...prevOpportunities,
+              updatedData as Opportunity
+            ]);
           }
         }}
       />

@@ -202,7 +202,7 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
               primary={item.label}
               primaryTypographyProps={{
                 fontSize: level === 0 ? '0.875rem' : '0.875rem',
-                fontWeight: level === 0 ? 600 : 500,
+                fontWeight: level === 0 ? 500 : 400,
                 color: 'inherit'
               }}
             />
@@ -233,7 +233,7 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({ open, onToggle })
             <MenuIcon />
           </IconButton>
         )}
-        <Typography variant="h6" component="div" sx={{ fontWeight: 600, color: '#111827' }}>
+        <Typography variant="h6" component="div" sx={{ fontWeight: 400, color: '#111827' }}>
           Partman
         </Typography>
       </Box>

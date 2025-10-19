@@ -8,27 +8,18 @@ import {
   Avatar,
   Chip,
   Button,
-  TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
-  ListItemSecondaryAction,
   IconButton,
-  Menu,
   Paper,
   LinearProgress,
   Divider,
   Badge,
-  Tooltip,
   Tab,
   Tabs,
   Table,
@@ -37,33 +28,31 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TableSortLabel
+  TableSortLabel,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 import {
-  Business,
-  Person,
-  Email,
-  Phone,
   TrendingUp,
   TrendingDown,
   Warning,
   CheckCircle,
   Error,
   Schedule,
-  MoreVert,
   Add,
   Edit,
   Visibility,
-  Compare,
-  FilterList,
-  Search,
-  AttachMoney,
-  CalendarToday,
   Star,
   StarBorder
 } from '@mui/icons-material';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, Title, Tooltip as ChartTooltip, Legend, PointElement } from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
+import { FilterBar } from '../common/FilterBar';
+import type { FilterConfig } from '../common/FilterBar';
+import { designTokens } from '../../theme/tokens';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, ChartTooltip, Legend);
 
@@ -146,8 +135,6 @@ const PartnerPortfolioManagement = () => {
   const [partnerDialogOpen, setPartnerDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [addPartnerDialogOpen, setAddPartnerDialogOpen] = useState(false);
-  const [compareMode, setCompareMode] = useState(false);
-  const [selectedForComparison, setSelectedForComparison] = useState<string[]>([]);
   const [filters, setFilters] = useState({
     category: 'all',
     health: 'all',
@@ -316,14 +303,6 @@ const PartnerPortfolioManagement = () => {
     }
   };
 
-  const handleCompareToggle = (partnerId: string) => {
-    if (selectedForComparison.includes(partnerId)) {
-      setSelectedForComparison(selectedForComparison.filter(id => id !== partnerId));
-    } else if (selectedForComparison.length < 3) {
-      setSelectedForComparison([...selectedForComparison, partnerId]);
-    }
-  };
-
   const revenueChartData = {
     labels: sortedPartners.slice(0, 10).map(p => p.name.split(' ')[0]),
     datasets: [
@@ -356,131 +335,137 @@ const PartnerPortfolioManagement = () => {
     ]
   };
 
+  // Filter configurations for FilterBar component
+  const filterConfigs: FilterConfig[] = [
+    {
+      id: 'search',
+      type: 'search',
+      placeholder: 'Search partners...',
+      value: filters.search,
+      onChange: (value) => setFilters({...filters, search: value}),
+      gridWidth: { xs: 12, sm: 6, md: 3 }
+    },
+    {
+      id: 'category',
+      type: 'select',
+      label: 'Category',
+      value: filters.category,
+      onChange: (value) => setFilters({...filters, category: value}),
+      options: [
+        { value: 'all', label: 'All Categories' },
+        { value: 'FinOps', label: 'FinOps' },
+        { value: 'Security', label: 'Security' },
+        { value: 'Observability', label: 'Observability' },
+        { value: 'DevOps', label: 'DevOps' },
+        { value: 'Data', label: 'Data' }
+      ],
+      gridWidth: { xs: 12, sm: 6, md: 2 }
+    },
+    {
+      id: 'health',
+      type: 'select',
+      label: 'Health',
+      value: filters.health,
+      onChange: (value) => setFilters({...filters, health: value}),
+      options: [
+        { value: 'all', label: 'All Status' },
+        { value: 'excellent', label: 'Excellent' },
+        { value: 'healthy', label: 'Healthy' },
+        { value: 'needs_attention', label: 'Needs Attention' },
+        { value: 'at_risk', label: 'At Risk' }
+      ],
+      gridWidth: { xs: 12, sm: 6, md: 2 }
+    },
+    {
+      id: 'tier',
+      type: 'select',
+      label: 'Tier',
+      value: filters.tier,
+      onChange: (value) => setFilters({...filters, tier: value}),
+      options: [
+        { value: 'all', label: 'All Tiers' },
+        { value: 'strategic', label: 'Strategic' },
+        { value: 'tactical', label: 'Tactical' },
+        { value: 'emerging', label: 'Emerging' }
+      ],
+      gridWidth: { xs: 12, sm: 6, md: 1.5 }
+    }
+  ];
+
+  const handleClearFilters = () => {
+    setFilters({ category: 'all', health: 'all', tier: 'all', search: '' });
+  };
+
+  const filterActions = [
+    <Button
+      key="add-partner"
+      startIcon={<Add />}
+      size="small"
+      variant="contained"
+      fullWidth
+      onClick={() => setAddPartnerDialogOpen(true)}
+      sx={{
+        height: designTokens.components.filter.height.small,
+        minHeight: designTokens.components.filter.height.small
+      }}
+    >
+      Add Partner
+    </Button>
+  ];
+
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Partner Portfolio Management
-      </Typography>
-      <Typography variant="body1" color="text.secondary" gutterBottom sx={{ mb: 3 }}>
-        Comprehensive partner directory with relationship health and performance analytics
-      </Typography>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', width: '100vw', position: 'relative' }}>
+      {/* Fixed-width content area - constrained to viewport */}
+      <Box sx={{
+        p: 3,
+        width: '100vw',
+        maxWidth: '100vw',
+        boxSizing: 'border-box',
+        flexShrink: 0,
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        backgroundColor: 'background.default'
+      }}>
+        {/* Modern Clean Header */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h5" sx={{ mb: 1, fontWeight: 400 }}>
+            Partner Portfolio Management
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Comprehensive partner directory with relationship health and performance analytics
+          </Typography>
+        </Box>
 
-      {/* Filters and Controls */}
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={6} md={4} lg={3}>
-            <TextField
-              fullWidth
-              size="small"
-              placeholder="Search partners..."
-              value={filters.search}
-              onChange={(e) => setFilters({...filters, search: e.target.value})}
-              InputProps={{
-                startAdornment: <Search color="action" sx={{ mr: 1 }} />
-              }}
-            />
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={2}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="category-label">Category</InputLabel>
-              <Select
-                labelId="category-label"
-                label="Category"
-                value={filters.category}
-                onChange={(e) => setFilters({...filters, category: e.target.value})}
-              >
-                <MenuItem value="all">All Categories</MenuItem>
-                <MenuItem value="FinOps">FinOps</MenuItem>
-                <MenuItem value="Security">Security</MenuItem>
-                <MenuItem value="Observability">Observability</MenuItem>
-                <MenuItem value="DevOps">DevOps</MenuItem>
-                <MenuItem value="Data">Data</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={2}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="health-label">Health</InputLabel>
-              <Select
-                labelId="health-label"
-                label="Health"
-                value={filters.health}
-                onChange={(e) => setFilters({...filters, health: e.target.value})}
-              >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="excellent">Excellent</MenuItem>
-                <MenuItem value="healthy">Healthy</MenuItem>
-                <MenuItem value="needs_attention">Needs Attention</MenuItem>
-                <MenuItem value="at_risk">At Risk</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={1.5}>
-            <FormControl fullWidth size="small">
-              <InputLabel id="tier-label">Tier</InputLabel>
-              <Select
-                labelId="tier-label"
-                label="Tier"
-                value={filters.tier}
-                onChange={(e) => setFilters({...filters, tier: e.target.value})}
-              >
-                <MenuItem value="all">All Tiers</MenuItem>
-                <MenuItem value="strategic">Strategic</MenuItem>
-                <MenuItem value="tactical">Tactical</MenuItem>
-                <MenuItem value="emerging">Emerging</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={1.5}>
-            <Button
-              fullWidth
-              startIcon={<Compare />}
-              onClick={() => setCompareMode(!compareMode)}
-              variant={compareMode ? 'contained' : 'outlined'}
-              size="small"
-            >
-              Compare ({selectedForComparison.length})
-            </Button>
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={1.5}>
-            <Button
-              startIcon={<FilterList />}
-              onClick={() => setFilters({ category: 'all', health: 'all', tier: 'all', search: '' })}
-              size="small"
-              variant="outlined"
-              fullWidth
-            >
-              Clear Filters
-            </Button>
-          </Grid>
-          <Grid item xs={6} sm={4} md={2} lg={1.5}>
-            <Button
-              startIcon={<Add />}
-              size="small"
-              variant="contained"
-              fullWidth
-              onClick={() => setAddPartnerDialogOpen(true)}
-            >
-              Add Partner
-            </Button>
-          </Grid>
-        </Grid>
-      </Paper>
+        {/* Unified Filter Bar - Fixed width, doesn't expand */}
+        <FilterBar
+          filters={filterConfigs}
+          actions={filterActions}
+          onClearFilters={handleClearFilters}
+          showClearButton={true}
+        />
 
-      <Tabs value={selectedTab} onChange={(_, newValue) => setSelectedTab(newValue)} sx={{ mb: 3 }}>
-        <Tab label="Directory" />
-        <Tab label="Analytics" />
-        <Tab label="Health Dashboard" />
-      </Tabs>
+        <Tabs
+          value={selectedTab}
+          onChange={(_, newValue) => setSelectedTab(newValue)}
+          sx={{ mb: 0, borderBottom: 1, borderColor: 'divider' }}
+        >
+          <Tab label="Directory" sx={{ textTransform: 'none', fontWeight: 400 }} />
+          <Tab label="Analytics" sx={{ textTransform: 'none', fontWeight: 400 }} />
+          <Tab label="Health Dashboard" sx={{ textTransform: 'none', fontWeight: 400 }} />
+        </Tabs>
+      </Box>
 
+      {/* Content Area - Scrollable container */}
+      <Box sx={{ flexGrow: 1, overflow: 'auto', px: 3, pb: 3 }}>
       {selectedTab === 0 && (
-        <TableContainer component={Paper}>
-          <Table>
+        <TableContainer component={Paper} sx={{ boxShadow: designTokens.components.card.shadow.light }}>
+          <Table sx={{ minWidth: 650 }}>
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Partner</TableCell>
-                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Health</TableCell>
-                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                <TableCell>Partner</TableCell>
+                <TableCell>Health</TableCell>
+                <TableCell align="right">
                   <TableSortLabel
                     active={sortBy === 'quarterlyRevenue'}
                     direction={sortOrder}
@@ -489,7 +474,7 @@ const PartnerPortfolioManagement = () => {
                     Q Revenue
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                <TableCell align="center">
                   <TableSortLabel
                     active={sortBy === 'activeOpportunities'}
                     direction={sortOrder}
@@ -498,45 +483,38 @@ const PartnerPortfolioManagement = () => {
                     Active Opps
                   </TableSortLabel>
                 </TableCell>
-                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Contact</TableCell>
-                <TableCell sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Next Action</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Actions</TableCell>
+                <TableCell>Contact</TableCell>
+                <TableCell>Next Action</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {sortedPartners.map((partner) => (
+              {sortedPartners.map((partner, index) => (
                 <TableRow
                   key={partner.id}
                   sx={{
-                    backgroundColor: selectedForComparison.includes(partner.id) ? 'primary.50' : 'inherit',
+                    backgroundColor: index % 2 === 0
+                      ? 'rgba(0, 0, 0, 0.02)'
+                      : 'transparent',
                     cursor: 'pointer',
                     '&:hover': {
-                      backgroundColor: 'action.hover'
-                    }
+                      backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                    },
+                    transition: 'background-color 0.15s ease'
                   }}
                   onClick={() => {
-                    if (compareMode) {
-                      handleCompareToggle(partner.id);
-                    } else {
-                      setSelectedPartner(partner);
-                      setIsEditMode(false);
-                      setPartnerDialogOpen(true);
-                    }
+                    setSelectedPartner(partner);
+                    setIsEditMode(false);
+                    setPartnerDialogOpen(true);
                   }}
                 >
                   <TableCell sx={{ verticalAlign: 'middle' }}>
                     <Box display="flex" alignItems="center" gap={2}>
-                      <Badge
-                        color="primary"
-                        variant="dot"
-                        invisible={!selectedForComparison.includes(partner.id)}
-                      >
-                        <Avatar sx={{ bgcolor: CATEGORY_COLORS[partner.category] }}>
-                          {partner.name.substring(0, 2)}
-                        </Avatar>
-                      </Badge>
+                      <Avatar sx={{ bgcolor: CATEGORY_COLORS[partner.category] }}>
+                        {partner.name.substring(0, 2)}
+                      </Avatar>
                       <Box>
-                        <Typography variant="subtitle2" fontWeight="bold">
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
                           {partner.name}
                         </Typography>
                         <Box display="flex" gap={0.5} mt={0.5}>
@@ -544,8 +522,11 @@ const PartnerPortfolioManagement = () => {
                             size="small"
                             label={partner.category}
                             sx={{
-                              backgroundColor: `${CATEGORY_COLORS[partner.category]}30`,
-                              color: CATEGORY_COLORS[partner.category]
+                              backgroundColor: `${CATEGORY_COLORS[partner.category]}15`,
+                              color: CATEGORY_COLORS[partner.category],
+                              fontWeight: 400,
+                              borderRadius: '6px',
+                              height: '22px'
                             }}
                           />
                           <Chip
@@ -553,43 +534,48 @@ const PartnerPortfolioManagement = () => {
                             label={partner.tier}
                             variant="outlined"
                             icon={partner.tier === 'strategic' ? <Star fontSize="small" /> : <StarBorder fontSize="small" />}
+                            sx={{
+                              fontWeight: 400,
+                              borderRadius: '6px',
+                              height: '22px'
+                            }}
                           />
                         </Box>
                       </Box>
                     </Box>
                   </TableCell>
-                  <TableCell sx={{ verticalAlign: 'middle' }}>
+                  <TableCell>
                     <Box display="flex" alignItems="center" gap={1}>
                       {getHealthIcon(partner.relationshipHealth.status)}
                       <Box>
-                        <Typography variant="body2" fontWeight="medium">
+                        <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
                           {partner.relationshipHealth.score}/100
                         </Typography>
-                        <Typography variant="caption" color="textSecondary">
+                        <Typography variant="caption" color="text.secondary">
                           {partner.relationshipHealth.status.replace('_', ' ')}
                         </Typography>
                       </Box>
                     </Box>
                   </TableCell>
-                  <TableCell sx={{ verticalAlign: 'middle' }}>
-                    <Box display="flex" alignItems="center" gap={0.5}>
-                      <Typography variant="body2" fontWeight="bold">
+                  <TableCell align="right">
+                    <Box display="flex" alignItems="center" justifyContent="flex-end" gap={0.5}>
+                      <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 500 }}>
                         ${(partner.performance.quarterlyRevenue / 1000000).toFixed(1)}M
                       </Typography>
                       {getTrendIcon(partner.performance.trend)}
                     </Box>
                   </TableCell>
-                  <TableCell sx={{ verticalAlign: 'middle' }}>
-                    <Typography variant="body2" fontWeight="bold">
+                  <TableCell align="center">
+                    <Typography variant="body2" sx={{ fontFamily: 'monospace', fontWeight: 500 }}>
                       {partner.performance.activeOpportunities}
                     </Typography>
                   </TableCell>
-                  <TableCell sx={{ verticalAlign: 'middle' }}>
+                  <TableCell>
                     <Box>
-                      <Typography variant="body2" fontWeight="medium">
+                      <Typography variant="body2">
                         {partner.contacts.find(c => c.isPrimary)?.name}
                       </Typography>
-                      <Typography variant="caption" color="textSecondary">
+                      <Typography variant="caption" color="text.secondary">
                         {partner.contacts.find(c => c.isPrimary)?.role}
                       </Typography>
                     </Box>
@@ -666,11 +652,11 @@ const PartnerPortfolioManagement = () => {
           <Grid item xs={12} md={4}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, textAlign: 'center' }}>
-                  <Typography variant="h4" color="primary" fontWeight="bold">
+                <Paper sx={{ p: 2, textAlign: 'center', boxShadow: designTokens.components.card.shadow.light }}>
+                  <Typography variant="h4" color="primary" sx={{ fontFamily: 'monospace', fontWeight: 500 }}>
                     {partners.length}
                   </Typography>
-                  <Typography variant="body2" color="textSecondary">
+                  <Typography variant="body2" color="text.secondary">
                     Active Partners
                   </Typography>
                 </Paper>
@@ -719,8 +705,9 @@ const PartnerPortfolioManagement = () => {
                           size="small"
                           label={partner.category}
                           sx={{
-                            backgroundColor: `${CATEGORY_COLORS[partner.category]}30`,
-                            color: CATEGORY_COLORS[partner.category]
+                            backgroundColor: `${CATEGORY_COLORS[partner.category]}${Math.round(designTokens.components.chip.backgroundOpacity.subtle * 100).toString(16).padStart(2, '0')}`,
+                            color: CATEGORY_COLORS[partner.category],
+                            fontWeight: designTokens.components.chip.fontWeight.medium
                           }}
                         />
                       </Box>
@@ -990,6 +977,7 @@ const PartnerPortfolioManagement = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      </Box>
     </Box>
   );
 };

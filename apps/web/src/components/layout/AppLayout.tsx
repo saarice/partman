@@ -84,7 +84,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, title = 'Partman' }) =>
               component="div"
               sx={{
                 flexGrow: 1,
-                fontWeight: 600,
+                fontWeight: 400,
                 color: 'text.primary'
               }}
             >
